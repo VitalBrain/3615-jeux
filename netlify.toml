@@ -1,0 +1,5 @@
+# Netlify : site statique, aucune compilation.
+# Le dossier publié est la racine du dépôt.
+[build]
+  publish = "."
+  command = ""
