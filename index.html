@@ -1,0 +1,4530 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=6bdf9afe-f7da-4026-a3d8-d37a54f812a8
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>3615 JEUX</title>
+<!-- ============ APPLICATION INSTALLABLE (PWA) ============ -->
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#ffd93d">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="3615 JEUX">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<script>
+  // Garde l'événement d'installation du navigateur dès qu'il arrive,
+  // pour que le bouton « Installer l'app » ouvre directement la fenêtre native.
+  window.__installPrompt = null;
+  window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); window.__installPrompt = e; });
+</script>
+<style>
+  :root{
+    --void:#04040c;
+    --frame:#0a0c2e;
+    --panel:#111a4d;
+    --panel-line:#2a3a8f;
+    --yellow:#ffd93d;
+    --cyan:#4de8ff;
+    --magenta:#ff4dd8;
+    --green:#39ff8f;
+    --red:#ff4d4d;
+    --white:#f1f2ff;
+    --mono: 'Courier New', ui-monospace, 'Consolas', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin:0;
+    padding:0;
+    min-height:100vh;
+    background: var(--void);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 3px);
+    color: var(--white);
+    font-family: var(--mono);
+  }
+
+  body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 24px 14px;
+  }
+
+  .page{ width: 100%; max-width: 640px; }
+  .page.hidden{ display:none; }
+
+  .frame{
+    border: 3px solid var(--panel-line);
+    background: var(--frame);
+    box-shadow: 0 0 0 1px var(--void), 0 20px 60px rgba(0,0,0,0.6);
+  }
+
+  .headbar{
+    background: var(--yellow);
+    color: var(--void);
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 8px 14px;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+  }
+
+  .headbar .dot{
+    width:8px; height:8px;
+    background: var(--red);
+    display:inline-block;
+    margin-right: 8px;
+    animation: blink 1.4s steps(1) infinite;
+  }
+
+  @keyframes blink{ 50%{ opacity: 0; } }
+
+  .body-pad{ padding: 22px 20px 26px; }
+
+  .screen{ display:block; }
+  .hidden{ display:none !important; }
+  .screen.hidden{ display:none; }
+
+  h1{ font-size: 1.35rem; line-height: 1.35; margin: 0 0 6px; color: var(--white); }
+
+  .subtitle{
+    color: var(--cyan);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    margin: 0 0 22px;
+    max-width: 58ch;
+  }
+
+  .back-link{
+    display:inline-block;
+    background: none;
+    color: var(--cyan);
+    text-decoration:none;
+    font-size: 0.8rem;
+    font-family: var(--mono);
+    border: 1px solid var(--panel-line);
+    padding: 5px 10px;
+    margin-bottom: 18px;
+    cursor: pointer;
+  }
+
+  .back-link:hover{ border-color: var(--cyan); color: var(--yellow); }
+
+  .setting-group{ margin-bottom: 20px; }
+  .setting-group > label{ display:block; color: var(--yellow); font-size: 0.85rem; margin-bottom: 8px; }
+
+  .options{ display:flex; gap:8px; flex-wrap: wrap; }
+
+  .choice-btn{
+    flex: 1 1 auto;
+    background: var(--panel);
+    border: 2px solid var(--panel-line);
+    color: var(--white);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    padding: 10px 8px;
+    cursor: pointer;
+  }
+
+  .choice-btn:hover{ border-color: var(--cyan); }
+
+  .choice-btn.active{
+    background: var(--cyan);
+    border-color: var(--cyan);
+    color: var(--void);
+    font-weight: 700;
+  }
+
+  .checkbox-label{
+    display:flex; align-items:center; gap: 10px;
+    font-size: 0.9rem; cursor: pointer; color: var(--white);
+  }
+
+  .checkbox-label input{ width: 18px; height: 18px; accent-color: var(--cyan); }
+
+  .primary-btn{
+    display:block; width: 100%;
+    background: var(--green); color: var(--void); border: none;
+    font-family: var(--mono); font-weight: 700; font-size: 1.05rem;
+    letter-spacing: 1px; padding: 14px; cursor: pointer; margin: 6px 0 22px;
+  }
+
+  .primary-btn:hover{ background: var(--yellow); }
+  .primary-btn:active{ transform: translateY(1px); }
+
+  .rules{ border-top: 1px dashed var(--panel-line); padding-top: 16px; }
+  .rules h3{ margin: 0 0 10px; font-size: 0.85rem; color: var(--magenta); }
+  .rules ul{ margin: 0; padding-left: 18px; font-size: 0.85rem; line-height: 1.65; color: var(--white); }
+
+  kbd{ background: var(--panel); border: 1px solid var(--panel-line); padding: 1px 6px; font-family: var(--mono); }
+
+  .round-indicator{ color: var(--cyan); font-size: 0.85rem; }
+
+  .top-bar{
+    display:flex; justify-content: space-between; align-items: center;
+    gap: 8px; margin-bottom: 18px;
+  }
+
+  .score-indicator{ color: var(--green); font-size: 0.85rem; white-space: nowrap; }
+
+  .quit-btn{
+    background: transparent; border: 1px solid var(--panel-line); color: var(--cyan);
+    font-family: var(--mono); font-size: 0.7rem; padding: 5px 9px;
+    cursor: pointer; letter-spacing: 1px; white-space: nowrap;
+  }
+
+  .quit-btn:hover{ border-color: var(--magenta); color: var(--magenta); }
+  .top-bar-actions{ display:flex; gap: 6px; }
+  .round-indicator{ white-space: nowrap; }
+  /* Téléphone : manche + score sur une ligne, boutons sur la suivante */
+  @media (max-width: 560px){
+    .top-bar{ flex-wrap: wrap; row-gap: 10px; }
+    .top-bar-actions{ order: 3; width: 100%; }
+    .top-bar-actions .quit-btn{ flex: 1; }
+  }
+
+  .modal-overlay{
+    position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+    display:flex; align-items:center; justify-content:center;
+    padding: 20px; z-index: 50;
+  }
+
+  .modal-overlay.hidden{ display:none; }
+
+  .modal-box{
+    background: var(--frame); border: 3px solid var(--magenta);
+    padding: 24px 20px; max-width: 360px; width: 100%; text-align:center;
+  }
+
+  .modal-text{ margin: 0 0 20px; font-size: 0.95rem; line-height: 1.55; color: var(--white); }
+  .modal-actions{ display:flex; gap: 10px; }
+  .modal-actions .choice-btn{ flex: 1; }
+
+  .confirm-danger{
+    background: var(--red) !important; border-color: var(--red) !important;
+    color: var(--void) !important; font-weight: 700;
+  }
+
+  /* ---- pop-up de soutien (au lancement) ---- */
+  .support-box{ border-color: var(--yellow); padding: 0; overflow: hidden; }
+  .support-box .headbar{ justify-content: center; }
+  .support-inner{ padding: 22px 20px 20px; }
+  .support-icon{ font-size: 2.4rem; line-height: 1; margin-bottom: 10px; }
+  .support-title{ margin: 0 0 12px; font-size: 1.1rem; color: var(--yellow); letter-spacing: 1px; }
+  .support-actions{ flex-direction: column; }
+  .support-kofi{
+    background: var(--yellow); border-color: var(--yellow); color: var(--void);
+    font-weight: 700; text-decoration: none;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .support-kofi:hover{ background: var(--green); border-color: var(--green); }
+  .support-dontshow{
+    justify-content: center; margin-top: 14px;
+    font-size: 0.78rem; opacity: 0.75;
+  }
+  .support-dontshow input{ width: 15px; height: 15px; }
+
+  .listening-indicator{
+    text-align:center; font-size: 1.3rem; color: var(--magenta);
+    padding: 60px 10px; animation: pulse 1.2s ease-in-out infinite;
+  }
+
+  .listening-indicator.hidden{ display:none; }
+
+  @keyframes pulse{ 0%,100%{ opacity: 0.5; } 50%{ opacity: 1; } }
+
+  .memorize-display{ text-align:center; padding: 30px 10px; }
+  .memorize-display.hidden{ display:none; }
+
+  .mem-number{ font-size: 3rem; font-weight: 700; letter-spacing: 10px; color: var(--yellow); }
+  .mem-word{ font-size: 2rem; letter-spacing: 8px; color: var(--green); margin-top: 18px; }
+  .mem-big{ font-size: 2.6rem; font-weight: 700; letter-spacing: 6px; color: var(--yellow); }
+
+  .feedback{ text-align:center; min-height: 1.4rem; color: var(--green); font-weight: 700; letter-spacing: 1px; }
+
+  .share-btn{ background: var(--cyan); margin-bottom: 10px; }
+  .share-btn:hover{ background: var(--yellow); }
+
+  .share-feedback{ text-align:center; min-height: 1.2rem; font-size: 0.8rem; color: var(--green); margin-bottom: 10px; }
+
+  .share-box{ margin: 0 0 14px; }
+  .share-box.hidden{ display:none; }
+  .share-box textarea{
+    width:100%; min-height: 90px; background: var(--panel); color: var(--white);
+    border: 2px solid var(--panel-line); font-family: var(--mono); font-size: 0.8rem;
+    padding: 8px; resize: none;
+  }
+
+  #page-memo .screen h1, #page-mots .screen h1{ text-align:center; margin-bottom: 24px; }
+
+  .result-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 26px; }
+
+  .result-card{ border: 2px solid var(--panel-line); background: var(--panel); padding: 16px 10px; text-align:center; }
+  .result-label{ display:block; font-size: 0.75rem; color: var(--cyan); margin-bottom: 8px; }
+  .result-value{ display:block; font-size: 1.6rem; font-weight: 700; color: var(--yellow); }
+
+  /* ---- hub ---- */
+  .menu{ display:flex; flex-direction:column; gap: 14px; margin-bottom: 6px; }
+
+  .game-tile{
+    display:flex; align-items:center; gap: 16px;
+    background: var(--panel); border: 2px solid var(--panel-line);
+    padding: 16px; text-decoration:none; color: var(--white);
+    cursor:pointer; width: 100%; text-align:left; font-family: var(--mono);
+  }
+
+  .game-tile:hover{ border-color: var(--cyan); }
+
+  .game-icon{
+    flex: 0 0 auto; width: 56px; height: 56px;
+    display:flex; align-items:center; justify-content:center;
+    font-size: 1.6rem; font-weight: 700;
+    background: var(--void); border: 2px solid var(--yellow); color: var(--yellow);
+  }
+
+  .game-tile.mots .game-icon{ border-color: var(--green); color: var(--green); }
+  .game-tile.simon .game-icon{ border-color: var(--magenta); color: var(--magenta); font-size: 0.85rem; }
+  .game-tile.anagramme .game-icon{ border-color: var(--cyan); color: var(--cyan); }
+  .game-tile.reflexe .game-icon{ border-color: var(--white); color: var(--white); }
+
+  .profile-panel{
+    border: 2px solid var(--panel-line);
+    background: var(--panel);
+    padding: 14px 16px;
+    margin-bottom: 20px;
+  }
+
+  .profile-panel h3{
+    margin: 0 0 12px;
+    font-size: 0.85rem;
+    color: var(--magenta);
+  }
+
+  .profile-field{ margin-bottom: 10px; }
+
+  .profile-field label{
+    display:block;
+    font-size: 0.75rem;
+    color: var(--cyan);
+    margin-bottom: 4px;
+  }
+
+  .profile-field select,
+  .profile-field input{
+    width: 100%;
+    background: var(--void);
+    border: 2px solid var(--panel-line);
+    color: var(--white);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    padding: 8px;
+    margin-bottom: 6px;
+  }
+
+  .profile-field select:focus,
+  .profile-field input:focus{ border-color: var(--cyan); outline: none; }
+
+  .profile-header{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .profile-name{
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--white);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .profile-status{
+    font-size: 0.75rem;
+    color: var(--cyan);
+    margin-top: 4px;
+  }
+
+  .profile-stats{ font-size: 0.78rem; }
+
+  .profile-stat-row{
+    display:flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 5px 0;
+    border-top: 1px dashed var(--panel-line);
+  }
+
+  .profile-stat-game{ color: var(--white); opacity: 0.85; }
+  .profile-stat-value{ color: var(--yellow); white-space: nowrap; }
+  .profile-empty{ margin: 4px 0 0; color: var(--white); opacity: 0.6; font-size: 0.78rem; }
+
+  .profile-backup-actions{ margin-top: 12px; margin-bottom: 0; }
+
+  /* ---- Connexion Google ---- */
+  .google-auth{ border-bottom: 1px dashed var(--panel-line); padding-bottom: 14px; margin-bottom: 14px; }
+  .google-btn{
+    width: 100%; display:flex; align-items:center; justify-content:center; gap: 10px;
+    background: var(--white); color: #1f1f1f; border-color: var(--white); font-weight: 700;
+  }
+  .google-btn:hover{ background: var(--yellow); border-color: var(--yellow); color: var(--void); }
+  .google-btn:disabled{ opacity: 0.6; cursor: wait; }
+  .google-btn svg{ width: 18px; height: 18px; flex: 0 0 auto; }
+  .google-hint{ font-size: 0.75rem; color: var(--white); opacity: 0.7; margin: 8px 0 0; line-height: 1.4; }
+  .google-user{ display:flex; align-items:center; gap: 10px; }
+  .google-user img{ width: 36px; height: 36px; border: 2px solid var(--cyan); flex: 0 0 auto; object-fit: cover; }
+  .google-user-info{ flex: 1 1 auto; min-width: 0; }
+  .google-name{ font-weight: 700; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .google-sync{ font-size: 0.72rem; color: var(--green); margin-top: 2px; }
+  .google-sync.warn{ color: var(--yellow); }
+  #google-status{ color: var(--yellow); }
+
+  .contact-link-row{ margin-top: 22px; display:flex; gap: 8px; }
+  .contact-link-row{ flex-wrap: wrap; }
+  .app-toolbar{ display:flex; flex-wrap: wrap; gap: 8px; margin: -8px 0 20px; }
+  .app-toolbar .choice-btn{ flex: 0 1 auto; padding: 10px 14px; }
+  .app-toolbar .install-btn-main{
+    background: var(--green); border-color: var(--green); color: var(--void); font-weight: 700;
+  }
+  .app-toolbar .install-btn-main:hover{ background: var(--yellow); border-color: var(--yellow); }
+  @media (max-width: 560px){ .app-toolbar .choice-btn{ flex: 1 1 140px; } }
+  .contact-link-row .choice-btn{ flex: 1 1 140px; }
+  .app-share-btn{ border-color: var(--cyan); color: var(--cyan); font-weight: 700; }
+  .app-share-btn:hover{ background: var(--cyan); color: var(--void); }
+  #app-share-feedback{ margin: 8px 0 0; word-break: break-all; }
+  .contact-link-row .install-btn{ border-color: var(--green); color: var(--green); font-weight: 700; }
+  .contact-link-row .install-btn:hover{ background: var(--green); color: var(--void); }
+  .install-box{ border-color: var(--green); text-align: left; }
+  .install-box .support-title{ text-align: center; color: var(--green); }
+  .install-steps{ font-size: 0.88rem; line-height: 1.6; margin-bottom: 18px; }
+  .install-steps ol{ margin: 0; padding-left: 20px; }
+  .install-steps li{ margin-bottom: 6px; }
+  .install-steps p{ margin: 0 0 10px; }
+
+  /* En mode application installée : marges pour l'encoche des téléphones */
+  @media (display-mode: standalone){
+    body{ padding-top: max(24px, env(safe-area-inset-top)); padding-bottom: max(24px, env(safe-area-inset-bottom)); }
+  }
+  .headbar .kofi-small{
+    color: var(--void);
+    text-decoration: none;
+    border: 2px solid var(--void);
+    padding: 2px 10px;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+  .headbar .kofi-small:hover{ background: var(--void); color: var(--yellow); }
+  .head-actions{ display:flex; align-items:center; gap: 8px; }
+  .lang-switch{ display:flex; border: 2px solid var(--void); }
+  .lang-switch button{
+    background: transparent; border: none; color: var(--void);
+    font-family: var(--mono); font-weight: 700; font-size: 0.75rem;
+    letter-spacing: 1px; padding: 2px 7px; cursor: pointer;
+  }
+  .lang-switch button.active{ background: var(--void); color: var(--yellow); }
+  .lang-switch button:not(.active):hover{ background: rgba(4,4,12,0.15); }
+  .contact-honeypot{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+  .profile-field textarea{
+    width: 100%;
+    background: var(--void);
+    border: 2px solid var(--panel-line);
+    color: var(--white);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    padding: 8px;
+    resize: vertical;
+  }
+  .profile-field textarea:focus{ border-color: var(--cyan); outline: none; }
+  .contact-status{ font-size: 0.85rem; line-height: 1.5; min-height: 1.3rem; margin-top: -10px; }
+  .contact-status.ok{ color: var(--green); }
+  .contact-status.err{ color: var(--red); }
+  .contact-status a{ color: var(--cyan); }
+  .ad-banner{ margin-top: 16px; min-height: 90px; display:flex; align-items:center; justify-content:center; }
+
+  .wordbank-panel{
+    border-top: 1px dashed var(--panel-line);
+    margin-top: 24px;
+    padding-top: 18px;
+  }
+
+  .wordbank-panel h3{
+    margin: 0 0 8px;
+    font-size: 0.85rem;
+    color: var(--magenta);
+  }
+
+  .wordbank-desc{
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: var(--white);
+    opacity: 0.75;
+    margin: 0 0 12px;
+  }
+
+  .wordbank-actions{
+    display:flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .wordbank-actions .choice-btn{ flex: 1 1 auto; }
+
+  .wordbank-upload-label{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }
+
+  .wordbank-status{
+    font-size: 0.78rem;
+    color: var(--cyan);
+    line-height: 1.4;
+  }
+
+  .game-info{ flex: 1 1 auto; display:flex; flex-direction:column; }
+  .game-code{ font-size: 0.75rem; color: var(--cyan); letter-spacing: 1px; margin-bottom: 4px; }
+  .game-title{ font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+  .game-desc{ font-size: 0.8rem; color: var(--white); opacity: 0.75; line-height: 1.4; }
+  .game-arrow{ flex: 0 0 auto; color: var(--panel-line); font-size: 1.4rem; }
+  .game-tile:hover .game-arrow{ color: var(--cyan); }
+
+  /* ---- memo game ---- */
+  .slots-container{ text-align:center; margin-bottom: 22px; }
+  .slots-row{ display:flex; justify-content:center; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+
+  .slot{
+    width: 2.2rem; height: 2.6rem; display:flex; align-items:center; justify-content:center;
+    font-size: 1.2rem; font-weight: 700; border: 2px solid var(--panel-line);
+    background: var(--panel); color: var(--panel-line);
+  }
+
+  .digit-slot{ border-color: var(--yellow); }
+  .letter-slot{ border-color: var(--green); }
+  .slot.filled{ color: var(--white); }
+  .digit-slot.filled{ background: var(--yellow); color: var(--void); }
+  .letter-slot.filled{ background: var(--green); color: var(--void); }
+
+  .legend{ font-size: 0.75rem; color: var(--white); opacity: 0.7; display:flex; justify-content:center; gap: 16px; }
+  .legend .lg-d{ color: var(--yellow); }
+  .legend .lg-w{ color: var(--green); }
+
+  .keypad{ border: 2px solid var(--panel-line); background: var(--void); padding: 14px; margin-bottom: 10px; }
+  .keypad-row{ display:flex; flex-wrap: wrap; justify-content:center; gap: 6px; }
+  .keypad-row + .keypad-row{ margin-top: 8px; }
+  .keypad-row.dim{ opacity: 0.35; }
+  .keypad-subrow{ display:flex; justify-content:center; gap: 6px; width: 100%; }
+  .keypad-subrow .key{ flex: 1 1 0; min-width: 0; max-width: 2.4rem; padding: 0; }
+
+  .key{
+    width: 2.4rem; height: 2.4rem; border: 2px solid var(--panel-line);
+    background: var(--panel); color: var(--white); font-family: var(--mono);
+    font-weight: 700; font-size: 1.05rem; cursor: pointer;
+    transition: background 0.12s, color 0.12s, border-color 0.12s;
+  }
+
+  .key.digit-key{ border-color: var(--yellow); }
+  .key.letter-key{ border-color: var(--green); }
+  .key:hover{ border-color: var(--cyan); }
+  .key.correct{ background: var(--green); color: var(--void); border-color: var(--green); }
+  .key.wrong{ background: var(--red); color: var(--void); border-color: var(--red); }
+  .key.used{ background: var(--green); color: var(--void); border-color: var(--green); opacity: 0.45; cursor: default; }
+
+  .keypad-hint{ text-align:center; font-size: 0.75rem; color: var(--cyan); margin-bottom: 18px; }
+
+  .inline-link-btn{
+    background: none;
+    border: none;
+    color: var(--cyan);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .inline-link-btn:hover{ color: var(--yellow); }
+  .inline-link-btn.hidden{ display:none; }
+
+  /* ---- mots game ---- */
+  .find-info{ text-align:center; font-size: 0.85rem; color: var(--cyan); margin-bottom: 14px; }
+
+  .word-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 6px; margin-bottom: 16px; }
+
+  .word-tile{
+    border: 2px solid var(--panel-line); background: var(--panel); color: var(--white);
+    font-family: var(--mono); font-size: 0.78rem; padding: 8px 4px; cursor: pointer;
+    text-align:center; transition: background 0.12s, color 0.12s, border-color 0.12s;
+  }
+
+  .word-tile:hover{ border-color: var(--cyan); }
+
+  .word-tile.found{
+    background: var(--green); color: var(--void); border-color: var(--green);
+    font-weight: 700; cursor: default;
+  }
+
+  .word-tile.flash-wrong{ background: var(--red); color: var(--void); border-color: var(--red); }
+
+  .mem-progress{ text-align:center; font-size: 0.8rem; color: var(--cyan); margin-bottom: 6px; }
+
+  /* ---- simon game ---- */
+  .simon-level{ text-align:center; font-size: 1rem; color: var(--cyan); margin-bottom: 18px; letter-spacing: 1px; }
+
+  .simon-pad-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    max-width: 280px;
+    margin: 0 auto 22px;
+  }
+
+  .simon-pad{
+    aspect-ratio: 1;
+    border: 3px solid var(--panel-line);
+    cursor: pointer;
+    filter: brightness(0.4);
+    transition: filter 0.1s, box-shadow 0.1s;
+  }
+
+  .simon-pad:disabled{ cursor: default; }
+
+  .simon-pad.pad-green{ background: var(--green); }
+  .simon-pad.pad-red{ background: var(--red); }
+  .simon-pad.pad-yellow{ background: var(--yellow); }
+  .simon-pad.pad-blue{ background: var(--cyan); }
+
+  .simon-pad.lit{ filter: brightness(1.2); }
+  .simon-pad.pad-green.lit{ box-shadow: 0 0 22px var(--green); }
+  .simon-pad.pad-red.lit{ box-shadow: 0 0 22px var(--red); }
+  .simon-pad.pad-yellow.lit{ box-shadow: 0 0 22px var(--yellow); }
+  .simon-pad.pad-blue.lit{ box-shadow: 0 0 22px var(--cyan); }
+
+  .simon-status{ text-align:center; font-size: 0.9rem; color: var(--magenta); min-height: 1.3rem; margin-bottom: 6px; }
+
+  /* ---- reflexe game ---- */
+  .reflexe-rules-box{
+    border: 2px solid var(--magenta);
+    background: var(--panel);
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  .reflexe-rules-box p{ margin: 0 0 8px; }
+  .reflexe-rules-box p:last-child{ margin-bottom: 0; }
+  .reflexe-rules-box strong{ color: var(--yellow); }
+  .reflexe-rules-box .rule2 strong{ color: var(--red); }
+
+  .reflexe-stage{
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 26px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border: 3px solid var(--panel-line);
+    background: var(--void);
+  }
+
+  .reflexe-shape{ width: 110px; height: 110px; }
+  .reflexe-shape.shape-carre{ background-color: var(--shape-color, var(--white)); }
+  .reflexe-shape.shape-cercle{ background-color: var(--shape-color, var(--white)); border-radius: 50%; }
+  .reflexe-shape.shape-losange{ background-color: var(--shape-color, var(--white)); transform: rotate(45deg); }
+  .reflexe-shape.shape-triangle{
+    width: 0; height: 0;
+    border-left: 55px solid transparent;
+    border-right: 55px solid transparent;
+    border-bottom: 95px solid var(--shape-color, var(--white));
+  }
+
+  .reflexe-answer-row{ display:flex; gap: 12px; margin-bottom: 18px; }
+
+  .reflexe-answer-btn{
+    flex: 1;
+    padding: 18px;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    border: none;
+    cursor: pointer;
+    color: var(--void);
+  }
+
+  .reflexe-answer-btn.oui{ background: var(--green); }
+  .reflexe-answer-btn.non{ background: var(--red); }
+  .reflexe-answer-btn:hover{ filter: brightness(1.1); }
+  .reflexe-answer-btn:disabled{ opacity: 0.5; cursor: default; }
+
+  .reflexe-slider{
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    background: var(--panel-line);
+    outline: none;
+    cursor: pointer;
+  }
+
+  .reflexe-slider::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--cyan);
+    border: 2px solid var(--void);
+    cursor: pointer;
+  }
+
+  .reflexe-slider::-moz-range-thumb{
+    width: 20px;
+    height: 20px;
+    background: var(--cyan);
+    border: 2px solid var(--void);
+    cursor: pointer;
+    border-radius: 0;
+  }
+
+  .answer-chart{ margin-bottom: 20px; }
+  .answer-chart-title{ font-size: 0.75rem; color: var(--magenta); margin-bottom: 6px; }
+  .answer-chart svg{ display:block; background: var(--void); border: 1px solid var(--panel-line); }
+  .answer-chart-avg{ text-align:center; font-size: 0.8rem; color: var(--cyan); margin: 8px 0 4px; }
+  .answer-chart-legend{ display:flex; justify-content:center; flex-wrap: wrap; gap: 16px; font-size: 0.72rem; color: var(--white); opacity: 0.75; }
+  .answer-chart-legend .lg-ok{ color: var(--green); }
+  .answer-chart-legend .lg-bad{ color: var(--red); }
+  .answer-chart-legend .lg-avg{ color: var(--yellow); }
+
+  .replay-listen-btn{
+    display:block;
+    margin: 18px auto 0;
+    padding: 8px 14px;
+    font-size: 0.75rem;
+  }
+</style>
+
+<!-- ============ GOOGLE ADSENSE ============
+  Compte connecté (client ca-pub-6034299359163810). Auto ads gère le
+  placement automatiquement une fois activé côté tableau de bord AdSense.
+  Le bloc bannière manuel plus bas dans le <body> reste, lui, désactivé :
+  il faut son propre data-ad-slot (créez un bloc d'annonces "Display" dans
+  AdSense, donnez-moi l'identifiant, et je le décommente).
+============================================================= -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6034299359163810" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<!-- ============ POP-UP DE SOUTIEN (au lancement) ============ -->
+<div class="modal-overlay hidden" id="support-modal" role="dialog" aria-modal="true" aria-labelledby="support-title">
+  <div class="modal-box support-box">
+    <div class="headbar"><span><span class="dot"></span>3615 SOUTIEN</span></div>
+    <div class="support-inner">
+      <div class="support-icon">☕</div>
+      <h2 class="support-title" id="support-title">Vous aimez 3615 JEUX ?</h2>
+      <p class="modal-text">Les jeux sont gratuits et sans inscription. Si vous voulez nous aider à les faire vivre, un petit café sur Ko-fi fait toujours plaisir !</p>
+      <div class="modal-actions support-actions">
+        <a id="support-kofi-btn" class="choice-btn support-kofi" href="https://ko-fi.com/3615memo" target="_blank" rel="noopener noreferrer">☕ NOUS SOUTENIR</a>
+        <button id="support-close-btn" class="choice-btn">JOUER ›</button>
+      </div>
+      <label class="checkbox-label support-dontshow">
+        <input type="checkbox" id="support-dontshow">
+        Ne plus afficher ce message
+      </label>
+    </div>
+  </div>
+</div>
+
+<!-- ============ HUB ============ -->
+<div class="page" id="page-hub">
+  <div class="frame">
+    <div class="headbar"><span><span class="dot"></span>3615 JEUX</span><span class="head-actions"><span class="lang-switch" role="group" aria-label="Langue / Language"><button type="button" data-lang="fr" title="Français">FR</button><button type="button" data-lang="en" title="English">EN</button></span><a class="kofi-small" href="https://ko-fi.com/3615memo" target="_blank" rel="noopener noreferrer" title="Faire un don sur Ko-fi">☕ DON</a></span></div>
+    <div class="body-pad">
+      <h1>Salle de jeux</h1>
+      <p class="subtitle">Choisissez un jeu pour commencer.</p>
+
+      <div class="app-toolbar" id="app-toolbar">
+        <button class="choice-btn install-btn-main hidden" id="install-app-btn">📲 Installer l'app</button>
+        <button class="choice-btn" id="download-app-btn">📥 Télécharger l'app (fichier)</button>
+      </div>
+
+      <div class="profile-panel" id="profile-panel">
+        <!-- Connexion Google (masquée tant que FIREBASE_CONFIG n'est pas rempli) -->
+        <div class="google-auth hidden" id="google-auth">
+          <div id="google-signed-out">
+            <button id="google-signin-btn" class="choice-btn google-btn"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.1C12.5 13.6 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.7 6c4.5-4.2 6.9-10.3 6.9-17.7z"/><path fill="#FBBC05" d="M10.6 28.6c-.5-1.4-.8-3-.8-4.6s.3-3.2.8-4.6l-7.9-6.1C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.7-6c-2.1 1.4-4.9 2.3-8.2 2.3-6.2 0-11.5-4.1-13.4-9.8l-7.9 6.1C6.6 42.6 14.6 48 24 48z"/></svg><span>Se connecter avec Google</span></button>
+            <p class="google-hint">Connectez-vous pour retrouver vos scores sur tous vos appareils.</p>
+          </div>
+          <div id="google-signed-in" class="google-user hidden">
+            <img id="google-avatar" alt="" referrerpolicy="no-referrer">
+            <div class="google-user-info">
+              <div class="google-name" id="google-name"></div>
+              <div class="google-sync" id="google-sync"></div>
+            </div>
+            <button id="google-signout-btn" class="quit-btn">Se déconnecter</button>
+          </div>
+          <div class="profile-status" id="google-status"></div>
+        </div>
+
+        <div id="profile-noplayer-view">
+          <h3>👤 PROFIL LOCAL</h3>
+          <div class="profile-field" id="profile-select-field">
+            <label for="profile-select">Joueurs enregistrés sur cet appareil</label>
+            <select id="profile-select"></select>
+            <button id="profile-select-btn" class="choice-btn">Choisir ce joueur</button>
+          </div>
+          <div class="profile-field">
+            <label for="profile-new-name">Ou créer un nouveau joueur</label>
+            <input type="text" id="profile-new-name" maxlength="30" placeholder="Nom du joueur">
+            <button id="profile-create-btn" class="choice-btn">Créer</button>
+          </div>
+          <div class="profile-status" id="profile-status"></div>
+        </div>
+
+        <div id="profile-active-view" class="hidden">
+          <div class="profile-header">
+            <div class="profile-name" id="profile-name">Profil</div>
+            <button id="profile-switch-btn" class="quit-btn">Changer de joueur</button>
+          </div>
+          <div class="profile-stats" id="profile-stats"></div>
+        </div>
+
+        <div class="wordbank-actions profile-backup-actions">
+          <button id="profile-backup-download-btn" class="choice-btn">📥 Sauvegarder (fichier)</button>
+          <label class="choice-btn wordbank-upload-label">
+            📤 Restaurer un fichier
+            <input type="file" id="profile-backup-file-input" accept="application/json,.json" hidden>
+          </label>
+        </div>
+      </div>
+
+      <div class="menu">
+        <button class="game-tile memo" data-open="memo">
+          <span class="game-icon">0-9</span>
+          <span class="game-info">
+            <span class="game-code">3615 MEMO</span>
+            <span class="game-title">Chiffres &amp; lettres</span>
+            <span class="game-desc">Mémorisez un nombre puis un mot, retrouvez-les chiffre après lettre.</span>
+          </span>
+          <span class="game-arrow">›</span>
+        </button>
+        <button class="game-tile mots" data-open="mots">
+          <span class="game-icon">A-Z</span>
+          <span class="game-info">
+            <span class="game-code">3616 MOTS</span>
+            <span class="game-title">Mémoire de mots</span>
+            <span class="game-desc">Mémorisez une liste de mots, puis retrouvez-les dans l'ordre alphabétique parmi 50.</span>
+          </span>
+          <span class="game-arrow">›</span>
+        </button>
+        <button class="game-tile simon" data-open="simon">
+          <span class="game-icon">●●●●</span>
+          <span class="game-info">
+            <span class="game-code">3617 SIMON</span>
+            <span class="game-title">Simon</span>
+            <span class="game-desc">Mémorisez la séquence de couleurs et reproduisez-la, elle s'allonge à chaque niveau.</span>
+          </span>
+          <span class="game-arrow">›</span>
+        </button>
+        <button class="game-tile anagramme" data-open="anagramme">
+          <span class="game-icon">?!?</span>
+          <span class="game-info">
+            <span class="game-code">3618 ANAGRAMME</span>
+            <span class="game-title">Anagramme</span>
+            <span class="game-desc">Devinez le mot composé à partir des lettres affichées dans le désordre.</span>
+          </span>
+          <span class="game-arrow">›</span>
+        </button>
+        <button class="game-tile reflexe" data-open="reflexe">
+          <span class="game-icon">▲</span>
+          <span class="game-info">
+            <span class="game-code">3619 RÉFLEXE</span>
+            <span class="game-title">Réflexe</span>
+            <span class="game-desc">Cliquez OUI ou NON selon deux consignes, dont une qui inverse la règle au rouge.</span>
+          </span>
+          <span class="game-arrow">›</span>
+        </button>
+      </div>
+
+      <div class="wordbank-panel">
+        <h3>📚 BANQUE DE MOTS</h3>
+        <p class="wordbank-desc">Les mots utilisés par MEMO, MOTS et ANAGRAMME viennent d'un seul fichier. Téléchargez-le, modifiez-le dans un éditeur de texte, puis rechargez-le pour personnaliser les mots du jeu.</p>
+        <div class="wordbank-actions">
+          <button id="wordbank-download-btn" class="choice-btn">📥 Télécharger</button>
+          <label class="choice-btn wordbank-upload-label">
+            📤 Charger un fichier
+            <input type="file" id="wordbank-file-input" accept="application/json,.json" hidden>
+          </label>
+          <button id="wordbank-reset-btn" class="choice-btn">↺ Réinitialiser</button>
+        </div>
+        <div class="wordbank-status" id="wordbank-status">Banque par défaut chargée.</div>
+      </div>
+
+      <div class="contact-link-row">
+        <button class="choice-btn app-share-btn" id="app-share-btn">📤 PARTAGER L'APPLI</button>
+        <button class="choice-btn" data-open="contact">✉ NOUS CONTACTER</button>
+      </div>
+      <div class="share-feedback" id="app-share-feedback"></div>
+
+      <!-- Fenêtre d'aide à l'installation (iPhone / navigateurs sans bouton natif) -->
+      <div class="modal-overlay hidden" id="install-modal" role="dialog" aria-modal="true" aria-labelledby="install-title">
+        <div class="modal-box install-box">
+          <h2 class="support-title" id="install-title">📲 Installer 3615 JEUX</h2>
+          <div class="install-steps" id="install-steps"></div>
+          <div class="modal-actions">
+            <button id="install-close-btn" class="choice-btn active">OK</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ BANDEAU PUBLICITAIRE (désactivé) ============
+        Décommentez ce bloc une fois le <script> AdSense (dans le <head>)
+        activé, et remplacez data-ad-slot par votre identifiant de bloc.
+      <div class="ad-banner">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-6034299359163810"
+             data-ad-slot="0000000000"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+      ============================================================= -->
+    </div>
+  </div>
+</div>
+
+<!-- ============ CONTACT ============ -->
+<div class="page hidden" id="page-contact">
+  <div class="frame">
+    <div class="headbar"><span><span class="dot"></span>3615 CONTACT</span><span>MESSAGE</span></div>
+    <div class="body-pad">
+      <button class="back-link" data-back>‹ MENU</button>
+      <h1>Nous contacter</h1>
+      <p class="subtitle">Une idée, un bug, une remarque ? Écrivez-nous.</p>
+
+      <form id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="contact">
+        <p class="contact-honeypot">
+          <label>Ne pas remplir : <input name="bot-field" tabindex="-1" autocomplete="off"></label>
+        </p>
+        <div class="profile-field">
+          <label for="contact-name">Nom</label>
+          <input type="text" id="contact-name" name="nom" maxlength="80" required autocomplete="name">
+        </div>
+        <div class="profile-field">
+          <label for="contact-email">E-mail (pour vous répondre)</label>
+          <input type="email" id="contact-email" name="email" maxlength="120" required autocomplete="email">
+        </div>
+        <div class="profile-field">
+          <label for="contact-message">Message</label>
+          <textarea id="contact-message" name="message" rows="6" maxlength="3000" required></textarea>
+        </div>
+        <button type="submit" id="contact-submit" class="primary-btn">&gt;&gt;&gt; ENVOYER &lt;&lt;&lt;</button>
+        <div class="contact-status" id="contact-status"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ============ GAME 1 : 3615 MEMO ============ -->
+<div class="page hidden" id="page-memo">
+  <div class="frame">
+    <div class="headbar"><span><span class="dot"></span>3615 MEMO</span><span id="memo-head-status">PRÊT</span></div>
+    <div class="body-pad">
+
+      <div id="memo-screen-start" class="screen">
+        <button class="back-link" data-back>‹ MENU</button>
+        <h1>Mémoire chiffres &amp; lettres</h1>
+        <p class="subtitle">Un nombre s'affiche, puis un mot de la même longueur. Ensuite, tous les chiffres et toutes les lettres apparaissent à l'écran : cliquez-les (ou tapez-les) dans le bon ordre pour tout recomposer.</p>
+
+        <div class="setting-group">
+          <label>Difficulté (longueur du code)</label>
+          <div class="options">
+            <button class="choice-btn active" data-diff="facile">FACILE (3)</button>
+            <button class="choice-btn" data-diff="moyen">MOYEN (5)</button>
+            <button class="choice-btn" data-diff="difficile">DIFFICILE (7)</button>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <label>Vitesse d'affichage</label>
+          <div class="options">
+            <button class="choice-btn" data-speed="lente">LENTE</button>
+            <button class="choice-btn active" data-speed="normale">NORMALE</button>
+            <button class="choice-btn" data-speed="rapide">RAPIDE</button>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <label>Nombre de manches</label>
+          <div class="options">
+            <button class="choice-btn active" data-rounds="5">5</button>
+            <button class="choice-btn" data-rounds="10">10</button>
+            <button class="choice-btn" data-rounds="15">15</button>
+            <button class="choice-btn" data-rounds="20">20</button>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="memo-afficher-toggle" checked>
+            Afficher le nombre et le mot (sinon, écoute seule)
+          </label>
+        </div>
+
+        <div class="setting-group">
+          <label>Disposition du clavier</label>
+          <div class="options">
+            <button class="choice-btn active" data-layout="abc">ABC</button>
+            <button class="choice-btn" data-layout="azerty">AZERTY</button>
+            <button class="choice-btn" data-layout="qwerty">QWERTY</button>
+          </div>
+        </div>
+
+        <button id="memo-start-btn" class="primary-btn">&gt;&gt;&gt; COMMENCER &lt;&lt;&lt;</button>
+
+        <div class="rules">
+          <h3>RÈGLES DU JEU</h3>
+          <ul>
+            <li>Un nombre de manches réglable (5 par défaut)</li>
+            <li>Un nombre puis un mot de même longueur à mémoriser, l'un après l'autre</li>
+            <li>La vitesse choisie règle le temps d'affichage (ou d'écoute) de chacun</li>
+            <li>Tous les chiffres et lettres restent affichés en permanence : trouvez un chiffre, puis une lettre, puis un chiffre... en alternance, jusqu'à reconstituer le nombre et le mot en même temps</li>
+            <li>Le temps est chronométré en coulisses... et révélé seulement à la fin</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="memo-screen-memorize" class="screen hidden">
+        <div class="top-bar">
+          <div class="round-indicator">MANCHE <span id="memo-mem-round">1</span>/<span id="memo-mem-total">5</span></div>
+          <div class="top-bar-actions">
+            <button class="quit-btn" data-restart>↻ RECOMMENCER</button>
+            <button class="quit-btn" data-quit>⌂ ACCUEIL</button>
+          </div>
+          <div class="score-indicator">SCORE : <span id="memo-mem-score-display">0</span></div>
+        </div>
+        <h2>Mémorisez...</h2>
+        <div id="memo-memorize-display" class="memorize-display hidden"></div>
+        <div id="memo-listening-indicator" class="listening-indicator hidden">🔊 ÉCOUTEZ...</div>
+        <button id="memo-replay-listen-btn" class="quit-btn replay-listen-btn">🔁 RÉÉCOUTER (−5 pts)</button>
+      </div>
+
+      <div id="memo-screen-recompose" class="screen hidden">
+        <div class="top-bar">
+          <div class="round-indicator">MANCHE <span id="memo-rec-round">1</span>/<span id="memo-rec-total">5</span></div>
+          <div class="top-bar-actions">
+            <button class="quit-btn" data-restart>↻ RECOMMENCER</button>
+            <button class="quit-btn" data-quit>⌂ ACCUEIL</button>
+          </div>
+          <div class="score-indicator">SCORE : <span id="memo-score-display">0</span></div>
+        </div>
+        <div class="slots-container">
+          <div id="memo-slots-number" class="slots-row"></div>
+          <div id="memo-slots-word" class="slots-row"></div>
+          <div class="legend"><span class="lg-d">■ nombre</span><span class="lg-w">■ mot</span></div>
+        </div>
+
+        <div class="keypad">
+          <div id="memo-keypad-digits" class="keypad-row"></div>
+          <div id="memo-keypad-letters" class="keypad-row"></div>
+        </div>
+        <div class="keypad-hint">Cliquez un symbole ou tapez-le au clavier</div>
+        <button id="memo-replay-all-btn" class="quit-btn replay-listen-btn">🔁 RÉÉCOUTER LE NOMBRE ET LE MOT (−5 pts)</button>
+
+        <div class="feedback" id="memo-feedback"></div>
+      </div>
+
+      <div id="memo-screen-result" class="screen hidden">
+        <h1>TRANSMISSION TERMINÉE</h1>
+        <div class="result-grid">
+          <div class="result-card"><span class="result-label">SCORE FINAL</span><span class="result-value" id="memo-final-score">0</span></div>
+          <div class="result-card"><span class="result-label">TEMPS TOTAL</span><span class="result-value" id="memo-final-time">0 s</span></div>
+          <div class="result-card"><span class="result-label">ERREURS</span><span class="result-value" id="memo-final-errors">0</span></div>
+          <div class="result-card"><span class="result-label">PRÉCISION</span><span class="result-value" id="memo-final-accuracy">0%</span></div>
+          <div class="result-card"><span class="result-label">RÉÉCOUTES</span><span class="result-value" id="memo-final-replays">0</span></div>
+        </div>
+
+        <div class="answer-chart" id="memo-chart"></div>
+
+        <button id="memo-share-btn" class="primary-btn share-btn">📤 PARTAGER LE SCORE</button>
+        <div class="share-feedback" id="memo-share-feedback"></div>
+        <div class="share-box hidden" id="memo-share-box"><textarea id="memo-share-textarea" readonly></textarea></div>
+
+        <button id="memo-replay-btn" class="primary-btn">&gt;&gt;&gt; REJOUER &lt;&lt;&lt;</button>
+        <button class="back-link" data-back>‹ MENU</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============ GAME 2 : 3616 MOTS ============ -->
+<div class="page hidden" id="page-mots">
+  <div class="frame">
+    <div class="headbar"><span><span class="dot"></span>3616 MOTS</span><span id="mots-head-status">PRÊT</span></div>
+    <div class="body-pad">
+
+      <div id="mots-screen-start" class="screen">
+        <button class="back-link" data-back>‹ MENU</button>
+        <h1>Mémoire de mots</h1>
+        <p class="subtitle">Mémorisez une liste de mots présentés un par un, puis retrouvez-les dans une grille — en cliquant dessus dans l'ordre alphabétique ou dans l'ordre libre, selon vos réglages.</p>
+
+        <div class="setting-group">
+          <label>Difficulté (nombre de mots)</label>
+          <div class="options">
+            <button class="choice-btn" data-count="3">3 MOTS</button>
+            <button class="choice-btn active" data-count="4">4 MOTS</button>
+            <button class="choice-btn" data-count="5">5 MOTS</button>
+            <button class="choice-btn" data-count="6">6 MOTS</button>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <label>Taille de la grille (nombre de mots affichés)</label>
+          <div class="options">
+            <button class="choice-btn" data-gridsize="20">20</button>
+            <button class="choice-btn" data-gridsize="30">30</button>
+            <button class="choice-btn active" data-gridsize="50">50</button>
+            <button class="choice-btn" data-gridsize="80">80</button>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <label>Vitesse d'affichage</label>
+          <div class="options">
+            <button class="choice-btn" data-speed="lente">LENTE</button>
+            <button class="choice-btn active" data-speed="normale">NORMALE</button>
+            <button class="choice-btn" data-speed="rapide">RAPIDE</button>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <label>Nombre de manches</label>
+          <div class="options">
+            <button class="choice-btn active" data-rounds="5">5</button>
+            <button class="choice-btn" data-rounds="10">10</button>
+            <button class="choice-btn" data-rounds="15">15</button>
+            <button class="choice-btn" data-rounds="20">20</button>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="mots-afficher-toggle" checked>
+            Afficher les mots (sinon, écoute seule)
+          </label>
+        </div>
+
+        <div class="setting-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="mots-alpha-toggle" checked>
+            Retrouver les mots dans l'ordre alphabétique (sinon, ordre libre)
+          </label>
+        </div>
+
+        <button id="mots-start-btn" class="primary-btn">&gt;&gt;&gt; COMMENCER &lt;&lt;&lt;</button>
+
+        <div class="rules">
+          <h3>RÈGLES DU JEU</h3>
+          <ul>
+            <li>Un nombre de manches réglable (5 par défaut)</li>
+            <li>Les mots à mémoriser s'affichent un par un, à la vitesse choisie</li>
+            <li>Ils sont ensuite mélangés dans une grille dont la taille est réglable</li>
+            <li>Cliquez les bons mots, dans l'ordre alphabétique ou dans l'ordre libre selon l'option choisie</li>
+            <li>Le temps est chronométré en coulisses... et révélé seulement à la fin</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="mots-screen-memorize" class="screen hidden">
+        <div class="top-bar">
+          <div class="round-indicator">MANCHE <span id="mots-mem-round">1</span>/<span id="mots-mem-total">5</span></div>
+          <div class="top-bar-actions">
+            <button class="quit-btn" data-restart>↻ RECOMMENCER</button>
+            <button class="quit-btn" data-quit>⌂ ACCUEIL</button>
+          </div>
+          <div class="score-indicator">SCORE : <span id="mots-mem-score-display">0</span></div>
+        </div>
+        <h2>Mémorisez...</h2>
+        <div class="mem-progress">MOT <span id="mots-mem-progress">1/4</span></div>
+        <div id="mots-memorize-display" class="memorize-display hidden"></div>
+        <div id="mots-listening-indicator" class="listening-indicator hidden">🔊 ÉCOUTEZ...</div>
+        <button id="mots-replay-listen-btn" class="quit-btn replay-listen-btn">🔁 RÉÉCOUTER (−5 pts)</button>
+      </div>
+
+      <div id="mots-screen-find" class="screen hidden">
+        <div class="top-bar">
+          <div class="round-indicator">MANCHE <span id="mots-find-round">1</span>/<span id="mots-find-total">5</span></div>
+          <div class="top-bar-actions">
+            <button class="quit-btn" data-restart>↻ RECOMMENCER</button>
+            <button class="quit-btn" data-quit>⌂ ACCUEIL</button>
+          </div>
+          <div class="score-indicator">SCORE : <span id="mots-score-display">0</span></div>
+        </div>
+        <div class="find-info" id="mots-find-info">Retrouvez les mots dans l'ordre alphabétique — trouvés : <span id="mots-find-progress">0/4</span></div>
+        <div id="mots-word-grid" class="word-grid"></div>
+        <button id="mots-replay-all-btn" class="quit-btn replay-listen-btn">🔁 RÉÉCOUTER TOUS LES MOTS (−5 pts)</button>
+        <div class="feedback" id="mots-feedback"></div>
+      </div>
+
+      <div id="mots-screen-result" class="screen hidden">
+        <h1>TRANSMISSION TERMINÉE</h1>
+        <div class="result-grid">
+          <div class="result-card"><span class="result-label">SCORE FINAL</span><span class="result-value" id="mots-final-score">0</span></div>
+          <div class="result-card"><span class="result-label">TEMPS TOTAL</span><span class="result-value" id="mots-final-time">0 s</span></div>
+          <div class="result-card"><span class="result-label">ERREURS</span><span class="result-value" id="mots-final-errors">0</span></div>
+          <div class="result-card"><span class="result-label">PRÉCISION</span><span class="result-value" id="mots-final-accuracy">0%</span></div>
+          <div class="result-card"><span class="result-label">RÉÉCOUTES</span><span class="result-value" id="mots-final-replays">0</span></div>
+        </div>
+
+        <div class="answer-chart" id="mots-chart"></div>
+
+        <button id="mots-share-btn" class="primary-btn share-btn">📤 PARTAGER LE SCORE</button>
+        <div class="share-feedback" id="mots-share-feedback"></div>
+        <div class="share-box hidden" id="mots-share-box"><textarea id="mots-share-textarea" readonly></textarea></div>
+
+        <button id="mots-replay-btn" class="primary-btn">&gt;&gt;&gt; REJOUER &lt;&lt;&lt;</button>
+        <button class="back-link" data-back>‹ MENU</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============ GAME 3 : 3617 SIMON ============ -->
+<div class="page hidden" id="page-simon">
+  <div class="frame">
+    <div class="headbar"><span><span class="dot"></span>3617 SIMON</span><span id="simon-head-status">PRÊT</span></div>
+    <div class="body-pad">
+
+      <div id="simon-screen-start" class="screen">
+        <button class="back-link" data-back>‹ MENU</button>
+        <h1>Simon</h1>
+        <p class="subtitle">La séquence de couleurs s'allonge à chaque niveau : regardez-la, puis reproduisez-la dans l'ordre exact. La partie s'arrête à la première erreur.</p>
+
+        <div class="setting-group">
+          <label>Vitesse de la séquence</label>
+          <div class="options">
+            <button class="choice-btn" data-speed="lente">LENTE</button>
+            <button class="choice-btn active" data-speed="normale">NORMALE</button>
+            <button class="choice-btn" data-speed="rapide">RAPIDE</button>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="simon-son-toggle" checked>
+            Son activé (bips)
+          </label>
+        </div>
+
+        <button id="simon-start-btn" class="primary-btn">&gt;&gt;&gt; COMMENCER &lt;&lt;&lt;</button>
+
+        <div class="rules">
+          <h3>RÈGLES DU JEU</h3>
+          <ul>
+            <li>Niveau 1 : une seule couleur à mémoriser, puis un chiffre de plus à chaque niveau</li>
+            <li>Regardez la séquence s'allumer, puis reproduisez-la en cliquant sur les mêmes couleurs, dans le même ordre</li>
+            <li>La vitesse choisie règle le rythme des flashs</li>
+            <li>La partie se termine dès la première erreur</li>
+            <li>Le temps est chronométré en coulisses... et révélé seulement à la fin</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="simon-screen-watch" class="screen hidden">
+        <div class="top-bar">
+          <div class="round-indicator">NIVEAU <span id="simon-watch-level">1</span></div>
+          <div class="top-bar-actions">
+            <button class="quit-btn" data-restart>↻ RECOMMENCER</button>
+            <button class="quit-btn" data-quit>⌂ ACCUEIL</button>
+          </div>
+        </div>
+        <div class="simon-level">Regardez bien...</div>
+        <div class="simon-pad-grid">
+          <button class="simon-pad pad-green" disabled data-color="green"></button>
+          <button class="simon-pad pad-red" disabled data-color="red"></button>
+          <button class="simon-pad pad-yellow" disabled data-color="yellow"></button>
+          <button class="simon-pad pad-blue" disabled data-color="blue"></button>
+        </div>
+      </div>
+
+      <div id="simon-screen-play" class="screen hidden">
+        <div class="top-bar">
+          <div class="round-indicator">NIVEAU <span id="simon-play-level">1</span></div>
+          <div class="top-bar-actions">
+            <button class="quit-btn" data-restart>↻ RECOMMENCER</button>
+            <button class="quit-btn" data-quit>⌂ ACCUEIL</button>
+          </div>
+        </div>
+        <div class="simon-status" id="simon-status">À vous !</div>
+        <div class="simon-pad-grid">
+          <button class="simon-pad pad-green" data-color="green"></button>
+          <button class="simon-pad pad-red" data-color="red"></button>
+          <button class="simon-pad pad-yellow" data-color="yellow"></button>
+          <button class="simon-pad pad-blue" data-color="blue"></button>
+        </div>
+      </div>
+
+      <div id="simon-screen-result" class="screen hidden">
+        <h1>TRANSMISSION TERMINÉE</h1>
+        <div class="result-grid">
+          <div class="result-card"><span class="result-label">NIVEAU ATTEINT</span><span class="result-value" id="simon-final-level">0</span></div>
+          <div class="result-card"><span class="result-label">TEMPS TOTAL</span><span class="result-value" id="simon-final-time">0 s</span></div>
+        </div>
+
+        <div class="answer-chart" id="simon-chart"></div>
+
+        <button id="simon-share-btn" class="primary-btn share-btn">📤 PARTAGER LE SCORE</button>
+        <div class="share-feedback" id="simon-share-feedback"></div>
+        <div class="share-box hidden" id="simon-share-box"><textarea id="simon-share-textarea" readonly></textarea></div>
+
+        <button id="simon-replay-btn" class="primary-btn">&gt;&gt;&gt; REJOUER &lt;&lt;&lt;</button>
+        <button class="back-link" data-back>‹ MENU</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============ GAME 4 : 3618 ANAGRAMME ============ -->
+<div class="page hidden" id="page-anagramme">
+  <div class="frame">
+    <div class="headbar"><span><span class="dot"></span>3618 ANAGRAMME</span><span id="anagramme-head-status">PRÊT</span></div>
+    <div class="body-pad">
+
+      <div id="anagramme-screen-start" class="screen">
+        <button class="back-link" data-back>‹ MENU</button>
+        <h1>Anagramme</h1>
+        <p class="subtitle">Toutes les lettres d'un mot s'affichent, mélangées. Cliquez-les dans le bon ordre pour reconstituer le mot.</p>
+
+        <div class="setting-group">
+          <label>Difficulté (longueur du mot)</label>
+          <div class="options">
+            <button class="choice-btn active" data-length="4">4 LETTRES</button>
+            <button class="choice-btn" data-length="5">5 LETTRES</button>
+            <button class="choice-btn" data-length="6">6 LETTRES</button>
+            <button class="choice-btn" data-length="7">7 LETTRES</button>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <label>Nombre de manches</label>
+          <div class="options">
+            <button class="choice-btn active" data-rounds="5">5</button>
+            <button class="choice-btn" data-rounds="10">10</button>
+            <button class="choice-btn" data-rounds="15">15</button>
+            <button class="choice-btn" data-rounds="20">20</button>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="anagramme-shuffle-toggle" checked>
+            Autoriser le mélange des lettres en cours de partie
+          </label>
+        </div>
+
+        <button id="anagramme-start-btn" class="primary-btn">&gt;&gt;&gt; COMMENCER &lt;&lt;&lt;</button>
+
+        <div class="rules">
+          <h3>RÈGLES DU JEU</h3>
+          <ul>
+            <li>Un nombre de manches réglable (5 par défaut)</li>
+            <li>Toutes les lettres du mot sont affichées en permanence, dans le désordre</li>
+            <li>Le mélange des lettres peut être désactivé pour plus de difficulté</li>
+            <li>Cliquez-les dans le bon ordre pour reconstituer le mot</li>
+            <li>Le temps est chronométré en coulisses... et révélé seulement à la fin</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="anagramme-screen-play" class="screen hidden">
+        <div class="top-bar">
+          <div class="round-indicator">MANCHE <span id="anagramme-round">1</span>/<span id="anagramme-total">5</span></div>
+          <div class="top-bar-actions">
+            <button class="quit-btn" data-restart>↻ RECOMMENCER</button>
+            <button class="quit-btn" data-quit>⌂ ACCUEIL</button>
+          </div>
+          <div class="score-indicator">SCORE : <span id="anagramme-score-display">0</span></div>
+        </div>
+
+        <div class="slots-container">
+          <div id="anagramme-slots" class="slots-row"></div>
+        </div>
+
+        <div class="keypad">
+          <div id="anagramme-letters" class="keypad-row"></div>
+        </div>
+        <div class="keypad-hint">
+          Cliquez les lettres dans le bon ordre —
+          <button id="anagramme-shuffle-btn" class="inline-link-btn">🔀 mélanger les lettres</button>
+        </div>
+
+        <div class="feedback" id="anagramme-feedback"></div>
+      </div>
+
+      <div id="anagramme-screen-result" class="screen hidden">
+        <h1>TRANSMISSION TERMINÉE</h1>
+        <div class="result-grid">
+          <div class="result-card"><span class="result-label">SCORE FINAL</span><span class="result-value" id="anagramme-final-score">0</span></div>
+          <div class="result-card"><span class="result-label">TEMPS TOTAL</span><span class="result-value" id="anagramme-final-time">0 s</span></div>
+          <div class="result-card"><span class="result-label">ERREURS</span><span class="result-value" id="anagramme-final-errors">0</span></div>
+          <div class="result-card"><span class="result-label">PRÉCISION</span><span class="result-value" id="anagramme-final-accuracy">0%</span></div>
+        </div>
+
+        <div class="answer-chart" id="anagramme-chart"></div>
+
+        <button id="anagramme-share-btn" class="primary-btn share-btn">📤 PARTAGER LE SCORE</button>
+        <div class="share-feedback" id="anagramme-share-feedback"></div>
+        <div class="share-box hidden" id="anagramme-share-box"><textarea id="anagramme-share-textarea" readonly></textarea></div>
+
+        <button id="anagramme-replay-btn" class="primary-btn">&gt;&gt;&gt; REJOUER &lt;&lt;&lt;</button>
+        <button class="back-link" data-back>‹ MENU</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============ GAME 5 : 3619 RÉFLEXE ============ -->
+<div class="page hidden" id="page-reflexe">
+  <div class="frame">
+    <div class="headbar"><span><span class="dot"></span>3619 RÉFLEXE</span><span id="reflexe-head-status">PRÊT</span></div>
+    <div class="body-pad">
+
+      <div id="reflexe-screen-start" class="screen">
+        <button class="back-link" data-back>‹ MENU</button>
+        <h1>Réflexe</h1>
+        <p class="subtitle">Des formes de couleurs différentes défilent. Respectez les deux consignes ci-dessous et cliquez OUI ou NON le plus vite possible.</p>
+
+        <div class="reflexe-rules-box">
+          <p class="rule1"><strong>RÈGLE 1 :</strong> <span id="reflexe-rule1-text"></span></p>
+          <p class="rule2"><strong>RÈGLE 2 :</strong> <span id="reflexe-rule2-text"></span></p>
+        </div>
+
+        <div class="setting-group">
+          <label>Temps de réponse : <span id="reflexe-speed-value">3.0</span> s</label>
+          <input type="range" id="reflexe-speed-slider" class="reflexe-slider" min="1" max="10" step="0.5" value="3">
+        </div>
+
+        <div class="setting-group">
+          <label>Nombre de formes</label>
+          <div class="options">
+            <button class="choice-btn" data-rounds="10">10</button>
+            <button class="choice-btn active" data-rounds="20">20</button>
+            <button class="choice-btn" data-rounds="50">50</button>
+            <button class="choice-btn" data-rounds="100">100</button>
+          </div>
+        </div>
+
+        <button id="reflexe-start-btn" class="primary-btn">&gt;&gt;&gt; COMMENCER &lt;&lt;&lt;</button>
+
+        <div class="rules">
+          <h3>RÈGLES DU JEU</h3>
+          <ul>
+            <li>Une nouvelle règle 1 est tirée à chaque nouvelle partie</li>
+            <li>Chaque forme doit recevoir une réponse avant la suivante — trop lent compte comme une erreur</li>
+            <li>Le curseur règle le temps disponible pour répondre (1 à 10 secondes)</li>
+            <li>Touches clavier : <kbd id="reflexe-yes-key">O</kbd> pour OUI, <kbd>N</kbd> pour NON</li>
+            <li>Le temps est chronométré en coulisses... et révélé seulement à la fin</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="reflexe-screen-play" class="screen hidden">
+        <div class="top-bar">
+          <div class="round-indicator">FORME <span id="reflexe-round">1</span>/<span id="reflexe-total">20</span></div>
+          <div class="top-bar-actions">
+            <button class="quit-btn" data-restart>↻ RECOMMENCER</button>
+            <button class="quit-btn" data-quit>⌂ ACCUEIL</button>
+          </div>
+          <div class="score-indicator">SCORE : <span id="reflexe-score-display">0</span></div>
+        </div>
+
+        <div class="reflexe-stage">
+          <div id="reflexe-shape" class="reflexe-shape"></div>
+        </div>
+
+        <div class="reflexe-answer-row">
+          <button id="reflexe-oui-btn" class="reflexe-answer-btn oui">OUI</button>
+          <button id="reflexe-non-btn" class="reflexe-answer-btn non">NON</button>
+        </div>
+
+        <div class="feedback" id="reflexe-feedback"></div>
+      </div>
+
+      <div id="reflexe-screen-result" class="screen hidden">
+        <h1>TRANSMISSION TERMINÉE</h1>
+        <div class="result-grid">
+          <div class="result-card"><span class="result-label">SCORE FINAL</span><span class="result-value" id="reflexe-final-score">0</span></div>
+          <div class="result-card"><span class="result-label">TEMPS TOTAL</span><span class="result-value" id="reflexe-final-time">0 s</span></div>
+          <div class="result-card"><span class="result-label">ERREURS</span><span class="result-value" id="reflexe-final-errors">0</span></div>
+          <div class="result-card"><span class="result-label">PRÉCISION</span><span class="result-value" id="reflexe-final-accuracy">0%</span></div>
+        </div>
+
+        <div class="answer-chart" id="reflexe-chart"></div>
+
+        <button id="reflexe-share-btn" class="primary-btn share-btn">📤 PARTAGER LE SCORE</button>
+        <div class="share-feedback" id="reflexe-share-feedback"></div>
+        <div class="share-box hidden" id="reflexe-share-box"><textarea id="reflexe-share-textarea" readonly></textarea></div>
+
+        <button id="reflexe-replay-btn" class="primary-btn">&gt;&gt;&gt; REJOUER &lt;&lt;&lt;</button>
+        <button class="back-link" data-back>‹ MENU</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCRIPT ============ -->
+<script>
+(function(){
+  "use strict";
+
+  // =========================================================
+  // SHARED HELPERS (used by the hub and both games)
+  // =========================================================
+  function $(id){ return document.getElementById(id); }
+  function delay(ms){ return new Promise(r => setTimeout(r, ms)); }
+
+  // =========================================================
+  // LANGUE (FR / EN)
+  // - Le texte de la page est écrit en français ; EN[...] donne
+  //   la traduction anglaise de chaque phrase.
+  // - t("phrase", {x: ...}) renvoie la phrase dans la langue
+  //   active (les {x} sont remplacés par les valeurs).
+  // - Le choix est mémorisé sur l'appareil.
+  // =========================================================
+  const LANG_KEY = "jeux3615_lang_v1";
+  const EN = {
+    // --- pop-up de soutien / menu
+    "3615 SOUTIEN": "3615 SUPPORT",
+    "Vous aimez 3615 JEUX ?": "Enjoying 3615 JEUX?",
+    "Les jeux sont gratuits et sans inscription. Si vous voulez nous aider à les faire vivre, un petit café sur Ko-fi fait toujours plaisir !": "The games are free, with no sign-up. If you'd like to help keep them going, a little coffee on Ko-fi is always appreciated!",
+    "☕ NOUS SOUTENIR": "☕ SUPPORT US",
+    "JOUER ›": "PLAY ›",
+    "Ne plus afficher ce message": "Don't show this again",
+    "Faire un don sur Ko-fi": "Donate on Ko-fi",
+    "☕ DON": "☕ DONATE",
+    "Salle de jeux": "Game room",
+    "Choisissez un jeu pour commencer.": "Pick a game to get started.",
+    "👤 PROFIL LOCAL": "👤 LOCAL PROFILE",
+    "Joueurs enregistrés sur cet appareil": "Players saved on this device",
+    "Choisir ce joueur": "Select this player",
+    "Ou créer un nouveau joueur": "Or create a new player",
+    "Nom du joueur": "Player name",
+    "Créer": "Create",
+    "Profil": "Profile",
+    "Changer de joueur": "Switch player",
+    "📥 Sauvegarder (fichier)": "📥 Back up (file)",
+    "📤 Restaurer un fichier": "📤 Restore a file",
+    "Chiffres & lettres": "Digits & letters",
+    "Mémorisez un nombre puis un mot, retrouvez-les chiffre après lettre.": "Memorize a number, then a word, and rebuild them digit after letter.",
+    "3616 MOTS": "3616 WORDS",
+    "Mémoire de mots": "Word memory",
+    "Mémorisez une liste de mots, puis retrouvez-les dans l'ordre alphabétique parmi 50.": "Memorize a list of words, then find them in alphabetical order among 50.",
+    "Mémorisez la séquence de couleurs et reproduisez-la, elle s'allonge à chaque niveau.": "Memorize the color sequence and repeat it: it gets longer at every level.",
+    "3618 ANAGRAMME": "3618 ANAGRAM",
+    "Anagramme": "Anagram",
+    "Devinez le mot composé à partir des lettres affichées dans le désordre.": "Rebuild the word from its scrambled letters.",
+    "3619 RÉFLEXE": "3619 REFLEX",
+    "Réflexe": "Reflex",
+    "Cliquez OUI ou NON selon deux consignes, dont une qui inverse la règle au rouge.": "Click YES or NO following two rules, one of which flips the other.",
+    "📚 BANQUE DE MOTS": "📚 WORD BANK",
+    "Les mots utilisés par MEMO, MOTS et ANAGRAMME viennent d'un seul fichier. Téléchargez-le, modifiez-le dans un éditeur de texte, puis rechargez-le pour personnaliser les mots du jeu.": "The words used by MEMO, WORDS and ANAGRAM come from a single file (one per language). Download it, edit it in a text editor, then load it back to customize the game's words.",
+    "📥 Télécharger": "📥 Download",
+    "📤 Charger un fichier": "📤 Load a file",
+    "↺ Réinitialiser": "↺ Reset",
+    "Banque par défaut chargée.": "Default word bank loaded.",
+    "📲 Installer l'app": "📲 Install the app",
+    "📥 Télécharger l'app (fichier)": "📥 Download the app (file)",
+    "✉ NOUS CONTACTER": "✉ CONTACT US",
+    "📲 Installer 3615 JEUX": "📲 Install 3615 JEUX",
+    // --- contact
+    "Nous contacter": "Contact us",
+    "Une idée, un bug, une remarque ? Écrivez-nous.": "An idea, a bug, a comment? Write to us.",
+    "Ne pas remplir :": "Do not fill in:",
+    "Nom": "Name",
+    "E-mail (pour vous répondre)": "E-mail (so we can reply)",
+    ">>> ENVOYER <<<": ">>> SEND <<<",
+    "Merci de remplir tous les champs.": "Please fill in every field.",
+    "Envoi en cours…": "Sending…",
+    "✔ Message envoyé, merci ! Nous vous répondrons à l'adresse indiquée.": "✔ Message sent, thank you! We'll reply to the address you gave.",
+    "L'envoi direct n'est pas disponible ici. ": "Direct sending isn't available here. ",
+    "Cliquez ici pour envoyer le message avec votre messagerie": "Click here to send the message with your email app",
+    "3615 JEUX — message de {n}": "3615 JEUX — message from {n}",
+    // --- commun aux jeux
+    "PRÊT": "READY",
+    "EN COURS": "PLAYING",
+    "Vitesse d'affichage": "Display speed",
+    "LENTE": "SLOW",
+    "NORMALE": "NORMAL",
+    "RAPIDE": "FAST",
+    "Nombre de manches": "Number of rounds",
+    ">>> COMMENCER <<<": ">>> START <<<",
+    "RÈGLES DU JEU": "HOW TO PLAY",
+    "Un nombre de manches réglable (5 par défaut)": "An adjustable number of rounds (5 by default)",
+    "Le temps est chronométré en coulisses... et révélé seulement à la fin": "Your time is tracked behind the scenes... and only revealed at the end",
+    "MANCHE": "ROUND",
+    "↻ RECOMMENCER": "↻ RESTART",
+    "⌂ ACCUEIL": "⌂ HOME",
+    "SCORE :": "SCORE:",
+    "Mémorisez...": "Memorize...",
+    "🔊 ÉCOUTEZ...": "🔊 LISTEN...",
+    "🔁 RÉÉCOUTER (−5 pts)": "🔁 REPLAY (−5 pts)",
+    "TRANSMISSION TERMINÉE": "TRANSMISSION COMPLETE",
+    "SCORE FINAL": "FINAL SCORE",
+    "TEMPS TOTAL": "TOTAL TIME",
+    "ERREURS": "MISTAKES",
+    "PRÉCISION": "ACCURACY",
+    "RÉÉCOUTES": "REPLAYS",
+    "📤 PARTAGER LE SCORE": "📤 SHARE SCORE",
+    ">>> REJOUER <<<": ">>> PLAY AGAIN <<<",
+    "Partagé !": "Shared!",
+    "Copié dans le presse-papiers ! (texte aussi affiché ci-dessous)": "Copied to the clipboard! (text also shown below)",
+    "Sélectionnez le texte ci-dessous et copiez-le (Ctrl+C)": "Select the text below and copy it (Ctrl+C)",
+    "TEMPS DE RÉPONSE PAR {x}": "RESPONSE TIME PER {x}",
+    "Temps de réponse moyen : {x} s": "Average response time: {x} s",
+    "■ correct": "■ correct",
+    "- - moyenne": "- - average",
+    "Manche": "Round",
+    "Niveau": "Level",
+    "Forme": "Shape",
+    "avec erreur(s)": "with mistake(s)",
+    "erreur": "mistake",
+    "incorrect / trop lent": "wrong / too slow",
+    "Quitter la partie en cours ?<br>Votre progression sera perdue.": "Quit the current game?<br>Your progress will be lost.",
+    "Recommencer une nouvelle partie ?<br>Votre progression actuelle sera perdue. Vous reviendrez au choix de la difficulté.": "Start a new game?<br>Your current progress will be lost. You'll go back to the difficulty settings.",
+    "ANNULER": "CANCEL",
+    "QUITTER": "QUIT",
+    "REDÉMARRER": "NEW GAME",
+    "Prêt ?": "Ready?",
+    "▶ COMMENCER": "▶ START",
+    "Lente": "Slow",
+    "Normale": "Normal",
+    "Rapide": "Fast",
+    "À toi de faire mieux !": "Can you beat that?",
+    // --- MEMO
+    "Mémoire chiffres & lettres": "Digits & letters memory",
+    "Un nombre s'affiche, puis un mot de la même longueur. Ensuite, tous les chiffres et toutes les lettres apparaissent à l'écran : cliquez-les (ou tapez-les) dans le bon ordre pour tout recomposer.": "A number appears, then a word of the same length. Then every digit and every letter is shown on screen: click them (or type them) in the right order to rebuild both.",
+    "Difficulté (longueur du code)": "Difficulty (code length)",
+    "FACILE (3)": "EASY (3)",
+    "MOYEN (5)": "MEDIUM (5)",
+    "DIFFICILE (7)": "HARD (7)",
+    "Afficher le nombre et le mot (sinon, écoute seule)": "Show the number and the word (otherwise, audio only)",
+    "Disposition du clavier": "Keyboard layout",
+    "Un nombre puis un mot de même longueur à mémoriser, l'un après l'autre": "A number, then a word of the same length, to memorize one after the other",
+    "La vitesse choisie règle le temps d'affichage (ou d'écoute) de chacun": "The chosen speed sets how long each one is shown (or heard)",
+    "Tous les chiffres et lettres restent affichés en permanence : trouvez un chiffre, puis une lettre, puis un chiffre... en alternance, jusqu'à reconstituer le nombre et le mot en même temps": "All digits and letters stay on screen: find a digit, then a letter, then a digit... alternating until both the number and the word are rebuilt",
+    "■ nombre": "■ number",
+    "■ mot": "■ word",
+    "Cliquez un symbole ou tapez-le au clavier": "Click a symbol or type it on your keyboard",
+    "🔁 RÉÉCOUTER LE NOMBRE ET LE MOT (−5 pts)": "🔁 REPLAY THE NUMBER AND THE WORD (−5 pts)",
+    "✔ RECOMPOSÉ !": "✔ REBUILT!",
+    "Prêt à mémoriser ?": "Ready to memorize?",
+    "Facile": "Easy",
+    "Moyen": "Medium",
+    "Difficile": "Hard",
+    "🧠 3615 MEMO — {score} pts ({diff}, vitesse {speed})\n⏱ {time} · 🎯 {acc} de précision · ❌ {err} erreur(s) · 🔁 {rep} réécoute(s)\nÀ toi de faire mieux !":
+      "🧠 3615 MEMO — {score} pts ({diff}, {speed} speed)\n⏱ {time} · 🎯 {acc} accuracy · ❌ {err} mistake(s) · 🔁 {rep} replay(s)\nCan you beat that?",
+    // --- MOTS
+    "Mémorisez une liste de mots présentés un par un, puis retrouvez-les dans une grille — en cliquant dessus dans l'ordre alphabétique ou dans l'ordre libre, selon vos réglages.": "Memorize a list of words shown one at a time, then find them in a grid by clicking them in alphabetical order or in any order, depending on your settings.",
+    "Difficulté (nombre de mots)": "Difficulty (number of words)",
+    "3 MOTS": "3 WORDS",
+    "4 MOTS": "4 WORDS",
+    "5 MOTS": "5 WORDS",
+    "6 MOTS": "6 WORDS",
+    "Taille de la grille (nombre de mots affichés)": "Grid size (number of words shown)",
+    "Afficher les mots (sinon, écoute seule)": "Show the words (otherwise, audio only)",
+    "Retrouver les mots dans l'ordre alphabétique (sinon, ordre libre)": "Find the words in alphabetical order (otherwise, any order)",
+    "Les mots à mémoriser s'affichent un par un, à la vitesse choisie": "The words to memorize appear one at a time, at the chosen speed",
+    "Ils sont ensuite mélangés dans une grille dont la taille est réglable": "They are then mixed into a grid of adjustable size",
+    "Cliquez les bons mots, dans l'ordre alphabétique ou dans l'ordre libre selon l'option choisie": "Click the right words, in alphabetical order or in any order, depending on the option chosen",
+    "MOT": "WORD",
+    "Retrouvez les mots dans l'ordre alphabétique — trouvés :": "Find the words in alphabetical order — found:",
+    "Retrouvez les mots (ordre libre) — trouvés :": "Find the words (any order) — found:",
+    "🔁 RÉÉCOUTER TOUS LES MOTS (−5 pts)": "🔁 REPLAY ALL THE WORDS (−5 pts)",
+    "✔ TOUS TROUVÉS !": "✔ ALL FOUND!",
+    "Prêt à mémoriser les mots ?": "Ready to memorize the words?",
+    "🔤 3616 MOTS — {score} pts ({n} mots, vitesse {speed})\n⏱ {time} · 🎯 {acc} de précision · ❌ {err} erreur(s) · 🔁 {rep} réécoute(s)\nÀ toi de faire mieux !":
+      "🔤 3616 WORDS — {score} pts ({n} words, {speed} speed)\n⏱ {time} · 🎯 {acc} accuracy · ❌ {err} mistake(s) · 🔁 {rep} replay(s)\nCan you beat that?",
+    // --- SIMON
+    "La séquence de couleurs s'allonge à chaque niveau : regardez-la, puis reproduisez-la dans l'ordre exact. La partie s'arrête à la première erreur.": "The color sequence gets longer at every level: watch it, then repeat it in the exact order. The game stops at the first mistake.",
+    "Vitesse de la séquence": "Sequence speed",
+    "Son activé (bips)": "Sound on (beeps)",
+    "Niveau 1 : une seule couleur à mémoriser, puis un chiffre de plus à chaque niveau": "Level 1: a single color to memorize, then one more at every level",
+    "Regardez la séquence s'allumer, puis reproduisez-la en cliquant sur les mêmes couleurs, dans le même ordre": "Watch the sequence light up, then repeat it by clicking the same colors in the same order",
+    "La vitesse choisie règle le rythme des flashs": "The chosen speed sets the pace of the flashes",
+    "La partie se termine dès la première erreur": "The game ends at the first mistake",
+    "NIVEAU": "LEVEL",
+    "Regardez bien...": "Watch closely...",
+    "À vous !": "Your turn!",
+    "NIVEAU ATTEINT": "LEVEL REACHED",
+    "✔ NIVEAU RÉUSSI !": "✔ LEVEL CLEARED!",
+    "✘ ERREUR !": "✘ MISTAKE!",
+    "Prêt à observer la séquence ?": "Ready to watch the sequence?",
+    "🎮 3617 SIMON — Niveau {level} atteint (vitesse {speed})\n⏱ {time}\nÀ toi de faire mieux !":
+      "🎮 3617 SIMON — Reached level {level} ({speed} speed)\n⏱ {time}\nCan you beat that?",
+    // --- ANAGRAMME
+    "Toutes les lettres d'un mot s'affichent, mélangées. Cliquez-les dans le bon ordre pour reconstituer le mot.": "All the letters of a word are shown, scrambled. Click them in the right order to rebuild the word.",
+    "Difficulté (longueur du mot)": "Difficulty (word length)",
+    "4 LETTRES": "4 LETTERS",
+    "5 LETTRES": "5 LETTERS",
+    "6 LETTRES": "6 LETTERS",
+    "7 LETTRES": "7 LETTERS",
+    "Autoriser le mélange des lettres en cours de partie": "Allow shuffling the letters during the game",
+    "Toutes les lettres du mot sont affichées en permanence, dans le désordre": "All the letters of the word stay on screen, scrambled",
+    "Le mélange des lettres peut être désactivé pour plus de difficulté": "Shuffling can be turned off for an extra challenge",
+    "Cliquez-les dans le bon ordre pour reconstituer le mot": "Click them in the right order to rebuild the word",
+    "Cliquez les lettres dans le bon ordre —": "Click the letters in the right order —",
+    "🔀 mélanger les lettres": "🔀 shuffle the letters",
+    "✔ MOT TROUVÉ !": "✔ WORD FOUND!",
+    "Prêt à recomposer le mot ?": "Ready to rebuild the word?",
+    "{n} lettres": "{n} letters",
+    "🔀 3618 ANAGRAMME — {score} pts ({len})\n⏱ {time} · 🎯 {acc} de précision · ❌ {err} erreur(s)\nÀ toi de faire mieux !":
+      "🔀 3618 ANAGRAM — {score} pts ({len})\n⏱ {time} · 🎯 {acc} accuracy · ❌ {err} mistake(s)\nCan you beat that?",
+    // --- RÉFLEXE
+    "Des formes de couleurs différentes défilent. Respectez les deux consignes ci-dessous et cliquez OUI ou NON le plus vite possible.": "Shapes of different colors roll by. Follow the two rules below and click YES or NO as fast as you can.",
+    "RÈGLE 1 :": "RULE 1:",
+    "RÈGLE 2 :": "RULE 2:",
+    "Temps de réponse :": "Response time:",
+    "Nombre de formes": "Number of shapes",
+    "Une nouvelle règle 1 est tirée à chaque nouvelle partie": "New rules are drawn for every new game",
+    "Chaque forme doit recevoir une réponse avant la suivante — trop lent compte comme une erreur": "Each shape needs an answer before the next one — too slow counts as a mistake",
+    "Le curseur règle le temps disponible pour répondre (1 à 10 secondes)": "The slider sets the time you have to answer (1 to 10 seconds)",
+    "Touches clavier :": "Keyboard keys:",
+    "pour OUI,": "for YES,",
+    "pour NON": "for NO",
+    "FORME": "SHAPE",
+    "OUI": "YES",
+    "NON": "NO",
+    "⏱ TROP LENT !": "⏱ TOO SLOW!",
+    "✔ CORRECT !": "✔ CORRECT!",
+    "✘ MAUVAISE RÉPONSE": "✘ WRONG ANSWER",
+    "Prêt ? Les formes vont défiler.": "Ready? The shapes are about to roll.",
+    "cliquez OUI pour chaque {c}, NON pour les autres.": "click YES for every {c}, NO for all the others.",
+    "une {c} inverse la règle 1, à partir d'elle et jusqu'à la prochaine {c}.": "a {c} reverses rule 1, from that shape until the next {c}.",
+    "forme {g} ({name})": "{g} ({name}) shape",
+    "forme {color}": "{color} shape",
+    "carré": "square", "cercle": "circle", "losange": "diamond",
+    "rouge": "red", "verte": "green", "jaune": "yellow", "bleue": "blue",
+    "🚦 3619 RÉFLEXE — {score} pts (temps de réponse {s}s)\n⏱ {time} · 🎯 {acc} de précision · ❌ {err} erreur(s)\nÀ toi de faire mieux !":
+      "🚦 3619 REFLEX — {score} pts ({s}s response time)\n⏱ {time} · 🎯 {acc} accuracy · ❌ {err} mistake(s)\nCan you beat that?",
+    // --- profil / banque de mots
+    "{n} partie(s)": "{n} game(s)",
+    "Aucune partie enregistrée pour l'instant.": "No games recorded yet.",
+    "Choisissez un nom d'au moins 2 caractères.": "Choose a name with at least 2 characters.",
+    "Ce nom existe déjà — choisissez-le dans la liste.": "That name already exists — pick it from the list.",
+    "Joueur créé et enregistré sur cet appareil.": "Player created and saved on this device.",
+    "Joueur créé, mais l'enregistrement local a échoué.": "Player created, but saving it on this device failed.",
+    "✔ Sauvegarde restaurée depuis \"{f}\".": "✔ Backup restored from \"{f}\".",
+    "✘ Fichier invalide, sauvegarde inchangée.": "✘ Invalid file, backup unchanged.",
+    "✘ Impossible de lire le fichier.": "✘ Could not read the file.",
+    "Format invalide : objet JSON attendu.": "Invalid format: a JSON object is expected.",
+    "✔ Banque personnalisée chargée depuis \"{f}\".": "✔ Custom word bank loaded from \"{f}\".",
+    "✘ Fichier invalide, banque inchangée ({e})": "✘ Invalid file, word bank unchanged ({e})",
+    "↺ Banque par défaut restaurée.": "↺ Default word bank restored.",
+    "Banque personnalisée active.": "Custom word bank active.",
+    // --- connexion Google
+    "Se connecter avec Google": "Sign in with Google",
+    "Se déconnecter": "Sign out",
+    "Connectez-vous pour retrouver vos scores sur tous vos appareils.": "Sign in to get your scores back on all your devices.",
+    "☁ Scores sauvegardés dans votre compte": "☁ Scores saved to your account",
+    "⏳ Synchronisation…": "⏳ Syncing…",
+    "⚠ Hors ligne : la synchro reprendra plus tard": "⚠ Offline: sync will resume later",
+    "Connexion en cours…": "Signing in…",
+    "Connexion impossible : {e}": "Sign-in failed: {e}",
+    "Ce site n'est pas encore autorisé dans Firebase (Authentication → Settings → Authorized domains).": "This site isn't authorized in Firebase yet (Authentication → Settings → Authorized domains).",
+    "Connexion Google indisponible pour le moment (pas de réseau ?).": "Google sign-in is unavailable right now (no connection?).",
+    "Accès refusé par Firebase : vérifiez les règles Firestore.": "Firebase denied access: check the Firestore rules.",
+    // --- partage
+    "📤 PARTAGER L'APPLI": "📤 SHARE THE APP",
+    "Joue avec moi sur 3615 JEUX : des petits jeux de mémoire et de réflexes au style Minitel, gratuits !": "Play with me on 3615 JEUX: free retro Minitel-style memory and reflex mini-games!",
+    "Lien copié ! Collez-le dans un message.": "Link copied! Paste it into a message.",
+    "Copiez ce lien : {u}": "Copy this link: {u}"
+  };
+
+  // Phrases anglaises -> clé française (pour revenir au français)
+  const EN_TO_FR = {};
+  Object.keys(EN).forEach(fr => { if(!(EN[fr] in EN_TO_FR)) EN_TO_FR[EN[fr]] = fr; });
+
+  function detectDefaultLang(){
+    try{
+      const saved = localStorage.getItem(LANG_KEY);
+      if(saved === "fr" || saved === "en") return saved;
+    } catch(e){ /* ignore */ }
+    const nav = (navigator.language || "fr").toLowerCase();
+    return nav.startsWith("fr") ? "fr" : "en";
+  }
+
+  let LANG = detectDefaultLang();
+  const langListeners = [];
+  function onLangChange(fn){ langListeners.push(fn); }
+
+  function t(fr, vars){
+    let out = (LANG === "en" && Object.prototype.hasOwnProperty.call(EN, fr)) ? EN[fr] : fr;
+    if(vars){
+      Object.keys(vars).forEach(k => { out = out.split("{" + k + "}").join(String(vars[k])); });
+    }
+    return out;
+  }
+
+  // Traduit tout le texte déjà présent dans la page (y compris ce
+  // qui a été ajouté par le script), sans toucher aux mots du jeu.
+  const I18N_SKIP = ".key, .slot, .word-tile, .mem-number, .mem-word, .mem-big, .profile-name, select, option, textarea, script, style";
+  const I18N_ATTRS = ["placeholder", "title", "aria-label"];
+
+  function frKeyFor(text){
+    if(Object.prototype.hasOwnProperty.call(EN, text)) return text;
+    if(Object.prototype.hasOwnProperty.call(EN_TO_FR, text)) return EN_TO_FR[text];
+    return null;
+  }
+
+  function translateTextNode(node){
+    const raw = node.nodeValue;
+    const trimmed = raw.trim();
+    if(!trimmed) return;
+    let key = node.__i18nFr;
+    if(!key || (trimmed !== key && trimmed !== EN[key])) key = frKeyFor(trimmed);
+    if(!key) return;
+    node.__i18nFr = key;
+    const target = LANG === "en" ? EN[key] : key;
+    if(trimmed !== target){
+      const lead = raw.match(/^\s*/)[0];
+      const trail = raw.match(/\s*$/)[0];
+      node.nodeValue = lead + target + trail;
+    }
+  }
+
+  function translatePage(root){
+    root = root || document.body;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(n){
+        const p = n.parentElement;
+        return (p && p.closest(I18N_SKIP)) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    let n;
+    while((n = walker.nextNode())) translateTextNode(n);
+
+    root.querySelectorAll("[placeholder],[title],[aria-label]").forEach(el => {
+      I18N_ATTRS.forEach(attr => {
+        if(!el.hasAttribute(attr)) return;
+        el.__i18nAttr = el.__i18nAttr || {};
+        const cur = el.getAttribute(attr);
+        let key = el.__i18nAttr[attr];
+        if(!key || (cur !== key && cur !== EN[key])) key = frKeyFor(cur);
+        if(!key) return;
+        el.__i18nAttr[attr] = key;
+        el.setAttribute(attr, LANG === "en" ? EN[key] : key);
+      });
+    });
+  }
+
+  function applyLanguage(lang, save){
+    LANG = lang === "en" ? "en" : "fr";
+    if(save){ try{ localStorage.setItem(LANG_KEY, LANG); } catch(e){ /* ignore */ } }
+    document.documentElement.lang = LANG;
+    document.querySelectorAll(".lang-switch button").forEach(b => {
+      b.classList.toggle("active", b.dataset.lang === LANG);
+      b.setAttribute("aria-pressed", b.dataset.lang === LANG ? "true" : "false");
+    });
+    const yesKey = document.getElementById("reflexe-yes-key");
+    if(yesKey) yesKey.textContent = LANG === "en" ? "Y" : "O";
+    if(window.speechSynthesis){ try{ speechSynthesis.cancel(); } catch(e){ /* ignore */ } }
+    langListeners.forEach(fn => { try{ fn(LANG); } catch(e){ /* ignore */ } });
+    translatePage();
+  }
+
+
+  function shuffle(arr){
+    const a = arr.slice();
+    for(let i = a.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function speak(text){
+    return new Promise(resolve => {
+      if(!("speechSynthesis" in window)){ resolve(); return; }
+      try{
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = LANG === "en" ? "en-US" : "fr-FR";
+        u.rate = 0.95;
+        let done = false;
+        const finish = () => { if(!done){ done = true; resolve(); } };
+        u.onend = finish;
+        u.onerror = finish;
+        speechSynthesis.speak(u);
+        setTimeout(finish, 4000);
+      } catch(e){ resolve(); }
+    });
+  }
+
+  function showScreenWithin(containerSelector, id){
+    document.querySelectorAll(containerSelector + " .screen").forEach(el => el.classList.add("hidden"));
+    $(id).classList.remove("hidden");
+    // Sur téléphone, revenir en haut pour voir le nouvel écran (sinon on
+    // reste à la hauteur où l'on avait touché le bouton).
+    window.scrollTo(0, 0);
+  }
+
+  // =========================================================
+  // POP-UP DE SOUTIEN — s'affiche à chaque lancement, sauf si
+  // le joueur a coché "Ne plus afficher" (mémorisé dans ce
+  // navigateur).
+  // =========================================================
+  const SUPPORT_HIDE_KEY = "jeux3615_support_hidden_v1";
+  const supportModalEl = $("support-modal");
+
+  function isSupportOpen(){ return !supportModalEl.classList.contains("hidden"); }
+
+  function closeSupportModal(){
+    if($("support-dontshow").checked){
+      try{ localStorage.setItem(SUPPORT_HIDE_KEY, "1"); } catch(e){ /* ignore */ }
+    }
+    supportModalEl.classList.add("hidden");
+  }
+
+  let supportHidden = false;
+  try{ supportHidden = localStorage.getItem(SUPPORT_HIDE_KEY) === "1"; } catch(e){ supportHidden = false; }
+  if(!supportHidden){
+    supportModalEl.classList.remove("hidden");
+    $("support-close-btn").focus();
+  }
+
+  $("support-close-btn").addEventListener("click", closeSupportModal);
+  $("support-kofi-btn").addEventListener("click", () => {
+    // Le lien s'ouvre dans un nouvel onglet ; on ferme la fenêtre ici.
+    setTimeout(closeSupportModal, 100);
+  });
+  supportModalEl.addEventListener("click", (e) => {
+    if(e.target === supportModalEl) closeSupportModal();
+  });
+  document.addEventListener("keydown", (e) => {
+    if(isSupportOpen() && e.key === "Escape") closeSupportModal();
+  });
+
+  // =========================================================
+  // APPLICATION INSTALLABLE (PWA)
+  // - Chrome / Edge / Android : bouton natif "Installer".
+  // - iPhone / iPad (Safari) et autres : fenêtre d'instructions.
+  // - Déjà lancé comme application : le bouton est masqué.
+  // =========================================================
+  const installBtn = $("install-app-btn");
+  const installModal = $("install-modal");
+  let deferredInstallPrompt = window.__installPrompt || null;
+
+  function isRunningAsApp(){
+    return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ||
+      window.navigator.standalone === true;
+  }
+
+  function isIOS(){
+    const ua = navigator.userAgent || "";
+    return /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  }
+
+  function installInstructionsHTML(){
+    if(LANG === "en"){
+      if(isIOS()){
+        return '<p>On iPhone and iPad, install it from <strong>Safari</strong>:</p><ol>' +
+          '<li>Tap the <strong>Share</strong> button (square with an arrow pointing up).</li>' +
+          '<li>Choose <strong>“Add to Home Screen”</strong>.</li>' +
+          '<li>Tap <strong>Add</strong>: the 3615 JEUX icon appears with your apps.</li></ol>';
+      }
+      if(/Firefox/.test(navigator.userAgent || "")){
+        return '<p>Firefox on desktop can\'t install web apps.</p><ol>' +
+          '<li>Open this site in <strong>Chrome</strong> or <strong>Edge</strong>, then tap “Install the app”.</li>' +
+          '<li>On Android with Firefox: menu <strong>⋮</strong> → <strong>“Install”</strong> or “Add to Home screen”.</li></ol>';
+      }
+      return '<ol>' +
+        '<li>Open the browser menu (<strong>⋮</strong> or <strong>…</strong>).</li>' +
+        '<li>Choose <strong>“Install 3615 JEUX”</strong> or <strong>“Add to Home screen”</strong>.</li></ol>';
+    }
+    if(isIOS()){
+      return '<p>Sur iPhone et iPad, l\'installation se fait depuis <strong>Safari</strong> :</p><ol>' +
+        '<li>Touchez le bouton <strong>Partager</strong> (carré avec une flèche vers le haut).</li>' +
+        '<li>Choisissez <strong>« Sur l\'écran d\'accueil »</strong>.</li>' +
+        '<li>Touchez <strong>Ajouter</strong> : l\'icône 3615 JEUX apparaît avec vos applis.</li></ol>';
+    }
+    if(/Firefox/.test(navigator.userAgent || "")){
+      return '<p>Firefox sur ordinateur ne permet pas d\'installer les applications web.</p><ol>' +
+        '<li>Ouvrez ce site dans <strong>Chrome</strong> ou <strong>Edge</strong>, puis touchez « Installer l\'appli ».</li>' +
+        '<li>Sur Android avec Firefox : menu <strong>⋮</strong> → <strong>« Installer »</strong> ou « Ajouter à l\'écran d\'accueil ».</li></ol>';
+    }
+    return '<ol>' +
+      '<li>Ouvrez le menu du navigateur (<strong>⋮</strong> ou <strong>…</strong>).</li>' +
+      '<li>Choisissez <strong>« Installer 3615 JEUX »</strong> ou <strong>« Ajouter à l\'écran d\'accueil »</strong>.</li></ol>';
+  }
+
+  function openInstallModal(){
+    $("install-steps").innerHTML = installInstructionsHTML();
+    installModal.classList.remove("hidden");
+    $("install-close-btn").focus();
+  }
+  function closeInstallModal(){ installModal.classList.add("hidden"); }
+
+  if(!isRunningAsApp()) installBtn.classList.remove("hidden");
+
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    window.__installPrompt = e;
+    if(!isRunningAsApp()) installBtn.classList.remove("hidden");
+  });
+
+  window.addEventListener("appinstalled", () => {
+    deferredInstallPrompt = null;
+    installBtn.classList.add("hidden");
+  });
+
+  installBtn.addEventListener("click", async () => {
+    const promptEvt = deferredInstallPrompt || window.__installPrompt;
+    if(promptEvt){
+      // Fenêtre d'installation native du navigateur (comme la Matrice d'Eisenhower)
+      promptEvt.prompt();
+      try{
+        const choice = await promptEvt.userChoice;
+        if(choice && choice.outcome === "accepted") installBtn.classList.add("hidden");
+      } catch(e){ /* ignore */ }
+      deferredInstallPrompt = null;
+      window.__installPrompt = null;
+    } else {
+      openInstallModal();
+    }
+  });
+
+  $("download-app-btn").addEventListener("click", async () => {
+    let html = null;
+    try{
+      const res = await fetch("/index.html", { cache: "no-store" });
+      if(res.ok) html = await res.text();
+    } catch(e){ /* hors ligne : copie de la page affichée */ }
+    if(!html) html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+    const blob = new Blob([html], { type: "text/html" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "3615-jeux.html";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+  });
+  if(isRunningAsApp()) $("download-app-btn").classList.add("hidden");
+
+  $("install-close-btn").addEventListener("click", closeInstallModal);
+  installModal.addEventListener("click", (e) => { if(e.target === installModal) closeInstallModal(); });
+  document.addEventListener("keydown", (e) => {
+    if(!installModal.classList.contains("hidden") && e.key === "Escape") closeInstallModal();
+  });
+
+  if("serviceWorker" in navigator && location.protocol !== "file:"){
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/sw.js").catch(() => { /* site toujours utilisable sans */ });
+    });
+  }
+
+  // ---- score sharing, with a guaranteed manual fallback ----
+  async function shareScoreText(text){
+    if(navigator.share){
+      try{ await navigator.share({ title: "Score", text: text }); return "shared"; }
+      catch(e){ if(e && e.name === "AbortError") return "cancelled"; }
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      try{ await navigator.clipboard.writeText(text); return "copied"; }
+      catch(e){ /* fall through to manual */ }
+    }
+    return "manual";
+  }
+
+  const SITE_URL = "https://3615-jeux.com";
+
+  async function handleShareClick(text, feedbackId, boxId, textareaId){
+    text = text + "\n👉 " + SITE_URL;
+    const outcome = await shareScoreText(text);
+    const feedback = $(feedbackId);
+    if(outcome === "shared" || outcome === "cancelled"){
+      if(outcome === "shared") feedback.textContent = t("Partagé !");
+      return;
+    }
+    const box = $(boxId);
+    const ta = $(textareaId);
+    ta.value = text;
+    box.classList.remove("hidden");
+    ta.focus();
+    ta.select();
+    feedback.textContent = (outcome === "copied")
+      ? t("Copié dans le presse-papiers ! (texte aussi affiché ci-dessous)")
+      : t("Sélectionnez le texte ci-dessous et copiez-le (Ctrl+C)");
+  }
+
+  // =========================================================
+  // SHARED RESULT CHART: one bar per question/round, height =
+  // answer time, green = correct, red = error, dashed = average.
+  // log entries: { index, responseMs, correct }
+  // =========================================================
+  function renderAnswerChart(containerId, log, itemLabel, badLabel){
+    const container = $(containerId);
+    if(!container) return;
+    if(!log || log.length === 0){ container.innerHTML = ""; return; }
+
+    const width = 320, height = 150, padding = 4, barGap = 2;
+    const n = log.length;
+    const barW = Math.max(1, (width - padding * 2) / n - barGap);
+    const maxMs = Math.max(...log.map(a => a.responseMs), 1);
+    const avgMs = log.reduce((sum, a) => sum + a.responseMs, 0) / n;
+    const usable = height - padding * 2;
+
+    let bars = "";
+    log.forEach((a, i) => {
+      const barH = Math.max(2, (a.responseMs / maxMs) * usable);
+      const x = padding + i * (barW + barGap);
+      const y = height - padding - barH;
+      const color = a.correct ? "var(--green)" : "var(--red)";
+      bars += '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + barW.toFixed(1) +
+        '" height="' + barH.toFixed(1) + '" style="fill:' + color + '"><title>' + itemLabel + ' ' + a.index + ' : ' +
+        (a.responseMs / 1000).toFixed(2) + ' s</title></rect>';
+    });
+
+    const avgY = height - padding - (avgMs / maxMs) * usable;
+    const avgLine = '<line x1="0" y1="' + avgY.toFixed(1) + '" x2="' + width + '" y2="' + avgY.toFixed(1) +
+      '" style="stroke:var(--yellow);stroke-width:2;stroke-dasharray:6,4"></line>';
+
+    container.innerHTML =
+      '<div class="answer-chart-title">' + t("TEMPS DE RÉPONSE PAR {x}", { x: itemLabel.toUpperCase() }) + '</div>' +
+      '<svg viewBox="0 0 ' + width + ' ' + height + '" width="100%" height="150" preserveAspectRatio="none">' +
+      bars + avgLine + '</svg>' +
+      '<div class="answer-chart-avg">' + t("Temps de réponse moyen : {x} s", { x: (avgMs / 1000).toFixed(2) }) + '</div>' +
+      '<div class="answer-chart-legend"><span class="lg-ok">' + t("■ correct") + '</span><span class="lg-bad">■ ' + badLabel +
+      '</span><span class="lg-avg">' + t("- - moyenne") + '</span></div>';
+  }
+
+  // =========================================================
+  // SHARED WORD BANKS (used by MEMO, MOTS and ANAGRAMME)
+  // Downloadable / editable / re-loadable as one JSON file.
+  // =========================================================
+  // ANAGRAMME : chaque mot n'a qu'une seule solution (vérifié contre un dictionnaire complet).
+  const DEFAULT_WORD_BANKS = {
+    memo: {
+      "3": ["feu","roi","mer","vie","eau","lit","nid","sac","bol","riz","vin","lac","ami","art","peu","pas","tas","sol","rue","nez"],
+      "5": ["table","chien","porte","voile","plage","monde","grand","fleur","nuage","arbre","livre","route","forme","jaune","verte","noire","radio","sucre","pluie","cadre"],
+      "7": ["chapeau","voiture","planete","musique","cuisine","lumiere","paysage","chateau","poisson","journee","fenetre","famille","montage","domaine","cabinet","costume","machine","semaine","voisine","general"]
+    },
+    mots: [
+      "feu","roi","mer","vie","eau","lit","nid","sac","bol","riz","vin","lac","ami","art","peu","pas","tas","sol","rue","nez",
+      "chat","lune","pain","jour","main","pied","tete","sang","bois","toit","lion","ours","vent","sofa","pere","mere","fils","lait","cafe","vase",
+      "table","chien","porte","voile","plage","monde","grand","fleur","nuage","arbre","livre","route","forme","jaune","verte","noire","radio","sucre","pluie","cadre",
+      "maison","jardin","bureau","voyage","nature","animal","marche","cheval","poulet","ballon","bateau","moteur","region","projet","examen","couple","copain","copine","espace","miroir",
+      "chapeau","voiture","planete","musique","cuisine","lumiere","paysage","chateau","poisson","journee","fenetre","famille","montage","domaine","cabinet","costume","machine","semaine","voisine","general",
+      "montagne","aventure","histoire","personne","question","document","escalier","elephant","vacances","semestre","fontaine","toilette","festival","corridor","analyste","critique","habitude","attitude","boutique","physique",
+      "telephone","directeur","ingenieur"
+    ],
+    anagramme: {
+      "4": ["chat","lune","jour","pied","tete","sang","bois","toit","ours","vent","sofa","pere","mere","fils","vase","loup","cerf","pont","gant","rire"],
+      "5": ["grand","nuage","livre","forme","pluie","bijou","pomme","bulle","gomme","zebre","pizza","robot","hiver","cygne","panda","glace","ville","ecole","clown","kayak"],
+      "6": ["jardin","bureau","nature","cheval","poulet","ballon","bateau","moteur","projet","examen","miroir","banane","bougie","crayon","violon","avocat","cochon","mouton","requin","citron"],
+      "7": ["chapeau","voiture","musique","cuisine","chateau","fenetre","famille","cabinet","costume","voisine","dauphin","biscuit","baleine","tambour","journal","horloge","theatre","abricot","brioche","cerceau"]
+    }
+  };
+
+
+  const DEFAULT_WORD_BANKS_EN = {
+    memo: {
+      "3": ["cat","dog","sun","sea","map","cup","box","hat","key","egg","pen","bed","car","bus","ice","fox","owl","jam","toy","art"],
+      "5": ["house","river","light","chair","water","music","plant","train","beach","clock","apple","tiger","zebra","pizza","candy","juice","money","sugar","happy","queen"],
+      "7": ["kitchen","picture","rainbow","blanket","dolphin","journey","morning","freedom","library","diamond","balloon","captain","volcano","pyramid","penguin","harvest","village","chicken","pumpkin","popcorn"]
+    },
+    mots: [
+      "cat","dog","sun","sea","map","cup","box","hat","key","egg","pen","bed","car","bus","ice","fox","owl","jam","toy","art",
+      "moon","bird","fish","door","tree","milk","rain","king","ship","bell","lamp","rose","sand","wolf","coin","frog","nest","star","wind","snow",
+      "house","river","light","chair","water","music","plant","train","beach","clock","apple","tiger","zebra","pizza","candy","juice","money","sugar","happy","queen",
+      "garden","window","planet","rocket","castle","forest","bridge","pencil","silver","orange","spring","guitar","island","basket","candle","mirror","school","family","doctor","winter",
+      "kitchen","picture","rainbow","blanket","dolphin","journey","morning","freedom","library","diamond","balloon","captain","volcano","pyramid","penguin","harvest","village","chicken","pumpkin","popcorn",
+      "mountain","elephant","dinosaur","umbrella","sandwich","festival","treasure","computer","notebook","airplane","birthday","hospital","sunshine","football","necklace","question","daughter","magazine","shoulder","vacation",
+      "telephone","adventure","chocolate"
+    ],
+    anagramme: {
+      "4": ["fish","milk","bell","frog","wind","duck","jump","gold","farm","hand","baby","cake","sock","fork","ball","girl","hill","jazz","park","pink"],
+      "5": ["house","river","light","chair","music","plant","beach","clock","tiger","pizza","juice","money","happy","queen","robot","piano","jelly","koala","llama","panda"],
+      "6": ["window","rocket","pencil","spring","guitar","island","basket","mirror","family","doctor","monkey","yellow","button","rabbit","jacket","banana","cookie","dragon","helmet","jungle"],
+      "7": ["rainbow","blanket","dolphin","journey","morning","freedom","library","diamond","balloon","volcano","pyramid","penguin","village","chicken","pumpkin","popcorn","cabbage","lettuce","pancake","unicorn"]
+    }
+  };
+
+  const DEFAULT_WORD_BANKS_BY_LANG = { fr: DEFAULT_WORD_BANKS, en: DEFAULT_WORD_BANKS_EN };
+  function defaultBanks(){ return DEFAULT_WORD_BANKS_BY_LANG[LANG] || DEFAULT_WORD_BANKS; }
+
+  function cloneDefaultBanks(){
+    return JSON.parse(JSON.stringify(defaultBanks()));
+  }
+
+  // Une banque personnalisée par langue (chargée depuis un fichier).
+  const customWordBanks = { fr: null, en: null };
+  let activeWordBanks = cloneDefaultBanks();
+
+  function sanitizeStringArray(arr, requiredLength){
+    if(!Array.isArray(arr)) return [];
+    return arr
+      .filter(w => typeof w === "string" && w.trim().length > 0)
+      .map(w => w.trim().toLowerCase())
+      .filter(w => requiredLength ? w.length === requiredLength : true);
+  }
+
+  function sanitizeByLength(obj, lengths, fallback){
+    const result = {};
+    lengths.forEach(len => {
+      const key = String(len);
+      const incoming = obj && typeof obj === "object" ? sanitizeStringArray(obj[key], len) : [];
+      result[key] = incoming.length > 0 ? incoming : fallback[key].slice();
+    });
+    return result;
+  }
+
+  function validateAndNormalizeBanks(data){
+    if(!data || typeof data !== "object") throw new Error(t("Format invalide : objet JSON attendu."));
+    const defaults = defaultBanks();
+    const normalized = {
+      memo: sanitizeByLength(data.memo, [3, 5, 7], defaults.memo),
+      mots: (() => {
+        const incoming = sanitizeStringArray(data.mots, null);
+        return incoming.length > 0 ? incoming : defaults.mots.slice();
+      })(),
+      anagramme: sanitizeByLength(data.anagramme, [4, 5, 6, 7], defaults.anagramme)
+    };
+    return normalized;
+  }
+
+  function pickCycled(bank, count){
+    const source = bank && bank.length > 0 ? bank : [LANG === "en" ? "word" : "mot"];
+    const shuffled = shuffle(source);
+    const list = [];
+    for(let i = 0; i < count; i++){ list.push(shuffled[i % shuffled.length]); }
+    return list;
+  }
+
+  function updateWordbankStatus(text){
+    const el = $("wordbank-status");
+    if(el) el.textContent = text;
+  }
+
+  function downloadWordBanks(){
+    const blob = new Blob([JSON.stringify(activeWordBanks, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = LANG === "en" ? "word-bank-en.json" : "banque-de-mots-fr.json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  function loadWordBanksFromFile(file){
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const parsed = JSON.parse(reader.result);
+        activeWordBanks = validateAndNormalizeBanks(parsed);
+        customWordBanks[LANG] = activeWordBanks;
+        updateWordbankStatus(t("✔ Banque personnalisée chargée depuis \"{f}\".", { f: file.name }));
+      } catch(e){
+        updateWordbankStatus(t("✘ Fichier invalide, banque inchangée ({e})", { e: e.message }));
+      }
+    };
+    reader.onerror = () => { updateWordbankStatus(t("✘ Impossible de lire le fichier.")); };
+    reader.readAsText(file);
+  }
+
+  const wordbankDownloadBtn = $("wordbank-download-btn");
+  const wordbankFileInput = $("wordbank-file-input");
+  const wordbankResetBtn = $("wordbank-reset-btn");
+
+  if(wordbankDownloadBtn) wordbankDownloadBtn.addEventListener("click", downloadWordBanks);
+  if(wordbankFileInput) wordbankFileInput.addEventListener("change", (e) => {
+    const file = e.target.files && e.target.files[0];
+    if(file) loadWordBanksFromFile(file);
+    wordbankFileInput.value = "";
+  });
+  if(wordbankResetBtn) wordbankResetBtn.addEventListener("click", () => {
+    customWordBanks[LANG] = null;
+    activeWordBanks = cloneDefaultBanks();
+    updateWordbankStatus(t("↺ Banque par défaut restaurée."));
+  });
+
+  // Changement de langue : chaque langue a sa propre banque de mots.
+  onLangChange(() => {
+    activeWordBanks = customWordBanks[LANG] || cloneDefaultBanks();
+    updateWordbankStatus(customWordBanks[LANG] ? t("Banque personnalisée active.") : t("Banque par défaut chargée."));
+  });
+
+  // =========================================================
+  // LOCAL PLAYER PROFILE — saved in this browser's storage
+  // (no server needed), with a downloadable/restorable backup
+  // file so scores survive a browser reset or move to another
+  // device. Standalone build: no Claude "db" capability here.
+  // =========================================================
+  const GAME_META = {
+    memo:      { label: "3615 MEMO" },
+    mots:      { label: "3616 MOTS" },
+    simon:     { label: "3617 SIMON" },
+    anagramme: { label: "3618 ANAGRAMME" },
+    reflexe:   { label: "3619 RÉFLEXE" }
+  };
+
+  const PROFILES_KEY = "jeux3615_profiles_v1";
+
+  function loadProfilesStore(){
+    try{
+      const raw = localStorage.getItem(PROFILES_KEY);
+      if(!raw) return { players: {}, activePlayer: null };
+      const parsed = JSON.parse(raw);
+      if(!parsed || typeof parsed !== "object" || typeof parsed.players !== "object"){
+        return { players: {}, activePlayer: null };
+      }
+      return parsed;
+    } catch(e){
+      return { players: {}, activePlayer: null };
+    }
+  }
+
+  function saveProfilesStore(store){
+    try{
+      localStorage.setItem(PROFILES_KEY, JSON.stringify(store));
+      return true;
+    } catch(e){
+      return false;
+    }
+  }
+
+  let profilesStore = loadProfilesStore();
+
+  function setProfileStatus(text){
+    const el = $("profile-status");
+    if(el) el.textContent = text;
+  }
+
+  function sanitizePlayerName(raw){
+    return (raw || "").trim().slice(0, 30);
+  }
+
+  function renderProfilePanel(){
+    const statsEl = $("profile-stats");
+    if(!statsEl) return;
+    const name = profilesStore.activePlayer;
+    const games = (name && profilesStore.players[name] && profilesStore.players[name].games) || {};
+    const rows = Object.keys(GAME_META)
+      .filter(key => games[key])
+      .map(key => {
+        const g = games[key];
+        const value = key === "simon" ? (g.bestLevel || 0) : (g.bestScore || 0);
+        return '<div class="profile-stat-row"><span class="profile-stat-game">' +
+          GAME_META[key].label + '</span><span class="profile-stat-value">' +
+          value + ' · ' + t("{n} partie(s)", { n: g.plays || 0 }) + '</span></div>';
+      })
+      .join("");
+    statsEl.innerHTML = rows || '<p class="profile-empty">' + t("Aucune partie enregistrée pour l'instant.") + '</p>';
+  }
+
+  function renderPlayerSelect(){
+    const select = $("profile-select");
+    const field = $("profile-select-field");
+    const names = Object.keys(profilesStore.players).filter(n => !isGoogleKey(n)).sort((a, b) => a.localeCompare(b));
+    if(names.length === 0){
+      field.classList.add("hidden");
+      select.innerHTML = "";
+      return;
+    }
+    field.classList.remove("hidden");
+    select.innerHTML = names.map(n => '<option value="' + n.replace(/"/g, "&quot;") + '">' + n + "</option>").join("");
+  }
+
+  function showNoPlayerView(){
+    $("profile-noplayer-view").classList.remove("hidden");
+    $("profile-active-view").classList.add("hidden");
+    renderPlayerSelect();
+  }
+
+  function showActiveView(){
+    $("profile-noplayer-view").classList.add("hidden");
+    $("profile-active-view").classList.remove("hidden");
+    const active = profilesStore.players[profilesStore.activePlayer] || {};
+    $("profile-name").textContent = active.displayName || profilesStore.activePlayer;
+    // Compte Google : on change de joueur en se déconnectant
+    // (le nom et la déconnexion sont déjà affichés dans le bloc Google)
+    document.querySelector("#profile-active-view .profile-header").classList.toggle("hidden", isGoogleKey(profilesStore.activePlayer));
+    renderProfilePanel();
+  }
+
+  function refreshProfileUI(){
+    if(profilesStore.activePlayer && profilesStore.players[profilesStore.activePlayer]){
+      showActiveView();
+    } else {
+      showNoPlayerView();
+    }
+  }
+
+  function handleCreatePlayer(){
+    const name = sanitizePlayerName($("profile-new-name").value);
+    if(name.length < 2){ setProfileStatus(t("Choisissez un nom d'au moins 2 caractères.")); return; }
+    if(profilesStore.players[name]){ setProfileStatus(t("Ce nom existe déjà — choisissez-le dans la liste.")); return; }
+
+    profilesStore.players[name] = { games: {}, createdAt: new Date().toISOString() };
+    profilesStore.activePlayer = name;
+    const ok = saveProfilesStore(profilesStore);
+    setProfileStatus(ok ? t("Joueur créé et enregistré sur cet appareil.") : t("Joueur créé, mais l'enregistrement local a échoué."));
+    $("profile-new-name").value = "";
+    refreshProfileUI();
+  }
+
+  function handleSelectPlayer(){
+    const select = $("profile-select");
+    const name = select.value;
+    if(!name || !profilesStore.players[name]) return;
+    profilesStore.activePlayer = name;
+    saveProfilesStore(profilesStore);
+    setProfileStatus("");
+    refreshProfileUI();
+  }
+
+  function handleSwitchPlayer(){
+    profilesStore.activePlayer = null;
+    saveProfilesStore(profilesStore);
+    setProfileStatus("");
+    refreshProfileUI();
+  }
+
+  function downloadProfilesBackup(){
+    const blob = new Blob([JSON.stringify(profilesStore, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "joueurs-scores.json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  function restoreProfilesBackup(file){
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const parsed = JSON.parse(reader.result);
+        if(!parsed || typeof parsed !== "object" || typeof parsed.players !== "object"){
+          throw new Error("format invalide");
+        }
+        profilesStore = { players: parsed.players, activePlayer: null };
+        if(cloud.user){
+          const key = googleKey(cloud.user.uid);
+          profilesStore.players[key] = profilesStore.players[key] || { games: {}, createdAt: new Date().toISOString() };
+          profilesStore.players[key].displayName = cloud.user.displayName || cloud.user.email || "Google";
+          profilesStore.activePlayer = key;
+        }
+        saveProfilesStore(profilesStore);
+        setProfileStatus(t("✔ Sauvegarde restaurée depuis \"{f}\".", { f: file.name }));
+        refreshProfileUI();
+      } catch(e){
+        setProfileStatus(t("✘ Fichier invalide, sauvegarde inchangée."));
+      }
+    };
+    reader.onerror = () => { setProfileStatus(t("✘ Impossible de lire le fichier.")); };
+    reader.readAsText(file);
+  }
+
+  function saveGameResult(gameKey, fields){
+    const name = profilesStore.activePlayer;
+    if(!name || !profilesStore.players[name]) return;
+
+    const games = profilesStore.players[name].games || {};
+    const prev = games[gameKey] || { plays: 0, bestScore: 0, bestLevel: 0 };
+
+    games[gameKey] = Object.assign({}, prev, fields, {
+      plays: (prev.plays || 0) + 1,
+      bestScore: Math.max(prev.bestScore || 0, fields.score || 0),
+      bestLevel: Math.max(prev.bestLevel || 0, fields.level || 0),
+      lastPlayedAt: new Date().toISOString()
+    });
+
+    profilesStore.players[name].games = games;
+    profilesStore.players[name].updatedAt = new Date().toISOString();
+    saveProfilesStore(profilesStore);
+    if(isGoogleKey(name)) cloud.push();
+    if($("profile-active-view") && !$("profile-active-view").classList.contains("hidden")){
+      renderProfilePanel();
+    }
+  }
+
+  $("profile-create-btn").addEventListener("click", handleCreatePlayer);
+  $("profile-select-btn").addEventListener("click", handleSelectPlayer);
+  $("profile-switch-btn").addEventListener("click", handleSwitchPlayer);
+  $("profile-backup-download-btn").addEventListener("click", downloadProfilesBackup);
+  $("profile-backup-file-input").addEventListener("change", (e) => {
+    const file = e.target.files && e.target.files[0];
+    if(file) restoreProfilesBackup(file);
+    e.target.value = "";
+  });
+
+
+  // =========================================================
+  // CONNEXION GOOGLE + SAUVEGARDE DES SCORES (Firebase)
+  // ---------------------------------------------------------
+  // 1. Collez ci-dessous la configuration de votre application
+  //    web Firebase (Console Firebase → Paramètres du projet →
+  //    Vos applications → SDK setup and configuration → Config).
+  // 2. Tant que FIREBASE_CONFIG vaut null, le bouton Google est
+  //    masqué et le site fonctionne comme avant (profil local).
+  // Les scores sont rangés dans Firestore, collection
+  // "jeux3615_users", un document par compte Google.
+  // =========================================================
+  const FIREBASE_CONFIG = {
+    apiKey: "AIzaSyDF6hKnOqaFM2CE06k-83Rgrahm8MKx0Zk",
+    authDomain: "matrice-d-eisenhower-aa8df.firebaseapp.com",
+    projectId: "matrice-d-eisenhower-aa8df",
+    storageBucket: "matrice-d-eisenhower-aa8df.firebasestorage.app",
+    messagingSenderId: "7353078163",
+    appId: "1:7353078163:web:b6814c7902f304026d1866",
+    measurementId: "G-QW5PSE62R3"
+  };
+  /* Exemple :
+  const FIREBASE_CONFIG = {
+    apiKey: "…",
+    authDomain: "votre-projet.firebaseapp.com",
+    projectId: "votre-projet",
+    storageBucket: "votre-projet.appspot.com",
+    messagingSenderId: "…",
+    appId: "…"
+  };
+  */
+  const FIREBASE_SDK = "https://www.gstatic.com/firebasejs/10.14.1/";
+  const CLOUD_COLLECTION = "jeux3615_users";
+
+  function googleKey(uid){ return "google:" + uid; }
+  function isGoogleKey(name){ return typeof name === "string" && name.indexOf("google:") === 0; }
+
+  function mergeGames(a, b){
+    const out = {};
+    const keys = new Set(Object.keys(a || {}).concat(Object.keys(b || {})));
+    keys.forEach(k => {
+      const x = (a && a[k]) || {}, y = (b && b[k]) || {};
+      const newer = (x.lastPlayedAt || "") >= (y.lastPlayedAt || "") ? x : y;
+      out[k] = Object.assign({}, y, x, newer, {
+        plays: Math.max(x.plays || 0, y.plays || 0),
+        bestScore: Math.max(x.bestScore || 0, y.bestScore || 0),
+        bestLevel: Math.max(x.bestLevel || 0, y.bestLevel || 0),
+        lastPlayedAt: newer.lastPlayedAt || x.lastPlayedAt || y.lastPlayedAt || null
+      });
+    });
+    return out;
+  }
+
+  function loadScriptOnce(src){
+    return new Promise((resolve, reject) => {
+      if(document.querySelector('script[src="' + src + '"]')){ resolve(); return; }
+      const el = document.createElement("script");
+      el.src = src; el.async = true;
+      el.onload = () => resolve();
+      el.onerror = () => reject(new Error("load " + src));
+      document.head.appendChild(el);
+    });
+  }
+
+  const cloud = {
+    enabled: !!FIREBASE_CONFIG,
+    ready: false,
+    auth: null,
+    db: null,
+    user: null,
+    pushTimer: null,
+
+    setSync(text, warn){
+      const el = $("google-sync");
+      el.textContent = text;
+      el.classList.toggle("warn", !!warn);
+    },
+
+    setStatus(text){ $("google-status").textContent = text || ""; },
+
+    render(){
+      const signedIn = !!this.user;
+      $("google-signed-out").classList.toggle("hidden", signedIn);
+      $("google-signed-in").classList.toggle("hidden", !signedIn);
+      if(signedIn){
+        $("google-name").textContent = this.user.displayName || this.user.email || "Google";
+        const av = $("google-avatar");
+        if(this.user.photoURL){ av.src = this.user.photoURL; av.classList.remove("hidden"); }
+        else { av.removeAttribute("src"); av.classList.add("hidden"); }
+      }
+    },
+
+    async init(){
+      if(!this.enabled) return;
+      $("google-auth").classList.remove("hidden");
+      try{
+        await loadScriptOnce(FIREBASE_SDK + "firebase-app-compat.js");
+        await Promise.all([
+          loadScriptOnce(FIREBASE_SDK + "firebase-auth-compat.js"),
+          loadScriptOnce(FIREBASE_SDK + "firebase-firestore-compat.js")
+        ]);
+        const app = firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+        this.auth = firebase.auth(app);
+        this.db = firebase.firestore(app);
+        this.ready = true;
+        this.auth.getRedirectResult().catch(e => this.showError(e));
+        this.auth.onAuthStateChanged(user => {
+          if(user) this.onSignedIn(user); else this.onSignedOut();
+        });
+      } catch(e){
+        this.setStatus(t("Connexion Google indisponible pour le moment (pas de réseau ?)."));
+      }
+    },
+
+    async signIn(){
+      if(!this.ready){ this.setStatus(t("Connexion Google indisponible pour le moment (pas de réseau ?).")); return; }
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: "select_account" });
+      const btn = $("google-signin-btn");
+      btn.disabled = true;
+      this.setStatus(t("Connexion en cours…"));
+      try{
+        await this.auth.signInWithPopup(provider);
+        this.setStatus("");
+      } catch(e){
+        const code = (e && e.code) || "";
+        if(code === "auth/popup-blocked" || code === "auth/operation-not-supported-in-this-environment" ||
+           code === "auth/cancelled-popup-request"){
+          try{ await this.auth.signInWithRedirect(provider); return; } catch(e2){ this.showError(e2); }
+        } else if(code === "auth/popup-closed-by-user"){
+          this.setStatus("");
+        } else {
+          this.showError(e);
+        }
+      } finally {
+        btn.disabled = false;
+      }
+    },
+
+    async signOut(){
+      if(this.auth) await this.auth.signOut();
+    },
+
+    showError(e){
+      const code = (e && e.code) || "";
+      if(code === "auth/unauthorized-domain"){
+        this.setStatus(t("Ce site n'est pas encore autorisé dans Firebase (Authentication → Settings → Authorized domains)."));
+      } else if(code === "auth/network-request-failed"){
+        this.setStatus(t("Connexion Google indisponible pour le moment (pas de réseau ?)."));
+      } else if(code === "permission-denied"){
+        this.setStatus(t("Accès refusé par Firebase : vérifiez les règles Firestore."));
+      } else if(code && code !== "auth/popup-closed-by-user"){
+        this.setStatus(t("Connexion impossible : {e}", { e: code.replace("auth/", "") }));
+      }
+    },
+
+    doc(){ return this.db.collection(CLOUD_COLLECTION).doc(this.user.uid); },
+
+    async onSignedIn(user){
+      this.user = user;
+      this.render();
+      this.setStatus("");
+      const key = googleKey(user.uid);
+      const previous = profilesStore.activePlayer;
+      const local = profilesStore.players[key] || { games: {}, createdAt: new Date().toISOString() };
+      local.displayName = user.displayName || user.email || "Google";
+      // Reprend la progression du joueur local actif au moment de la connexion
+      if(previous && !isGoogleKey(previous) && profilesStore.players[previous]){
+        local.games = mergeGames(local.games, profilesStore.players[previous].games);
+      }
+      profilesStore.players[key] = local;
+      profilesStore.activePlayer = key;
+      saveProfilesStore(profilesStore);
+      refreshProfileUI();
+
+      this.setSync(t("⏳ Synchronisation…"));
+      try{
+        const snap = await this.doc().get();
+        const remote = snap.exists ? (snap.data().games || {}) : {};
+        local.games = mergeGames(local.games, remote);
+        saveProfilesStore(profilesStore);
+        refreshProfileUI();
+        await this.write();
+      } catch(e){
+        this.handleSyncError(e);
+      }
+    },
+
+    onSignedOut(){
+      this.user = null;
+      clearTimeout(this.pushTimer);
+      if(isGoogleKey(profilesStore.activePlayer)){
+        profilesStore.activePlayer = null;
+        saveProfilesStore(profilesStore);
+      }
+      this.render();
+      refreshProfileUI();
+    },
+
+    async write(){
+      if(!this.user || !this.db) return;
+      const p = profilesStore.players[googleKey(this.user.uid)];
+      if(!p) return;
+      await this.doc().set({
+        name: p.displayName || "",
+        games: p.games || {},
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+      this.setSync(t("☁ Scores sauvegardés dans votre compte"));
+    },
+
+    push(){
+      if(!this.user) return;
+      clearTimeout(this.pushTimer);
+      this.setSync(t("⏳ Synchronisation…"));
+      this.pushTimer = setTimeout(() => {
+        this.write().catch(e => this.handleSyncError(e));
+      }, 400);
+    },
+
+    handleSyncError(e){
+      if(e && e.code === "permission-denied"){
+        this.setSync(t("Accès refusé par Firebase : vérifiez les règles Firestore."), true);
+      } else {
+        this.setSync(t("⚠ Hors ligne : la synchro reprendra plus tard"), true);
+      }
+    }
+  };
+
+  $("google-signin-btn").addEventListener("click", () => cloud.signIn());
+  $("google-signout-btn").addEventListener("click", () => cloud.signOut());
+  window.addEventListener("online", () => { if(cloud.user) cloud.push(); });
+  onLangChange(() => {
+    if(!cloud.user) return;
+    cloud.setSync(t("☁ Scores sauvegardés dans votre compte"));
+  });
+
+  refreshProfileUI();
+  cloud.init();
+  onLangChange(() => { renderProfilePanel(); setProfileStatus(""); });
+
+  // =========================================================
+  // CONTACT FORM
+  // Sent through Netlify Forms (POST to "/"), which forwards each
+  // submission by e-mail once notifications are set up in the
+  // Netlify dashboard. Anywhere Netlify isn't available (local file,
+  // claude.ai preview), falls back to opening the visitor's mail app.
+  // =========================================================
+  const CONTACT_EMAIL = "valentinbriand9@gmail.com";
+
+  function setContactStatus(html, kind){
+    const el = $("contact-status");
+    el.innerHTML = html;
+    el.className = "contact-status" + (kind ? " " + kind : "");
+  }
+
+  function buildMailtoLink(nom, email, message){
+    const subject = t("3615 JEUX — message de {n}", { n: nom });
+    const body = message + "\n\n— " + nom + " (" + email + ")";
+    return "mailto:" + CONTACT_EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+  }
+
+  const contactForm = $("contact-form");
+  contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const nom = $("contact-name").value.trim();
+    const email = $("contact-email").value.trim();
+    const message = $("contact-message").value.trim();
+    if(!nom || !email || !message){
+      setContactStatus(t("Merci de remplir tous les champs."), "err");
+      return;
+    }
+
+    const submitBtn = $("contact-submit");
+    submitBtn.disabled = true;
+    setContactStatus(t("Envoi en cours…"), "");
+
+    let sent = false;
+    try{
+      const body = new URLSearchParams(new FormData(contactForm)).toString();
+      const res = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: body
+      });
+      sent = res.ok;
+    } catch(err){
+      sent = false;
+    }
+
+    submitBtn.disabled = false;
+    if(sent){
+      contactForm.reset();
+      setContactStatus(t("✔ Message envoyé, merci ! Nous vous répondrons à l'adresse indiquée."), "ok");
+    } else {
+      const link = buildMailtoLink(nom, email, message);
+      setContactStatus(t("L'envoi direct n'est pas disponible ici. ") +
+        '<a href="' + link + '">' + t("Cliquez ici pour envoyer le message avec votre messagerie") + '</a>.', "err");
+    }
+  });
+
+  // =========================================================
+  // HUB navigation + shared quit-confirmation modal
+  // =========================================================
+  function showPage(name){
+    document.querySelectorAll(".page").forEach(el => el.classList.add("hidden"));
+    $("page-" + name).classList.remove("hidden");
+    window.scrollTo(0, 0);
+  }
+
+  document.querySelectorAll("[data-open]").forEach(btn => {
+    btn.addEventListener("click", () => showPage(btn.dataset.open));
+  });
+
+  document.querySelectorAll("[data-back]").forEach(btn => {
+    btn.addEventListener("click", () => showPage("hub"));
+  });
+
+  // Single shared modal: whichever game opens it stores its own
+  // "what to do if confirmed" callback in pendingQuitAction first.
+  let pendingQuitAction = null;
+
+  const quitModalEl = document.createElement("div");
+  quitModalEl.id = "quit-modal";
+  quitModalEl.className = "modal-overlay hidden";
+  quitModalEl.innerHTML =
+    '<div class="modal-box">' +
+      '<p class="modal-text" id="quit-modal-text">Quitter la partie en cours ?<br>Votre progression sera perdue.</p>' +
+      '<div class="modal-actions">' +
+        '<button id="quit-cancel" class="choice-btn">ANNULER</button>' +
+        '<button id="quit-confirm" class="choice-btn confirm-danger">QUITTER</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(quitModalEl);
+
+  function showQuitModal(message, confirmLabel){
+    $("quit-modal-text").innerHTML = t(message);
+    $("quit-confirm").textContent = t(confirmLabel);
+    $("quit-cancel").textContent = t("ANNULER");
+    quitModalEl.classList.remove("hidden");
+  }
+  function hideQuitModal(){ quitModalEl.classList.add("hidden"); }
+  function isQuitModalOpen(){ return !quitModalEl.classList.contains("hidden"); }
+
+  $("quit-cancel").addEventListener("click", hideQuitModal);
+  $("quit-confirm").addEventListener("click", () => {
+    hideQuitModal();
+    if(pendingQuitAction) pendingQuitAction();
+  });
+
+  function wireQuitButtons(containerSelector, onConfirm){
+    document.querySelectorAll(containerSelector + " [data-quit]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        pendingQuitAction = onConfirm;
+        showQuitModal("Quitter la partie en cours ?<br>Votre progression sera perdue.", "QUITTER");
+      });
+    });
+  }
+
+  function wireRestartButtons(containerSelector, onConfirm){
+    document.querySelectorAll(containerSelector + " [data-restart]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        pendingQuitAction = onConfirm;
+        showQuitModal("Recommencer une nouvelle partie ?<br>Votre progression actuelle sera perdue. Vous reviendrez au choix de la difficulté.", "REDÉMARRER");
+      });
+    });
+  }
+
+  // =========================================================
+  // "Tampon" buffer screen: a small confirmation the player must
+  // click before a game actually starts (shared across all games).
+  // =========================================================
+  // Also shown between rounds (MEMO, MOTS, ANAGRAMME): in that case an
+  // "⌂ ACCUEIL" button lets the player leave the game from the buffer.
+  let pendingReadyAction = null;
+  let pendingReadyCancel = null;
+
+  const readyModalEl = document.createElement("div");
+  readyModalEl.id = "ready-modal";
+  readyModalEl.className = "modal-overlay hidden";
+  readyModalEl.innerHTML =
+    '<div class="modal-box">' +
+      '<p class="modal-text" id="ready-modal-text">Prêt ?</p>' +
+      '<div class="modal-actions">' +
+        '<button id="ready-cancel" class="choice-btn hidden">⌂ ACCUEIL</button>' +
+        '<button id="ready-confirm" class="choice-btn active">▶ COMMENCER</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(readyModalEl);
+
+  function showReadyBuffer(message, onConfirm, onCancel){
+    $("ready-modal-text").innerHTML = t(message);
+    $("ready-confirm").textContent = t("▶ COMMENCER");
+    $("ready-cancel").textContent = t("⌂ ACCUEIL");
+    pendingReadyAction = onConfirm;
+    pendingReadyCancel = onCancel || null;
+    $("ready-cancel").classList.toggle("hidden", !onCancel);
+    readyModalEl.classList.remove("hidden");
+    $("ready-confirm").focus();
+  }
+  function hideReadyBuffer(){ readyModalEl.classList.add("hidden"); }
+  function isReadyBufferOpen(){ return !readyModalEl.classList.contains("hidden"); }
+
+  function confirmReadyBuffer(){
+    hideReadyBuffer();
+    const action = pendingReadyAction;
+    pendingReadyAction = null;
+    pendingReadyCancel = null;
+    if(action) action();
+  }
+
+  function cancelReadyBuffer(){
+    hideReadyBuffer();
+    const cancel = pendingReadyCancel;
+    pendingReadyAction = null;
+    pendingReadyCancel = null;
+    if(cancel) cancel();
+  }
+
+  // Promise version, used to pause a game before each round.
+  function waitReady(message, onCancel){
+    return new Promise(resolve => { showReadyBuffer(message, resolve, onCancel); });
+  }
+
+  function roundReadyMessage(index, total, text){
+    return t("MANCHE") + " " + (index + 1) + "/" + total + "<br>" + t(text);
+  }
+
+  $("ready-confirm").addEventListener("click", confirmReadyBuffer);
+  $("ready-cancel").addEventListener("click", cancelReadyBuffer);
+
+  document.addEventListener("keydown", (e) => {
+    if(!isReadyBufferOpen()) return;
+    if(e.key === "Enter"){
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      confirmReadyBuffer();
+    } else if(e.key === "Escape"){
+      e.stopImmediatePropagation();
+      cancelReadyBuffer();
+    }
+  });
+
+  // =========================================================
+  // GAME 1 — 3615 MEMO
+  // =========================================================
+  (function(){
+    const DIGITS = "0123456789".split("");
+    const LETTERS = "abcdefghijklmnopqrstuvwxyz".split("");
+
+    const DIFF_CONFIG = { facile: { length: 3 }, moyen: { length: 5 }, difficile: { length: 7 } };
+    const SPEED_CONFIG = { lente: 4500, normale: 3000, rapide: 1500 };
+    const DIFF_LABELS = { facile: "Facile", moyen: "Moyen", difficile: "Difficile" };
+    const SPEED_LABELS = { lente: "Lente", normale: "Normale", rapide: "Rapide" };
+
+    let selectedDiff = "facile";
+    let selectedSpeed = "normale";
+    let selectedRounds = 5;
+    let gameState = "idle";
+    let currentGen = 0;
+    let currentRoundIndex = 0;
+    let score = 0, errors = 0, totalCatches = 0;
+    let startTimestamp = 0, endTimestamp = 0;
+    let numbersForGame = [], wordsForGame = [];
+    let targetSequence = [], pointer = 0;
+    let digitKeyEls = {}, letterKeyEls = {};
+    let roundCompleteResolve = null;
+    let replaysUsed = 0;
+    let currentMemorizeText = null;
+    let answerLog = [];
+    let roundStartedAt = 0, roundErrors = 0;
+    let currentRoundNumber = null, currentRoundWord = null;
+    let replayAllBusy = false;
+    const REPLAY_PENALTY = 5;
+
+    function generateNumber(length){
+      let n = String(1 + Math.floor(Math.random() * 9));
+      for(let i = 1; i < length; i++){ n += String(Math.floor(Math.random() * 10)); }
+      return n;
+    }
+
+    function isAfficherOn(){ return $("memo-afficher-toggle").checked; }
+    function screen(id){ showScreenWithin("#page-memo", id); }
+
+    document.querySelectorAll("#page-memo .choice-btn[data-diff]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#page-memo .choice-btn[data-diff]").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedDiff = btn.dataset.diff;
+      });
+    });
+
+    document.querySelectorAll("#page-memo .choice-btn[data-rounds]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#page-memo .choice-btn[data-rounds]").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedRounds = parseInt(btn.dataset.rounds, 10);
+      });
+    });
+
+    document.querySelectorAll("#page-memo .choice-btn[data-speed]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#page-memo .choice-btn[data-speed]").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedSpeed = btn.dataset.speed;
+      });
+    });
+
+    const AZERTY_DIGITS = "1234567890".split("");
+    const AZERTY_ROWS = ["azertyuiop", "qsdfghjklm", "wxcvbn"];
+    const QWERTY_ROWS = ["qwertyuiop", "asdfghjkl", "zxcvbnm"];
+    let selectedLayout = "abc";
+
+    document.querySelectorAll("#page-memo .choice-btn[data-layout]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#page-memo .choice-btn[data-layout]").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedLayout = btn.dataset.layout;
+        buildKeypad();
+      });
+    });
+
+    function makeKey(ch, isDigit){
+      const btn = document.createElement("button");
+      btn.className = "key " + (isDigit ? "digit-key" : "letter-key");
+      btn.textContent = isDigit ? ch : ch.toUpperCase();
+      btn.addEventListener("click", () => attemptChar(ch));
+      if(isDigit) digitKeyEls[ch] = btn; else letterKeyEls[ch] = btn;
+      return btn;
+    }
+
+    function buildKeypad(){
+      const digitRow = $("memo-keypad-digits");
+      const letterRow = $("memo-keypad-letters");
+      digitRow.innerHTML = ""; letterRow.innerHTML = "";
+      digitKeyEls = {}; letterKeyEls = {};
+
+      const digitOrder = selectedLayout === "abc" ? DIGITS : AZERTY_DIGITS;
+      digitOrder.forEach(d => digitRow.appendChild(makeKey(d, true)));
+
+      if(selectedLayout === "azerty" || selectedLayout === "qwerty"){
+        (selectedLayout === "azerty" ? AZERTY_ROWS : QWERTY_ROWS).forEach(rowLetters => {
+          const sub = document.createElement("div");
+          sub.className = "keypad-subrow";
+          rowLetters.split("").forEach(l => sub.appendChild(makeKey(l, false)));
+          letterRow.appendChild(sub);
+        });
+      } else {
+        LETTERS.forEach(l => letterRow.appendChild(makeKey(l, false)));
+      }
+    }
+
+    function updateKeypadFocus(){
+      const current = targetSequence[pointer];
+      const expectingDigit = current && current.type === "digit";
+      $("memo-keypad-digits").classList.toggle("dim", !expectingDigit);
+      $("memo-keypad-letters").classList.toggle("dim", expectingDigit);
+    }
+
+    async function memorizePhase(number, word, myGen){
+      gameState = "memorize";
+      screen("memo-screen-memorize");
+      $("memo-mem-round").textContent = currentRoundIndex + 1;
+      $("memo-mem-score-display").textContent = score;
+
+      const displayEl = $("memo-memorize-display");
+      const listeningEl = $("memo-listening-indicator");
+      const digitsSpaced = number.split("").join(", ");
+      const stepMs = SPEED_CONFIG[selectedSpeed];
+
+      if(isAfficherOn()){
+        listeningEl.classList.add("hidden");
+        displayEl.classList.remove("hidden");
+
+        displayEl.innerHTML = '<div class="mem-number">' + number + '</div>';
+        currentMemorizeText = digitsSpaced;
+        await Promise.all([ speak(digitsSpaced), delay(stepMs) ]);
+        if(myGen !== currentGen) return;
+
+        displayEl.innerHTML = '<div class="mem-word">' + word.toUpperCase() + '</div>';
+        currentMemorizeText = word;
+        await Promise.all([ speak(word), delay(stepMs) ]);
+
+        displayEl.innerHTML = "";
+      } else {
+        displayEl.innerHTML = "";
+        displayEl.classList.add("hidden");
+        listeningEl.classList.remove("hidden");
+
+        currentMemorizeText = digitsSpaced;
+        await Promise.all([ speak(digitsSpaced), delay(stepMs) ]);
+        if(myGen !== currentGen) return;
+        currentMemorizeText = word;
+        await Promise.all([ speak(word), delay(stepMs) ]);
+      }
+      currentMemorizeText = null;
+    }
+
+    function replayListen(){
+      if(gameState !== "memorize" || !currentMemorizeText) return;
+      replaysUsed++;
+      score -= REPLAY_PENALTY;
+      $("memo-mem-score-display").textContent = score;
+      speak(currentMemorizeText);
+    }
+    $("memo-replay-listen-btn").addEventListener("click", replayListen);
+
+    async function replayAll(){
+      if(gameState !== "recompose" || replayAllBusy || !currentRoundNumber) return;
+      replayAllBusy = true;
+      replaysUsed++;
+      score -= REPLAY_PENALTY;
+      updateScoreDisplay();
+      if(window.speechSynthesis) speechSynthesis.cancel();
+      await speak(currentRoundNumber.split("").join(", "));
+      await speak(currentRoundWord);
+      replayAllBusy = false;
+    }
+    $("memo-replay-all-btn").addEventListener("click", replayAll);
+
+    function buildSlots(number, word){
+      const numContainer = $("memo-slots-number");
+      const wordContainer = $("memo-slots-word");
+      numContainer.innerHTML = ""; wordContainer.innerHTML = "";
+      const numberSlotEls = [], wordSlotEls = [];
+
+      for(let i = 0; i < number.length; i++){
+        const div = document.createElement("div");
+        div.className = "slot digit-slot";
+        div.textContent = "_";
+        numContainer.appendChild(div);
+        numberSlotEls.push(div);
+      }
+      for(let i = 0; i < word.length; i++){
+        const div = document.createElement("div");
+        div.className = "slot letter-slot";
+        div.textContent = "_";
+        wordContainer.appendChild(div);
+        wordSlotEls.push(div);
+      }
+      return { numberSlotEls, wordSlotEls };
+    }
+
+    function buildTargetSequence(number, word, numberSlotEls, wordSlotEls){
+      const seq = [];
+      const length = Math.max(number.length, word.length);
+      for(let i = 0; i < length; i++){
+        if(i < number.length){ seq.push({ char: number[i], el: numberSlotEls[i], type: "digit" }); }
+        if(i < word.length){ seq.push({ char: word[i], el: wordSlotEls[i], type: "letter" }); }
+      }
+      return seq;
+    }
+
+    function updateScoreDisplay(){ $("memo-score-display").textContent = score; }
+    function showFeedback(text){ $("memo-feedback").textContent = text; }
+    function hideFeedback(){ $("memo-feedback").textContent = ""; }
+
+    function flashKey(el, kind){
+      const cls = kind === "correct" ? "correct" : "wrong";
+      el.classList.add(cls);
+      setTimeout(() => el.classList.remove(cls), 180);
+    }
+
+    function attemptChar(char){
+      if(gameState !== "recompose") return;
+
+      const current = targetSequence[pointer];
+      const target = current.char;
+      const keyEl = digitKeyEls[char] || letterKeyEls[char];
+
+      if(char.toLowerCase() === target.toLowerCase()){
+        current.el.textContent = target.toUpperCase();
+        current.el.classList.add("filled");
+        pointer++;
+        score += 10;
+        totalCatches++;
+        if(keyEl) flashKey(keyEl, "correct");
+        updateScoreDisplay();
+
+        if(pointer >= targetSequence.length){
+          gameState = "transition";
+          answerLog.push({ index: currentRoundIndex + 1, responseMs: performance.now() - roundStartedAt, correct: roundErrors === 0 });
+          showFeedback(t("✔ RECOMPOSÉ !"));
+          setTimeout(() => {
+            hideFeedback();
+            const resolve = roundCompleteResolve;
+            roundCompleteResolve = null;
+            if(resolve) resolve();
+          }, 700);
+        } else {
+          updateKeypadFocus();
+        }
+      } else {
+        errors++;
+        roundErrors++;
+        score = Math.max(0, score - 2);
+        if(keyEl) flashKey(keyEl, "wrong");
+        updateScoreDisplay();
+      }
+    }
+
+    function recomposePhase(number, word){
+      return new Promise(resolve => {
+        roundCompleteResolve = resolve;
+        screen("memo-screen-recompose");
+        $("memo-rec-round").textContent = currentRoundIndex + 1;
+        updateScoreDisplay();
+        hideFeedback();
+
+        pointer = 0;
+        roundStartedAt = performance.now();
+        roundErrors = 0;
+        currentRoundNumber = number;
+        currentRoundWord = word;
+        const { numberSlotEls, wordSlotEls } = buildSlots(number, word);
+        targetSequence = buildTargetSequence(number, word, numberSlotEls, wordSlotEls);
+        updateKeypadFocus();
+
+        gameState = "recompose";
+      });
+    }
+
+    async function runRounds(myGen, totalRounds){
+      for(let i = 0; i < totalRounds; i++){
+        if(myGen !== currentGen) return;
+        currentRoundIndex = i;
+        const waitStart = performance.now();
+        await waitReady(roundReadyMessage(i, totalRounds, "Prêt à mémoriser ?"), quitAction);
+        if(myGen !== currentGen) return;
+        startTimestamp += performance.now() - waitStart; // la pause ne compte pas dans le temps
+        const number = numbersForGame[i];
+        const word = wordsForGame[i];
+        await memorizePhase(number, word, myGen);
+        if(myGen !== currentGen) return;
+        await recomposePhase(number, word);
+        if(myGen !== currentGen) return;
+      }
+      if(myGen === currentGen) endGame(totalRounds);
+    }
+
+    async function startGame(){
+      currentGen++;
+      const myGen = currentGen;
+      score = 0; errors = 0; totalCatches = 0; currentRoundIndex = 0;
+      replaysUsed = 0;
+      answerLog = [];
+      $("memo-head-status").textContent = t("EN COURS");
+
+      const totalRounds = selectedRounds;
+      $("memo-mem-total").textContent = totalRounds;
+      $("memo-rec-total").textContent = totalRounds;
+
+      const length = DIFF_CONFIG[selectedDiff].length;
+      const bank = activeWordBanks.memo[String(length)];
+      wordsForGame = pickCycled(bank, totalRounds);
+      numbersForGame = Array.from({length: totalRounds}, () => generateNumber(length));
+
+      startTimestamp = performance.now();
+      await runRounds(myGen, totalRounds);
+    }
+
+    function buildShareText(){
+      const finalScore = $("memo-final-score").textContent;
+      const finalTime = $("memo-final-time").textContent;
+      const finalErrors = $("memo-final-errors").textContent;
+      const finalAccuracy = $("memo-final-accuracy").textContent;
+      return t("🧠 3615 MEMO — {score} pts ({diff}, vitesse {speed})\n⏱ {time} · 🎯 {acc} de précision · ❌ {err} erreur(s) · 🔁 {rep} réécoute(s)\nÀ toi de faire mieux !", {
+        score: finalScore, diff: t(DIFF_LABELS[selectedDiff]), speed: t(SPEED_LABELS[selectedSpeed]),
+        time: finalTime, acc: finalAccuracy, err: finalErrors, rep: $("memo-final-replays").textContent
+      });
+    }
+
+    function endGame(totalRounds){
+      endTimestamp = performance.now();
+      gameState = "result";
+      $("memo-head-status").textContent = t("PRÊT");
+
+      const totalTimeSec = ((endTimestamp - startTimestamp) / 1000).toFixed(1);
+      const denom = totalCatches + errors;
+      const accuracy = denom > 0 ? Math.round((totalCatches / denom) * 100) : 100;
+
+      screen("memo-screen-result");
+      $("memo-final-score").textContent = score;
+      $("memo-final-time").textContent = totalTimeSec + " s";
+      $("memo-final-errors").textContent = errors;
+      $("memo-final-accuracy").textContent = accuracy + "%";
+      $("memo-final-replays").textContent = replaysUsed;
+      renderAnswerChart("memo-chart", answerLog, t("Manche"), t("avec erreur(s)"));
+      $("memo-share-box").classList.add("hidden");
+      $("memo-share-feedback").textContent = "";
+      saveGameResult("memo", { score: score, accuracy: accuracy, replays: replaysUsed });
+    }
+
+    function quitAction(){
+      currentGen++;
+      if(window.speechSynthesis) speechSynthesis.cancel();
+      if(roundCompleteResolve){
+        const resolve = roundCompleteResolve;
+        roundCompleteResolve = null;
+        resolve();
+      }
+      gameState = "idle";
+      $("memo-head-status").textContent = t("PRÊT");
+      showPage("hub");
+    }
+
+    function restartAction(){
+      currentGen++;
+      if(window.speechSynthesis) speechSynthesis.cancel();
+      if(roundCompleteResolve){
+        const resolve = roundCompleteResolve;
+        roundCompleteResolve = null;
+        resolve();
+      }
+      gameState = "idle";
+      $("memo-head-status").textContent = t("PRÊT");
+      screen("memo-screen-start");
+    }
+
+    wireQuitButtons("#page-memo", quitAction);
+    wireRestartButtons("#page-memo", restartAction);
+    buildKeypad();
+
+    $("memo-start-btn").addEventListener("click", startGame);
+    $("memo-share-btn").addEventListener("click", () => {
+      handleShareClick(buildShareText(), "memo-share-feedback", "memo-share-box", "memo-share-textarea");
+    });
+    $("memo-replay-btn").addEventListener("click", () => {
+      gameState = "idle";
+      if(window.speechSynthesis) speechSynthesis.cancel();
+      screen("memo-screen-start");
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if(isReadyBufferOpen()){
+        if(e.key === "Escape") hideReadyBuffer();
+        return;
+      }
+      if(isQuitModalOpen()){
+        if(e.key === "Escape") hideQuitModal();
+        return;
+      }
+      if(e.key === "Escape" && (gameState === "memorize" || gameState === "recompose")){
+        pendingQuitAction = quitAction;
+        showQuitModal("Quitter la partie en cours ?<br>Votre progression sera perdue.", "QUITTER");
+        return;
+      }
+      if(gameState !== "recompose") return;
+      const key = e.key.toLowerCase();
+      if(/^[0-9]$/.test(key) || /^[a-z]$/.test(key)){
+        e.preventDefault();
+        attemptChar(key);
+      }
+    });
+  })();
+
+  // =========================================================
+  // GAME 2 — 3616 MOTS
+  // =========================================================
+  (function(){
+    const SPEED_CONFIG = { lente: 3500, normale: 2200, rapide: 1300 };
+    const SPEED_LABELS = { lente: "Lente", normale: "Normale", rapide: "Rapide" };
+
+    let selectedCount = 4;
+    let selectedGridSize = 50;
+    let selectedSpeed = "normale";
+    let selectedRounds = 5;
+    let gameState = "idle";
+    let currentGen = 0;
+    let currentRoundIndex = 0;
+    let score = 0, errors = 0, totalCatches = 0;
+    let startTimestamp = 0, endTimestamp = 0;
+    let currentRound = null, pointer = 0;
+    let foundWords = null;
+    let tileEls = {};
+    let roundCompleteResolve = null;
+    let replaysUsed = 0;
+    let currentMemorizeText = null;
+    let answerLog = [];
+    let roundStartedAt = 0, roundErrors = 0;
+    let replayAllBusy = false;
+    const REPLAY_PENALTY = 5;
+
+    function isAfficherOn(){ return $("mots-afficher-toggle").checked; }
+    function isAlphaOn(){ return $("mots-alpha-toggle").checked; }
+    function screen(id){ showScreenWithin("#page-mots", id); }
+
+    document.querySelectorAll("#page-mots .choice-btn[data-count]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#page-mots .choice-btn[data-count]").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedCount = parseInt(btn.dataset.count, 10);
+      });
+    });
+
+    document.querySelectorAll("#page-mots .choice-btn[data-gridsize]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#page-mots .choice-btn[data-gridsize]").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedGridSize = parseInt(btn.dataset.gridsize, 10);
+      });
+    });
+
+    document.querySelectorAll("#page-mots .choice-btn[data-rounds]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#page-mots .choice-btn[data-rounds]").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedRounds = parseInt(btn.dataset.rounds, 10);
+      });
+    });
+
+    document.querySelectorAll("#page-mots .choice-btn[data-speed]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#page-mots .choice-btn[data-speed]").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedSpeed = btn.dataset.speed;
+      });
+    });
+
+    function generateRound(count, gridSize){
+      const wordBank = activeWordBanks.mots;
+      const totalWords = Math.min(Math.max(gridSize, count), wordBank.length);
+      const bankShuffled = shuffle(wordBank);
+      const targets = bankShuffled.slice(0, count);
+      const fillers = bankShuffled.slice(count, totalWords);
+      const grid = shuffle(targets.concat(fillers));
+      const sortedTargets = targets.slice().sort();
+      return { targets, sortedTargets, grid };
+    }
+
+    async function memorizePhase(round, myGen){
+      gameState = "memorize";
+      screen("mots-screen-memorize");
+      $("mots-mem-round").textContent = currentRoundIndex + 1;
+      $("mots-mem-score-display").textContent = score;
+
+      const displayEl = $("mots-memorize-display");
+      const listeningEl = $("mots-listening-indicator");
+      const stepMs = SPEED_CONFIG[selectedSpeed];
+
+      for(let i = 0; i < round.targets.length; i++){
+        if(myGen !== currentGen) return;
+        $("mots-mem-progress").textContent = (i + 1) + "/" + round.targets.length;
+        const word = round.targets[i];
+
+        if(isAfficherOn()){
+          listeningEl.classList.add("hidden");
+          displayEl.classList.remove("hidden");
+          displayEl.innerHTML = '<div class="mem-big">' + word.toUpperCase() + '</div>';
+        } else {
+          displayEl.innerHTML = "";
+          displayEl.classList.add("hidden");
+          listeningEl.classList.remove("hidden");
+        }
+
+        currentMemorizeText = word;
+        await Promise.all([ speak(word), delay(stepMs) ]);
+      }
+      currentMemorizeText = null;
+      if(myGen === currentGen) displayEl.innerHTML = "";
+    }
+
+    function replayListen(){
+      if(gameState !== "memorize" || !currentMemorizeText) return;
+      replaysUsed++;
+      score -= REPLAY_PENALTY;
+      $("mots-mem-score-display").textContent = score;
+      speak(currentMemorizeText);
+    }
+    $("mots-replay-listen-btn").addEventListener("click", replayListen);
+
+    async function replayAll(){
+      if(gameState !== "find" || replayAllBusy || !currentRound) return;
+      replayAllBusy = true;
+      replaysUsed++;
+      score -= REPLAY_PENALTY;
+      updateScoreDisplay();
+      if(window.speechSynthesis) speechSynthesis.cancel();
+      for(const w of currentRound.targets){
+        if(gameState !== "find") break;
+        await speak(w);
+        await delay(250);
+      }
+      replayAllBusy = false;
+    }
+    $("mots-replay-all-btn").addEventListener("click", replayAll);
+
+    function buildGrid(round){
+      const container = $("mots-word-grid");
+      container.innerHTML = "";
+      tileEls = {};
+      round.grid.forEach(word => {
+        const btn = document.createElement("button");
+        btn.className = "word-tile";
+        btn.textContent = word;
+        btn.addEventListener("click", () => attemptWord(word, btn));
+        container.appendChild(btn);
+        tileEls[word] = btn;
+      });
+    }
+
+    function updateScoreDisplay(){ $("mots-score-display").textContent = score; }
+    function updateFindProgress(){ $("mots-find-progress").textContent = pointer + "/" + currentRound.sortedTargets.length; }
+    function showFeedback(text){ $("mots-feedback").textContent = text; }
+    function hideFeedback(){ $("mots-feedback").textContent = ""; }
+
+    function flashTile(btn, kind){
+      if(kind === "wrong"){
+        btn.classList.add("flash-wrong");
+        setTimeout(() => btn.classList.remove("flash-wrong"), 220);
+      }
+    }
+
+    function markWordFound(word, btn){
+      btn.classList.add("found");
+      btn.disabled = true;
+      pointer++;
+      score += 10;
+      totalCatches++;
+      updateScoreDisplay();
+      updateFindProgress();
+
+      if(pointer >= currentRound.sortedTargets.length){
+        gameState = "transition";
+        answerLog.push({ index: currentRoundIndex + 1, responseMs: performance.now() - roundStartedAt, correct: roundErrors === 0 });
+        showFeedback(t("✔ TOUS TROUVÉS !"));
+        setTimeout(() => {
+          hideFeedback();
+          const resolve = roundCompleteResolve;
+          roundCompleteResolve = null;
+          if(resolve) resolve();
+        }, 700);
+      }
+    }
+
+    function attemptWord(word, btn){
+      if(gameState !== "find") return;
+      if(btn.classList.contains("found")) return;
+
+      if(isAlphaOn()){
+        const expected = currentRound.sortedTargets[pointer];
+        if(word === expected){
+          markWordFound(word, btn);
+          return;
+        }
+      } else {
+        if(foundWords.has(word)){
+          errors++;
+          roundErrors++;
+          score = Math.max(0, score - 2);
+          updateScoreDisplay();
+          flashTile(btn, "wrong");
+          return;
+        }
+        if(currentRound.sortedTargets.includes(word)){
+          foundWords.add(word);
+          markWordFound(word, btn);
+          return;
+        }
+      }
+
+      errors++;
+      roundErrors++;
+      score = Math.max(0, score - 2);
+      updateScoreDisplay();
+      flashTile(btn, "wrong");
+    }
+
+    function findPhase(round){
+      return new Promise(resolve => {
+        roundCompleteResolve = resolve;
+        screen("mots-screen-find");
+        $("mots-find-round").textContent = currentRoundIndex + 1;
+        updateScoreDisplay();
+        hideFeedback();
+
+        currentRound = round;
+        pointer = 0;
+        roundStartedAt = performance.now();
+        roundErrors = 0;
+        foundWords = new Set();
+        buildGrid(round);
+        updateFindProgress();
+
+        $("mots-find-info").firstChild.textContent = (isAlphaOn()
+          ? t("Retrouvez les mots dans l'ordre alphabétique — trouvés :")
+          : t("Retrouvez les mots (ordre libre) — trouvés :")) + " ";
+
+        gameState = "find";
+      });
+    }
+
+    async function runRounds(myGen, totalRounds){
+      for(let i = 0; i < totalRounds; i++){
+        if(myGen !== currentGen) return;
+        currentRoundIndex = i;
+        const waitStart = performance.now();
+        await waitReady(roundReadyMessage(i, totalRounds, "Prêt à mémoriser les mots ?"), quitAction);
+        if(myGen !== currentGen) return;
+        startTimestamp += performance.now() - waitStart; // la pause ne compte pas dans le temps
+        const round = generateRound(selectedCount, selectedGridSize);
+        await memorizePhase(round, myGen);
+        if(myGen !== currentGen) return;
+        await findPhase(round);
+        if(myGen !== currentGen) return;
+      }
+      if(myGen === currentGen) endGame(totalRounds);
+    }
+
+    async function startGame(){
+      currentGen++;
+      const myGen = currentGen;
+      score = 0; errors = 0; totalCatches = 0; currentRoundIndex = 0;
+      replaysUsed = 0;
+      answerLog = [];
+      $("mots-head-status").textContent = t("EN COURS");
+
+      const totalRounds = selectedRounds;
+      $("mots-mem-total").textContent = totalRounds;
+      $("mots-find-total").textContent = totalRounds;
+
+      startTimestamp = performance.now();
+      await runRounds(myGen, totalRounds);
+    }
+
+    function buildShareText(){
+      const finalScore = $("mots-final-score").textContent;
+      const finalTime = $("mots-final-time").textContent;
+      const finalErrors = $("mots-final-errors").textContent;
+      const finalAccuracy = $("mots-final-accuracy").textContent;
+      return t("🔤 3616 MOTS — {score} pts ({n} mots, vitesse {speed})\n⏱ {time} · 🎯 {acc} de précision · ❌ {err} erreur(s) · 🔁 {rep} réécoute(s)\nÀ toi de faire mieux !", {
+        score: finalScore, n: selectedCount, speed: t(SPEED_LABELS[selectedSpeed]),
+        time: finalTime, acc: finalAccuracy, err: finalErrors, rep: $("mots-final-replays").textContent
+      });
+    }
+
+    function endGame(totalRounds){
+      endTimestamp = performance.now();
+      gameState = "result";
+      $("mots-head-status").textContent = t("PRÊT");
+
+      const totalTimeSec = ((endTimestamp - startTimestamp) / 1000).toFixed(1);
+      const denom = totalCatches + errors;
+      const accuracy = denom > 0 ? Math.round((totalCatches / denom) * 100) : 100;
+
+      screen("mots-screen-result");
+      $("mots-final-score").textContent = score;
+      $("mots-final-time").textContent = totalTimeSec + " s";
+      $("mots-final-errors").textContent = errors;
+      $("mots-final-accuracy").textContent = accuracy + "%";
+      $("mots-final-replays").textContent = replaysUsed;
+      renderAnswerChart("mots-chart", answerLog, t("Manche"), t("avec erreur(s)"));
+      $("mots-share-box").classList.add("hidden");
+      $("mots-share-feedback").textContent = "";
+      saveGameResult("mots", { score: score, accuracy: accuracy, replays: replaysUsed });
+    }
+
+    function quitAction(){
+      currentGen++;
+      if(window.speechSynthesis) speechSynthesis.cancel();
+      if(roundCompleteResolve){
+        const resolve = roundCompleteResolve;
+        roundCompleteResolve = null;
+        resolve();
+      }
+      gameState = "idle";
+      $("mots-head-status").textContent = t("PRÊT");
+      showPage("hub");
+    }
+
+    function restartAction(){
+      currentGen++;
+      if(window.speechSynthesis) speechSynthesis.cancel();
+      if(roundCompleteResolve){
+        const resolve = roundCompleteResolve;
+        roundCompleteResolve = null;
+        resolve();
+      }
+      gameState = "idle";
+      $("mots-head-status").textContent = t("PRÊT");
+      screen("mots-screen-start");
+    }
+
+    wireQuitButtons("#page-mots", quitAction);
+    wireRestartButtons("#page-mots", restartAction);
+
+    $("mots-start-btn").addEventListener("click", startGame);
+    $("mots-share-btn").addEventListener("click", () => {
+      handleShareClick(buildShareText(), "mots-share-feedback", "mots-share-box", "mots-share-textarea");
+    });
+    $("mots-replay-btn").addEventListener("click", () => {
+      gameState = "idle";
+      if(window.speechSynthesis) speechSynthesis.cancel();
+      screen("mots-screen-start");
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if(isReadyBufferOpen()){
+        if(e.key === "Escape") hideReadyBuffer();
+        return;
+      }
+      if(isQuitModalOpen()){
+        if(e.key === "Escape") hideQuitModal();
+        return;
+      }
+      if(e.key === "Escape" && (gameState === "memorize" || gameState === "find")){
+        pendingQuitAction = quitAction;
+        showQuitModal("Quitter la partie en cours ?<br>Votre progression sera perdue.", "QUITTER");
+      }
+    });
+  })();
+
+  // =========================================================
+  // GAME 3 — 3617 SIMON
+  // =========================================================
+  (function(){
+    const COLORS = ["green", "red", "yellow", "blue"];
+    const TONES = { green: 329.63, red: 261.63, yellow: 392.0, blue: 220.0 };
+    const SPEED_CONFIG = {
+      lente:   { on: 700, gap: 300 },
+      normale: { on: 500, gap: 200 },
+      rapide:  { on: 320, gap: 130 }
+    };
+    const SPEED_LABELS = { lente: "Lente", normale: "Normale", rapide: "Rapide" };
+
+    let selectedSpeed = "normale";
+    let gameState = "idle";
+    let currentGen = 0;
+    let sequence = [];
+    let level = 0;
+    let playerIndex = 0;
+    let startTimestamp = 0, endTimestamp = 0;
+    let playerInputResolve = null;
+    let answerLog = [];
+    let levelStartedAt = 0;
+    let audioCtx = null;
+    let padEls = {};
+
+    function isSoundOn(){ return $("simon-son-toggle").checked; }
+    function screen(id){ showScreenWithin("#page-simon", id); }
+
+    function getAudioCtx(){
+      if(!audioCtx){
+        try{ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+        catch(e){ audioCtx = null; }
+      }
+      return audioCtx;
+    }
+
+    function playTone(color, durationMs){
+      if(!isSoundOn()) return;
+      const ctx = getAudioCtx();
+      if(!ctx) return;
+      try{
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.frequency.value = TONES[color];
+        osc.type = "sine";
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + durationMs / 1000);
+        osc.start();
+        osc.stop(ctx.currentTime + durationMs / 1000);
+      } catch(e){ /* ignore */ }
+    }
+
+    document.querySelectorAll("#page-simon .choice-btn[data-speed]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#page-simon .choice-btn[data-speed]").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedSpeed = btn.dataset.speed;
+      });
+    });
+
+    function collectPads(screenId){
+      const map = {};
+      document.querySelectorAll("#" + screenId + " .simon-pad").forEach(btn => {
+        map[btn.dataset.color] = btn;
+      });
+      return map;
+    }
+
+    function litPad(padEl, color, durationMs){
+      padEl.classList.add("lit");
+      playTone(color, durationMs);
+      setTimeout(() => padEl.classList.remove("lit"), durationMs);
+    }
+
+    async function playSequence(myGen){
+      const cfg = SPEED_CONFIG[selectedSpeed];
+      const pads = collectPads("simon-screen-watch");
+      for(let i = 0; i < sequence.length; i++){
+        if(myGen !== currentGen) return;
+        const color = sequence[i];
+        litPad(pads[color], color, cfg.on);
+        await delay(cfg.on);
+        if(myGen !== currentGen) return;
+        await delay(cfg.gap);
+      }
+    }
+
+    function attemptColor(color, btn){
+      if(gameState !== "play") return;
+      litPad(btn, color, 200);
+
+      const expected = sequence[playerIndex];
+      if(color === expected){
+        playerIndex++;
+        if(playerIndex >= sequence.length){
+          gameState = "transition";
+          answerLog.push({ index: level, responseMs: performance.now() - levelStartedAt, correct: true });
+          $("simon-status").textContent = t("✔ NIVEAU RÉUSSI !");
+          const resolve = playerInputResolve;
+          playerInputResolve = null;
+          setTimeout(() => { if(resolve) resolve(true); }, 500);
+        }
+      } else {
+        gameState = "transition";
+        answerLog.push({ index: level, responseMs: performance.now() - levelStartedAt, correct: false });
+        $("simon-status").textContent = t("✘ ERREUR !");
+        const resolve = playerInputResolve;
+        playerInputResolve = null;
+        setTimeout(() => { if(resolve) resolve(false); }, 400);
+      }
+    }
+
+    async function watchPhase(myGen){
+      gameState = "watch";
+      screen("simon-screen-watch");
+      $("simon-watch-level").textContent = level;
+      await delay(500);
+      if(myGen !== currentGen) return;
+      await playSequence(myGen);
+    }
+
+    function playPhase(){
+      return new Promise(resolve => {
+        playerInputResolve = resolve;
+        playerIndex = 0;
+        levelStartedAt = performance.now();
+        gameState = "play";
+        screen("simon-screen-play");
+        $("simon-play-level").textContent = level;
+        $("simon-status").textContent = t("À vous !");
+      });
+    }
+
+    async function runGame(myGen){
+      while(true){
+        if(myGen !== currentGen) return;
+        level++;
+        sequence.push(COLORS[Math.floor(Math.random() * COLORS.length)]);
+
+        await watchPhase(myGen);
+        if(myGen !== currentGen) return;
+
+        const success = await playPhase();
+        if(myGen !== currentGen) return;
+
+        if(!success){
+          endGame();
+          return;
+        }
+      }
+    }
+
+    async function startGame(){
+      currentGen++;
+      const myGen = currentGen;
+      sequence = [];
+      answerLog = [];
+      level = 0;
+      gameState = "idle";
+      $("simon-head-status").textContent = t("EN COURS");
+      startTimestamp = performance.now();
+      await runGame(myGen);
+    }
+
+    function buildShareText(){
+      const finalLevel = $("simon-final-level").textContent;
+      const finalTime = $("simon-final-time").textContent;
+      return t("🎮 3617 SIMON — Niveau {level} atteint (vitesse {speed})\n⏱ {time}\nÀ toi de faire mieux !", {
+        level: finalLevel, speed: t(SPEED_LABELS[selectedSpeed]), time: finalTime
+      });
+    }
+
+    function endGame(){
+      endTimestamp = performance.now();
+      gameState = "result";
+      $("simon-head-status").textContent = t("PRÊT");
+
+      const totalTimeSec = ((endTimestamp - startTimestamp) / 1000).toFixed(1);
+      const levelReached = Math.max(0, level - 1);
+
+      screen("simon-screen-result");
+      $("simon-final-level").textContent = levelReached;
+      $("simon-final-time").textContent = totalTimeSec + " s";
+      renderAnswerChart("simon-chart", answerLog, t("Niveau"), t("erreur"));
+      $("simon-share-box").classList.add("hidden");
+      $("simon-share-feedback").textContent = "";
+      saveGameResult("simon", { level: levelReached });
+    }
+
+    function quitAction(){
+      currentGen++;
+      if(playerInputResolve){
+        const resolve = playerInputResolve;
+        playerInputResolve = null;
+        resolve(false);
+      }
+      gameState = "idle";
+      $("simon-head-status").textContent = t("PRÊT");
+      showPage("hub");
+    }
+
+    function restartAction(){
+      currentGen++;
+      if(playerInputResolve){
+        const resolve = playerInputResolve;
+        playerInputResolve = null;
+        resolve(false);
+      }
+      gameState = "idle";
+      $("simon-head-status").textContent = t("PRÊT");
+      screen("simon-screen-start");
+    }
+
+    wireQuitButtons("#page-simon", quitAction);
+    wireRestartButtons("#page-simon", restartAction);
+
+    document.querySelectorAll("#simon-screen-play .simon-pad").forEach(btn => {
+      btn.addEventListener("click", () => attemptColor(btn.dataset.color, btn));
+    });
+
+    $("simon-start-btn").addEventListener("click", () => { showReadyBuffer("Prêt à observer la séquence ?", startGame); });
+    $("simon-share-btn").addEventListener("click", () => {
+      handleShareClick(buildShareText(), "simon-share-feedback", "simon-share-box", "simon-share-textarea");
+    });
+    $("simon-replay-btn").addEventListener("click", () => {
+      gameState = "idle";
+      screen("simon-screen-start");
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if(isReadyBufferOpen()){
+        if(e.key === "Escape") hideReadyBuffer();
+        return;
+      }
+      if(isQuitModalOpen()){
+        if(e.key === "Escape") hideQuitModal();
+        return;
+      }
+      if(e.key === "Escape" && (gameState === "watch" || gameState === "play")){
+        pendingQuitAction = quitAction;
+        showQuitModal("Quitter la partie en cours ?<br>Votre progression sera perdue.", "QUITTER");
+      }
+    });
+  })();
+
+  // =========================================================
+  // GAME 4 — 3618 ANAGRAMME
+  // =========================================================
+  (function(){
+    let selectedLength = 4;
+    let selectedRounds = 5;
+    let gameState = "idle";
+    let currentGen = 0;
+    let currentRoundIndex = 0;
+    let score = 0, errors = 0, totalCatches = 0;
+    let startTimestamp = 0, endTimestamp = 0;
+    let wordsForGame = [];
+    let currentWord = null;
+    let pointer = 0;
+    let slotEls = [];
+    let roundCompleteResolve = null;
+    let answerLog = [];
+    let roundStartedAt = 0, roundErrors = 0;
+
+    function screen(id){ showScreenWithin("#page-anagramme", id); }
+
+    document.querySelectorAll("#page-anagramme .choice-btn[data-length]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#page-anagramme .choice-btn[data-length]").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedLength = parseInt(btn.dataset.length, 10);
+      });
+    });
+
+    document.querySelectorAll("#page-anagramme .choice-btn[data-rounds]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#page-anagramme .choice-btn[data-rounds]").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedRounds = parseInt(btn.dataset.rounds, 10);
+      });
+    });
+
+    function buildWordsForGame(totalRounds){
+      const bank = activeWordBanks.anagramme[String(selectedLength)];
+      return pickCycled(bank, totalRounds);
+    }
+
+    function buildSlots(word){
+      const container = $("anagramme-slots");
+      container.innerHTML = "";
+      slotEls = [];
+      for(let i = 0; i < word.length; i++){
+        const div = document.createElement("div");
+        div.className = "slot letter-slot";
+        div.textContent = "_";
+        container.appendChild(div);
+        slotEls.push(div);
+      }
+    }
+
+    function isShuffleAllowed(){ return $("anagramme-shuffle-toggle").checked; }
+
+    function updateShuffleButtonVisibility(){
+      const btn = $("anagramme-shuffle-btn");
+      btn.classList.toggle("hidden", !isShuffleAllowed());
+    }
+
+    function buildLetterTiles(word){
+      const remaining = word.slice(pointer).split("");
+      const container = $("anagramme-letters");
+      container.innerHTML = "";
+      let shuffledLetters = shuffle(remaining);
+      if(shuffledLetters.join("") === remaining.join("") && shuffledLetters.length > 1){
+        shuffledLetters = shuffle(shuffledLetters);
+      }
+      shuffledLetters.forEach(letter => {
+        const btn = document.createElement("button");
+        btn.className = "key letter-key";
+        btn.textContent = letter.toUpperCase();
+        btn.dataset.letter = letter;
+        btn.addEventListener("click", () => attemptLetter(letter, btn, word));
+        container.appendChild(btn);
+      });
+      updateShuffleButtonVisibility();
+    }
+
+    function shuffleLetters(){
+      if(gameState !== "play" || !currentWord) return;
+      if(!isShuffleAllowed()) return;
+      buildLetterTiles(currentWord);
+    }
+
+    function updateScoreDisplay(){ $("anagramme-score-display").textContent = score; }
+    function showFeedback(text){ $("anagramme-feedback").textContent = text; }
+    function hideFeedback(){ $("anagramme-feedback").textContent = ""; }
+
+    function flashTile(btn, kind){
+      btn.classList.add(kind);
+      setTimeout(() => btn.classList.remove(kind), 180);
+    }
+
+    function attemptLetter(letter, btn, word){
+      if(gameState !== "play") return;
+      if(btn.disabled) return;
+
+      const target = word[pointer];
+
+      if(letter.toLowerCase() === target.toLowerCase()){
+        slotEls[pointer].textContent = target.toUpperCase();
+        slotEls[pointer].classList.add("filled");
+        pointer++;
+        score += 10;
+        totalCatches++;
+        updateScoreDisplay();
+
+        btn.disabled = true;
+        flashTile(btn, "correct");
+        setTimeout(() => btn.classList.add("used"), 180);
+
+        if(pointer >= word.length){
+          gameState = "transition";
+          answerLog.push({ index: currentRoundIndex + 1, responseMs: performance.now() - roundStartedAt, correct: roundErrors === 0 });
+          showFeedback(t("✔ MOT TROUVÉ !"));
+          setTimeout(() => {
+            hideFeedback();
+            const resolve = roundCompleteResolve;
+            roundCompleteResolve = null;
+            if(resolve) resolve();
+          }, 700);
+        }
+      } else {
+        errors++;
+        roundErrors++;
+        score = Math.max(0, score - 2);
+        updateScoreDisplay();
+        flashTile(btn, "wrong");
+      }
+    }
+
+    function playRound(word){
+      return new Promise(resolve => {
+        roundCompleteResolve = resolve;
+        screen("anagramme-screen-play");
+        $("anagramme-round").textContent = currentRoundIndex + 1;
+        updateScoreDisplay();
+        hideFeedback();
+
+        pointer = 0;
+        roundStartedAt = performance.now();
+        roundErrors = 0;
+        currentWord = word;
+        buildSlots(word);
+        buildLetterTiles(word);
+
+        gameState = "play";
+      });
+    }
+
+    async function runRounds(myGen, totalRounds){
+      for(let i = 0; i < totalRounds; i++){
+        if(myGen !== currentGen) return;
+        currentRoundIndex = i;
+        const waitStart = performance.now();
+        await waitReady(roundReadyMessage(i, totalRounds, "Prêt à recomposer le mot ?"), quitAction);
+        if(myGen !== currentGen) return;
+        startTimestamp += performance.now() - waitStart; // la pause ne compte pas dans le temps
+        const word = wordsForGame[i];
+        await playRound(word);
+        if(myGen !== currentGen) return;
+      }
+      if(myGen === currentGen) endGame();
+    }
+
+    async function startGame(){
+      currentGen++;
+      const myGen = currentGen;
+      score = 0; errors = 0; totalCatches = 0; currentRoundIndex = 0;
+      answerLog = [];
+      $("anagramme-head-status").textContent = t("EN COURS");
+
+      const totalRounds = selectedRounds;
+      $("anagramme-total").textContent = totalRounds;
+      wordsForGame = buildWordsForGame(totalRounds);
+
+      startTimestamp = performance.now();
+      await runRounds(myGen, totalRounds);
+    }
+
+    const LENGTH_LABELS = { 4: "4 lettres", 5: "5 lettres", 6: "6 lettres", 7: "7 lettres" };
+
+    function buildShareText(){
+      const finalScore = $("anagramme-final-score").textContent;
+      const finalTime = $("anagramme-final-time").textContent;
+      const finalErrors = $("anagramme-final-errors").textContent;
+      const finalAccuracy = $("anagramme-final-accuracy").textContent;
+      return t("🔀 3618 ANAGRAMME — {score} pts ({len})\n⏱ {time} · 🎯 {acc} de précision · ❌ {err} erreur(s)\nÀ toi de faire mieux !", {
+        score: finalScore, len: t("{n} lettres", { n: selectedLength }), time: finalTime, acc: finalAccuracy, err: finalErrors
+      });
+    }
+
+    function endGame(){
+      endTimestamp = performance.now();
+      gameState = "result";
+      $("anagramme-head-status").textContent = t("PRÊT");
+
+      const totalTimeSec = ((endTimestamp - startTimestamp) / 1000).toFixed(1);
+      const denom = totalCatches + errors;
+      const accuracy = denom > 0 ? Math.round((totalCatches / denom) * 100) : 100;
+
+      screen("anagramme-screen-result");
+      $("anagramme-final-score").textContent = score;
+      $("anagramme-final-time").textContent = totalTimeSec + " s";
+      $("anagramme-final-errors").textContent = errors;
+      $("anagramme-final-accuracy").textContent = accuracy + "%";
+      renderAnswerChart("anagramme-chart", answerLog, t("Manche"), t("avec erreur(s)"));
+      $("anagramme-share-box").classList.add("hidden");
+      $("anagramme-share-feedback").textContent = "";
+      saveGameResult("anagramme", { score: score, accuracy: accuracy });
+    }
+
+    function quitAction(){
+      currentGen++;
+      if(roundCompleteResolve){
+        const resolve = roundCompleteResolve;
+        roundCompleteResolve = null;
+        resolve();
+      }
+      gameState = "idle";
+      $("anagramme-head-status").textContent = t("PRÊT");
+      showPage("hub");
+    }
+
+    function restartAction(){
+      currentGen++;
+      if(roundCompleteResolve){
+        const resolve = roundCompleteResolve;
+        roundCompleteResolve = null;
+        resolve();
+      }
+      gameState = "idle";
+      $("anagramme-head-status").textContent = t("PRÊT");
+      screen("anagramme-screen-start");
+    }
+
+    wireQuitButtons("#page-anagramme", quitAction);
+    wireRestartButtons("#page-anagramme", restartAction);
+
+    $("anagramme-start-btn").addEventListener("click", startGame);
+    $("anagramme-shuffle-btn").addEventListener("click", () => { shuffleLetters(); });
+    $("anagramme-share-btn").addEventListener("click", () => {
+      handleShareClick(buildShareText(), "anagramme-share-feedback", "anagramme-share-box", "anagramme-share-textarea");
+    });
+    $("anagramme-replay-btn").addEventListener("click", () => {
+      gameState = "idle";
+      screen("anagramme-screen-start");
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if(isReadyBufferOpen()){
+        if(e.key === "Escape") hideReadyBuffer();
+        return;
+      }
+      if(isQuitModalOpen()){
+        if(e.key === "Escape") hideQuitModal();
+        return;
+      }
+      if(e.key === "Escape" && gameState === "play"){
+        pendingQuitAction = quitAction;
+        showQuitModal("Quitter la partie en cours ?<br>Votre progression sera perdue.", "QUITTER");
+      }
+    });
+  })();
+
+  // =========================================================
+  // GAME 5 — 3619 RÉFLEXE
+  // =========================================================
+  (function(){
+    const SHAPES = ["carre", "cercle", "triangle", "losange"];
+    const SHAPE_LABELS = { carre: "carré", cercle: "cercle", triangle: "triangle", losange: "losange" };
+    const SHAPE_GLYPHS = { carre: "■", cercle: "●", triangle: "▲", losange: "◆" };
+
+    const COLORS = ["red", "green", "yellow", "cyan", "magenta"];
+    const COLOR_VALUES = {
+      red: "var(--red)", green: "var(--green)", yellow: "var(--yellow)",
+      cyan: "var(--cyan)", magenta: "var(--magenta)"
+    };
+    const COLOR_LABELS = { red: "rouge", green: "verte", yellow: "jaune", cyan: "bleue", magenta: "magenta" };
+
+    let selectedSpeedMs = 3000;
+    let selectedRounds = 20;
+    let rule1Criterion = null;
+    let rule2Criterion = null;
+    let gameState = "idle";
+    let currentGen = 0;
+    let currentRoundIndex = 0;
+    let score = 0, errors = 0, totalCatches = 0;
+    let startTimestamp = 0, endTimestamp = 0;
+    let inverted = false;
+    let currentCorrectAnswer = null;
+    let currentAnswerResolve = null;
+    let autoTimer = null;
+    let shapeShownAt = 0;
+    let answerLog = [];
+
+    function screen(id){ showScreenWithin("#page-reflexe", id); }
+
+    function randomCriterion(){
+      const axis = Math.random() < 0.5 ? "shape" : "color";
+      const value = axis === "shape"
+        ? SHAPES[Math.floor(Math.random() * SHAPES.length)]
+        : COLORS[Math.floor(Math.random() * COLORS.length)];
+      return { axis, value };
+    }
+
+    function describeCriterion(crit){
+      return crit.axis === "shape"
+        ? t("forme {g} ({name})", { g: SHAPE_GLYPHS[crit.value], name: t(SHAPE_LABELS[crit.value]) })
+        : t("forme {color}", { color: t(COLOR_LABELS[crit.value]).toUpperCase() });
+    }
+
+    function matchesCriterion(crit, shapeType, color){
+      return crit.axis === "shape" ? shapeType === crit.value : color === crit.value;
+    }
+
+    function randomizeRule(){
+      rule1Criterion = randomCriterion();
+      rule2Criterion = randomCriterion();
+      renderRuleText();
+    }
+
+    function renderRuleText(){
+      if(!rule1Criterion || !rule2Criterion) return;
+      $("reflexe-rule1-text").textContent =
+        t("cliquez OUI pour chaque {c}, NON pour les autres.", { c: describeCriterion(rule1Criterion) });
+      $("reflexe-rule2-text").textContent =
+        t("une {c} inverse la règle 1, à partir d'elle et jusqu'à la prochaine {c}.", { c: describeCriterion(rule2Criterion) });
+    }
+    randomizeRule();
+    onLangChange(renderRuleText);
+
+    const speedSlider = $("reflexe-speed-slider");
+    const speedValueLabel = $("reflexe-speed-value");
+    speedSlider.addEventListener("input", () => {
+      const seconds = parseFloat(speedSlider.value);
+      selectedSpeedMs = Math.round(seconds * 1000);
+      speedValueLabel.textContent = seconds.toFixed(1);
+    });
+
+    document.querySelectorAll("#page-reflexe .choice-btn[data-rounds]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#page-reflexe .choice-btn[data-rounds]").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedRounds = parseInt(btn.dataset.rounds, 10);
+      });
+    });
+
+    function updateScoreDisplay(){ $("reflexe-score-display").textContent = score; }
+    function showFeedback(text){ $("reflexe-feedback").textContent = text; }
+    function hideFeedback(){ $("reflexe-feedback").textContent = ""; }
+
+    function renderShape(shapeType, color){
+      const el = $("reflexe-shape");
+      el.className = "reflexe-shape shape-" + shapeType;
+      el.style.setProperty("--shape-color", COLOR_VALUES[color]);
+    }
+
+    function computeCorrectAnswer(shapeType, color){
+      if(matchesCriterion(rule2Criterion, shapeType, color)){ inverted = !inverted; }
+      const base = matchesCriterion(rule1Criterion, shapeType, color);
+      const effective = inverted ? !base : base;
+      return effective ? "oui" : "non";
+    }
+
+    function showShapeAndWait(myGen){
+      return new Promise(resolve => {
+        currentAnswerResolve = resolve;
+        screen("reflexe-screen-play");
+
+        const shapeType = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+        const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+        currentCorrectAnswer = computeCorrectAnswer(shapeType, color);
+        renderShape(shapeType, color);
+
+        $("reflexe-round").textContent = currentRoundIndex + 1;
+        updateScoreDisplay();
+        hideFeedback();
+
+        $("reflexe-oui-btn").disabled = false;
+        $("reflexe-non-btn").disabled = false;
+        gameState = "play";
+        shapeShownAt = performance.now();
+
+        clearTimeout(autoTimer);
+        autoTimer = setTimeout(() => judge(null), selectedSpeedMs);
+      });
+    }
+
+    function judge(clicked){
+      if(gameState !== "play") return;
+      gameState = "transition";
+      clearTimeout(autoTimer);
+      autoTimer = null;
+      $("reflexe-oui-btn").disabled = true;
+      $("reflexe-non-btn").disabled = true;
+
+      const responseMs = Math.min(performance.now() - shapeShownAt, selectedSpeedMs);
+      const wasCorrect = clicked !== null && clicked === currentCorrectAnswer;
+      answerLog.push({ index: currentRoundIndex + 1, responseMs: responseMs, correct: wasCorrect });
+
+      if(clicked === null){
+        errors++;
+        score = Math.max(0, score - 2);
+        showFeedback(t("⏱ TROP LENT !"));
+      } else if(wasCorrect){
+        score += 10;
+        totalCatches++;
+        showFeedback(t("✔ CORRECT !"));
+      } else {
+        errors++;
+        score = Math.max(0, score - 2);
+        showFeedback(t("✘ MAUVAISE RÉPONSE"));
+      }
+      updateScoreDisplay();
+
+      setTimeout(() => {
+        hideFeedback();
+        const resolve = currentAnswerResolve;
+        currentAnswerResolve = null;
+        if(resolve) resolve();
+      }, 450);
+    }
+
+    async function runGame(myGen, totalRounds){
+      inverted = false;
+      for(let i = 0; i < totalRounds; i++){
+        if(myGen !== currentGen) return;
+        currentRoundIndex = i;
+        await showShapeAndWait(myGen);
+        if(myGen !== currentGen) return;
+      }
+      if(myGen === currentGen) endGame();
+    }
+
+    async function startGame(){
+      currentGen++;
+      const myGen = currentGen;
+      score = 0; errors = 0; totalCatches = 0; currentRoundIndex = 0;
+      answerLog = [];
+      $("reflexe-head-status").textContent = t("EN COURS");
+
+      const totalRounds = selectedRounds;
+      $("reflexe-total").textContent = totalRounds;
+
+      startTimestamp = performance.now();
+      await runGame(myGen, totalRounds);
+    }
+
+    function buildShareText(){
+      const finalScore = $("reflexe-final-score").textContent;
+      const finalTime = $("reflexe-final-time").textContent;
+      const finalErrors = $("reflexe-final-errors").textContent;
+      const finalAccuracy = $("reflexe-final-accuracy").textContent;
+      return t("🚦 3619 RÉFLEXE — {score} pts (temps de réponse {s}s)\n⏱ {time} · 🎯 {acc} de précision · ❌ {err} erreur(s)\nÀ toi de faire mieux !", {
+        score: finalScore, s: (selectedSpeedMs / 1000).toFixed(1), time: finalTime, acc: finalAccuracy, err: finalErrors
+      });
+    }
+
+    function renderResponseChart(){
+      renderAnswerChart("reflexe-chart", answerLog, t("Forme"), t("incorrect / trop lent"));
+    }
+
+    function endGame(){
+      endTimestamp = performance.now();
+      gameState = "result";
+      $("reflexe-head-status").textContent = t("PRÊT");
+
+      const totalTimeSec = ((endTimestamp - startTimestamp) / 1000).toFixed(1);
+      const denom = totalCatches + errors;
+      const accuracy = denom > 0 ? Math.round((totalCatches / denom) * 100) : 100;
+
+      screen("reflexe-screen-result");
+      $("reflexe-final-score").textContent = score;
+      $("reflexe-final-time").textContent = totalTimeSec + " s";
+      $("reflexe-final-errors").textContent = errors;
+      $("reflexe-final-accuracy").textContent = accuracy + "%";
+      $("reflexe-share-box").classList.add("hidden");
+      $("reflexe-share-feedback").textContent = "";
+      renderResponseChart();
+      saveGameResult("reflexe", { score: score, accuracy: accuracy });
+    }
+
+    function quitAction(){
+      currentGen++;
+      clearTimeout(autoTimer);
+      autoTimer = null;
+      if(currentAnswerResolve){
+        const resolve = currentAnswerResolve;
+        currentAnswerResolve = null;
+        resolve();
+      }
+      gameState = "idle";
+      $("reflexe-head-status").textContent = t("PRÊT");
+      showPage("hub");
+    }
+
+    function restartAction(){
+      currentGen++;
+      clearTimeout(autoTimer);
+      autoTimer = null;
+      if(currentAnswerResolve){
+        const resolve = currentAnswerResolve;
+        currentAnswerResolve = null;
+        resolve();
+      }
+      gameState = "idle";
+      $("reflexe-head-status").textContent = t("PRÊT");
+      randomizeRule();
+      screen("reflexe-screen-start");
+    }
+
+    wireQuitButtons("#page-reflexe", quitAction);
+    wireRestartButtons("#page-reflexe", restartAction);
+
+    $("reflexe-oui-btn").addEventListener("click", () => judge("oui"));
+    $("reflexe-non-btn").addEventListener("click", () => judge("non"));
+
+    $("reflexe-start-btn").addEventListener("click", () => { showReadyBuffer("Prêt ? Les formes vont défiler.", startGame); });
+    $("reflexe-share-btn").addEventListener("click", () => {
+      handleShareClick(buildShareText(), "reflexe-share-feedback", "reflexe-share-box", "reflexe-share-textarea");
+    });
+    $("reflexe-replay-btn").addEventListener("click", () => {
+      gameState = "idle";
+      randomizeRule();
+      screen("reflexe-screen-start");
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if(isReadyBufferOpen()){
+        if(e.key === "Escape") hideReadyBuffer();
+        return;
+      }
+      if(isQuitModalOpen()){
+        if(e.key === "Escape") hideQuitModal();
+        return;
+      }
+      if(e.key === "Escape" && gameState === "play"){
+        pendingQuitAction = quitAction;
+        showQuitModal("Quitter la partie en cours ?<br>Votre progression sera perdue.", "QUITTER");
+        return;
+      }
+      if(gameState !== "play") return;
+      const key = e.key.toLowerCase();
+      if(key === "o" || key === "y"){ judge("oui"); }
+      else if(key === "n"){ judge("non"); }
+    });
+  })();
+
+  // =========================================================
+  // Boutons FR / EN + langue au démarrage
+  // =========================================================
+  // ---- Bouton « Partager l'appli » ----
+  $("app-share-btn").addEventListener("click", async () => {
+    const fb = $("app-share-feedback");
+    const msg = t("Joue avec moi sur 3615 JEUX : des petits jeux de mémoire et de réflexes au style Minitel, gratuits !");
+    fb.textContent = "";
+    if(navigator.share){
+      try{ await navigator.share({ title: "3615 JEUX", text: msg, url: SITE_URL }); return; }
+      catch(e){ if(e && e.name === "AbortError") return; }
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      try{
+        await navigator.clipboard.writeText(msg + "\n👉 " + SITE_URL);
+        fb.textContent = t("Lien copié ! Collez-le dans un message.");
+        return;
+      } catch(e){ /* fall through */ }
+    }
+    fb.textContent = t("Copiez ce lien : {u}", { u: SITE_URL });
+  });
+
+  document.querySelectorAll(".lang-switch button").forEach(btn => {
+    btn.addEventListener("click", () => applyLanguage(btn.dataset.lang, true));
+  });
+  applyLanguage(LANG, false);
+
+})();
+</script>
+
+</body>
+</html>

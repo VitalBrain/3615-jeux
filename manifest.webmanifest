@@ -1,0 +1,19 @@
+{
+  "name": "3615 JEUX",
+  "short_name": "3615 JEUX",
+  "description": "Jeux de mémoire et de réflexes au style Minitel : MEMO, MOTS, SIMON, ANAGRAMME, RÉFLEXE.",
+  "lang": "fr",
+  "id": "/",
+  "start_url": "/?source=app",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#04040c",
+  "theme_color": "#ffd93d",
+  "categories": ["games", "education"],
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
