@@ -453,6 +453,25 @@
   .contact-status a{ color: var(--cyan); }
   .ad-banner{ margin-top: 16px; min-height: 90px; display:flex; align-items:center; justify-content:center; }
 
+  .reminder-panel{
+    border: 2px solid var(--yellow);
+    background: var(--panel);
+    padding: 14px 16px;
+    margin-top: 24px;
+  }
+  .reminder-panel h3{ margin: 0 0 8px; font-size: 0.85rem; color: var(--yellow); }
+  .reminder-desc{ font-size: 0.78rem; line-height: 1.5; color: var(--white); opacity: 0.8; margin: 0 0 12px; }
+  .reminder-row{ display:flex; gap: 8px; flex-wrap: wrap; align-items: stretch; }
+  .reminder-row input[type="time"]{
+    flex: 0 0 auto; background: var(--void); border: 2px solid var(--panel-line); color: var(--white);
+    font-family: var(--mono); font-size: 1rem; padding: 8px 10px; color-scheme: dark;
+  }
+  .reminder-row input[type="time"]:focus{ border-color: var(--yellow); outline: none; }
+  .reminder-row .choice-btn{ flex: 1 1 160px; }
+  .reminder-row .choice-btn.on{ background: var(--yellow); border-color: var(--yellow); color: var(--void); font-weight: 700; }
+  .reminder-status{ font-size: 0.78rem; color: var(--cyan); margin-top: 10px; line-height: 1.4; min-height: 1.1rem; }
+  .reminder-status.warn{ color: var(--yellow); }
+
   .wordbank-panel{
     border-top: 1px dashed var(--panel-line);
     margin-top: 24px;
@@ -857,6 +876,16 @@
           </span>
           <span class="game-arrow">›</span>
         </button>
+      </div>
+
+      <div class="reminder-panel" id="reminder-panel">
+        <h3>🔔 RAPPEL QUOTIDIEN</h3>
+        <p class="reminder-desc">Recevez chaque jour une notification pour faire votre partie, à l'heure de votre choix.</p>
+        <div class="reminder-row">
+          <input type="time" id="reminder-time" value="19:00" aria-label="Heure du rappel">
+          <button id="reminder-toggle" class="choice-btn">Activer le rappel</button>
+        </div>
+        <div class="reminder-status" id="reminder-status"></div>
       </div>
 
       <div class="wordbank-panel">
@@ -1753,6 +1782,19 @@
     "Ce site n'est pas encore autorisé dans Firebase (Authentication → Settings → Authorized domains).": "This site isn't authorized in Firebase yet (Authentication → Settings → Authorized domains).",
     "Connexion Google indisponible pour le moment (pas de réseau ?).": "Google sign-in is unavailable right now (no connection?).",
     "Accès refusé par Firebase : vérifiez les règles Firestore.": "Firebase denied access: check the Firestore rules.",
+    // --- rappel quotidien
+    "🔔 RAPPEL QUOTIDIEN": "🔔 DAILY REMINDER",
+    "Recevez chaque jour une notification pour faire votre partie, à l'heure de votre choix.": "Get a notification every day to play your game, at the time of your choice.",
+    "Heure du rappel": "Reminder time",
+    "Activer le rappel": "Turn on reminder",
+    "Désactiver le rappel": "Turn off reminder",
+    "🔔 Rappel actif tous les jours à {t}.": "🔔 Reminder on, every day at {t}.",
+    "Rappel désactivé.": "Reminder turned off.",
+    "⏳ Activation…": "⏳ Turning on…",
+    "Notifications refusées : autorisez-les dans les réglages du navigateur pour ce site.": "Notifications blocked: allow them for this site in your browser settings.",
+    "Notifications indisponibles ici. Sur iPhone/iPad : installez d'abord l'app (Partager → Sur l'écran d'accueil), puis ouvrez-la depuis l'icône.": "Notifications aren't available here. On iPhone/iPad: install the app first (Share → Add to Home Screen), then open it from the icon.",
+    "Impossible d'activer le rappel (connexion ?). Réessayez plus tard.": "Couldn't turn on the reminder (connection?). Please try again later.",
+    "Rappels indisponibles hors du site en ligne.": "Reminders only work on the online site.",
     // --- partage
     "📤 PARTAGER L'APPLI": "📤 SHARE THE APP",
     "Joue avec moi sur 3615 JEUX : des petits jeux de mémoire et de réflexes au style Minitel, gratuits !": "Play with me on 3615 JEUX: free retro Minitel-style memory and reflex mini-games!",
@@ -4499,6 +4541,159 @@
   // =========================================================
   // Boutons FR / EN + langue au démarrage
   // =========================================================
+  // =========================================================
+  // RAPPEL QUOTIDIEN (notifications push)
+  // L'appareil s'abonne aux notifications ; la fonction Netlify
+  // "send-reminders" envoie le rappel chaque jour à l'heure choisie,
+  // même quand l'app est fermée.
+  // =========================================================
+  const VAPID_PUBLIC_KEY = "BDTnrRPrkb8ex5x2P4Hza_5_unp4-6SBAr9ZWDmYjnXqVejzbzRCjdnFv64TCOnrQNWi7ETG8ObxLBpL6x-O338";
+  const REMINDER_KEY = "jeux3615_reminder_v1";
+  const reminder = {
+    state: { enabled: false, time: "19:00" },
+
+    supported(){
+      return "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+    },
+
+    load(){
+      try{
+        const raw = JSON.parse(localStorage.getItem(REMINDER_KEY) || "null");
+        if(raw && typeof raw === "object"){
+          this.state.enabled = !!raw.enabled;
+          if(/^\d\d:\d\d$/.test(raw.time || "")) this.state.time = raw.time;
+        }
+      } catch(e){ /* ignore */ }
+    },
+
+    save(){ try{ localStorage.setItem(REMINDER_KEY, JSON.stringify(this.state)); } catch(e){ /* ignore */ } },
+
+    setStatus(text, warn){
+      const el = $("reminder-status");
+      el.textContent = text || "";
+      el.classList.toggle("warn", !!warn);
+    },
+
+    render(){
+      $("reminder-time").value = this.state.time;
+      const btn = $("reminder-toggle");
+      btn.textContent = this.state.enabled ? t("Désactiver le rappel") : t("Activer le rappel");
+      btn.classList.toggle("on", this.state.enabled);
+      if(this.state.enabled) this.setStatus(t("🔔 Rappel actif tous les jours à {t}.", { t: this.state.time }));
+    },
+
+    keyBytes(){
+      const b64 = (VAPID_PUBLIC_KEY + "=".repeat((4 - VAPID_PUBLIC_KEY.length % 4) % 4)).replace(/-/g, "+").replace(/_/g, "/");
+      return Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+    },
+
+    async subscription(create){
+      const reg = await navigator.serviceWorker.ready;
+      let sub = await reg.pushManager.getSubscription();
+      if(!sub && create){
+        sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: this.keyBytes() });
+      }
+      return sub;
+    },
+
+    async send(action, sub, silent){
+      const res = await fetch("/api/reminder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action, silent: !!silent,
+          subscription: sub.toJSON ? sub.toJSON() : sub,
+          time: this.state.time,
+          tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "Europe/Paris",
+          lang: LANG
+        })
+      });
+      if(!res.ok) throw new Error("HTTP " + res.status);
+      return res.json();
+    },
+
+    async enable(){
+      if(location.protocol === "file:"){ this.setStatus(t("Rappels indisponibles hors du site en ligne."), true); return; }
+      this.setStatus(t("⏳ Activation…"));
+      const perm = await Notification.requestPermission();
+      if(perm !== "granted"){
+        this.setStatus(t("Notifications refusées : autorisez-les dans les réglages du navigateur pour ce site."), true);
+        return;
+      }
+      try{
+        const sub = await this.subscription(true);
+        await this.send("subscribe", sub, false);
+        this.state.enabled = true;
+        this.save();
+        this.render();
+      } catch(e){
+        this.setStatus(t("Impossible d'activer le rappel (connexion ?). Réessayez plus tard."), true);
+      }
+    },
+
+    async disable(){
+      this.state.enabled = false;
+      this.save();
+      this.render();
+      this.setStatus(t("Rappel désactivé."));
+      try{
+        const sub = await this.subscription(false);
+        if(sub){
+          await this.send("unsubscribe", sub, true).catch(() => {});
+          await sub.unsubscribe();
+        }
+      } catch(e){ /* ignore */ }
+    },
+
+    // Remet le serveur à jour (heure, langue, fuseau) sans notification de confirmation.
+    async sync(){
+      if(!this.state.enabled) return;
+      // Seul un refus explicite coupe le rappel ; sinon on remet simplement le serveur à jour.
+      if(Notification.permission === "denied"){
+        this.state.enabled = false;
+        this.save();
+        this.render();
+        this.setStatus(t("Notifications refusées : autorisez-les dans les réglages du navigateur pour ce site."), true);
+        return;
+      }
+      try{
+        const sub = await this.subscription(Notification.permission === "granted");
+        if(sub) await this.send("subscribe", sub, true);
+      } catch(e){
+        // Réseau indisponible : le serveur sera remis à jour à la prochaine ouverture.
+      }
+    },
+
+    init(){
+      if(!this.supported()){
+        $("reminder-time").disabled = true;
+        $("reminder-toggle").disabled = true;
+        this.setStatus(t("Notifications indisponibles ici. Sur iPhone/iPad : installez d'abord l'app (Partager → Sur l'écran d'accueil), puis ouvrez-la depuis l'icône."), true);
+        onLangChange(() => this.setStatus(t("Notifications indisponibles ici. Sur iPhone/iPad : installez d'abord l'app (Partager → Sur l'écran d'accueil), puis ouvrez-la depuis l'icône."), true));
+        return;
+      }
+      this.load();
+      this.render();
+      $("reminder-toggle").addEventListener("click", () => {
+        if(this.state.enabled) this.disable(); else this.enable();
+      });
+      $("reminder-time").addEventListener("change", (e) => {
+        if(!/^\d\d:\d\d$/.test(e.target.value)) return;
+        this.state.time = e.target.value;
+        this.save();
+        this.render();
+        if(this.state.enabled) this.sync();
+      });
+      let syncedLang = LANG;
+      onLangChange(() => {
+        this.render();
+        if(this.state.enabled && LANG !== syncedLang){ syncedLang = LANG; this.sync(); }
+      });
+      if(this.state.enabled && location.protocol !== "file:") this.sync();
+    }
+  };
+  reminder.init();
+
   // ---- Bouton « Partager l'appli » ----
   $("app-share-btn").addEventListener("click", async () => {
     const fb = $("app-share-feedback");

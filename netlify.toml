@@ -1,5 +1,8 @@
-# Netlify : site statique, aucune compilation.
-# Le dossier publié est la racine du dépôt.
+# Netlify : site statique (aucune compilation) + fonctions pour le rappel quotidien.
 [build]
   publish = "."
   command = ""
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"

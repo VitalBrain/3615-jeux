@@ -2,7 +2,7 @@
 // Pour publier une mise à jour, il suffit de redéployer : la page est toujours
 // rechargée depuis le réseau quand il est disponible (le cache ne sert que hors ligne).
 // Changez CACHE_VERSION seulement si vous ajoutez ou renommez des fichiers.
-const CACHE_VERSION = "3615-jeux-v8";
+const CACHE_VERSION = "3615-jeux-v9";
 const PRECACHE = [
   "/",
   "/index.html",
@@ -60,4 +60,34 @@ self.addEventListener("fetch", (event) => {
       return res;
     }))
   );
+});
+
+// ---------------------------------------------------------------
+// Rappel quotidien : notifications push envoyées par Netlify
+// (fonction planifiée netlify/functions/send-reminders.mjs).
+// ---------------------------------------------------------------
+self.addEventListener("push", (event) => {
+  let data = {};
+  try { data = event.data ? event.data.json() : {}; } catch (e) { data = { body: event.data ? event.data.text() : "" }; }
+  const title = data.title || "3615 JEUX";
+  event.waitUntil(self.registration.showNotification(title, {
+    body: data.body || "",
+    icon: "/icons/icon-192.png",
+    badge: "/icons/favicon-32.png",
+    tag: data.tag || "daily-reminder",
+    renotify: true,
+    data: { url: data.url || "/" }
+  }));
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const target = new URL((event.notification.data && event.notification.data.url) || "/", self.location.origin);
+  event.waitUntil((async () => {
+    const all = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+    for (const c of all) {
+      if (new URL(c.url).origin === target.origin && "focus" in c) return c.focus();
+    }
+    if (self.clients.openWindow) return self.clients.openWindow(target.href);
+  })());
 });

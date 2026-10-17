@@ -14,7 +14,11 @@ Français / anglais, installable (PWA), jouable hors ligne, connexion Google (Fi
 | `manifest.webmanifest` + `icons/` | Nom, icônes et couleurs de l'application installée |
 | `_headers` | En-têtes HTTP Netlify pour `sw.js` et le manifeste |
 | `ads.txt` | Autorisation Google AdSense |
-| `netlify.toml` | Réglages Netlify (site statique, pas de compilation) |
+| `netlify.toml` | Réglages Netlify (site statique + fonctions) |
+| `netlify/functions/reminder.mjs` | `POST /api/reminder` : enregistre / supprime le rappel quotidien d'un appareil |
+| `netlify/functions/send-reminders.mjs` | Fonction planifiée (toutes les 15 min) : envoie les rappels à l'heure choisie |
+| `netlify/lib/reminders.mjs` | Code partagé des rappels (messages, fuseaux horaires, clé VAPID publique) |
+| `package.json` | Dépendances des fonctions (`web-push`, `@netlify/blobs`), installées par Netlify |
 
 ## Mettre à jour le site
 
@@ -26,6 +30,9 @@ Chaque modification envoyée sur la branche `main` est publiée automatiquement 
 Si un fichier est ajouté ou renommé, augmenter `CACHE_VERSION` dans `sw.js`.
 
 ## Configuration externe (hors dépôt)
+
+- **Rappel quotidien** : variable d'environnement Netlify `VAPID_PRIVATE_KEY` (clé privée, jamais dans le dépôt).
+  Les abonnements sont stockés dans Netlify Blobs (magasin `daily-reminders`).
 
 - **Firebase** (projet `matrice-d-eisenhower-aa8df`) : connexion Google activée, domaines autorisés
   (`3615-jeux.com`, `www.3615-jeux.com`, `3615-memo.netlify.app`), règles Firestore pour `jeux3615_users/{uid}`.
