@@ -3,6 +3,12 @@
   publish = "."
   command = ""
 
+[build.environment]
+  # La clé "apiKey" de Firebase est publique par conception (elle identifie le projet,
+  # l'accès est protégé par les règles Firestore et les domaines autorisés).
+  # On l'exclut de la détection automatique de secrets de Netlify.
+  SECRETS_SCAN_SMART_DETECTION_OMIT_VALUES = "AIzaSyDF6hKnOqaFM2CE06k-83Rgrahm8MKx0Zk"
+
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
