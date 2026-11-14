@@ -370,6 +370,7 @@
   .profile-stat-value{ color: var(--yellow); white-space: nowrap; }
   .profile-stat-config{ border-top: none; padding: 2px 0 2px 12px; font-size: 0.72rem; }
   .profile-stat-cfg{ color: var(--cyan); opacity: 0.9; }
+  .profile-clear-legacy{ width: 100%; margin-top: 10px; font-size: 0.75rem; }
   .profile-empty{ margin: 4px 0 0; color: var(--white); opacity: 0.6; font-size: 0.78rem; }
 
   .profile-backup-actions{ margin-top: 12px; margin-bottom: 0; }
@@ -821,6 +822,8 @@
             <button id="profile-switch-btn" class="quit-btn">Changer de joueur</button>
           </div>
           <div class="profile-stats" id="profile-stats"></div>
+          <button id="profile-clear-legacy-btn" class="choice-btn profile-clear-legacy hidden">🗑 Effacer les anciens scores</button>
+          <div class="profile-status" id="profile-clear-status"></div>
         </div>
 
         <div class="wordbank-actions profile-backup-actions">
@@ -1762,7 +1765,11 @@
     "{n} manches": "{n} rounds", "{n} mots": "{n} words", "grille {n}": "grid {n}",
     "{n} lettres": "{n} letters", "{n} formes": "{n} shapes", "{n} s": "{n} s",
     "écoute seule": "audio only", "ordre libre": "any order", "sans son": "no sound",
-    "sans mélange": "no shuffle", "réglages non enregistrés": "settings not recorded",
+    "sans mélange": "no shuffle",
+    "🗑 Effacer les anciens scores": "🗑 Delete old scores",
+    "Effacer les anciens scores (« réglages non enregistrés ») ?<br>Cette action est définitive.": "Delete old scores (“settings not recorded”)?<br>This cannot be undone.",
+    "EFFACER": "DELETE",
+    "✔ Anciens scores effacés.": "✔ Old scores deleted.", "réglages non enregistrés": "settings not recorded",
     "Aucune partie enregistrée pour l'instant.": "No games recorded yet.",
     "Choisissez un nom d'au moins 2 caractères.": "Choose a name with at least 2 characters.",
     "Ce nom existe déjà — choisissez-le dans la liste.": "That name already exists — pick it from the list.",
@@ -2446,19 +2453,71 @@
     return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
   }
 
+  // Configurations d'une partie, anciens scores compris
+  // (un jeu sans "configs" date d'avant le rangement par réglages).
+  function withConfigs(g){
+    if(!g) return {};
+    if(g.configs) return g.configs;
+    const out = {};
+    if((g.plays || 0) > 0){
+      out[LEGACY_CONFIG] = { plays: g.plays, bestScore: g.bestScore || 0, bestLevel: g.bestLevel || 0, lastPlayedAt: g.lastPlayedAt || "" };
+    }
+    return out;
+  }
+
+  // Les configurations effacées restent sous forme de marqueur
+  // { cleared: true } pour que la synchro ne les fasse pas revenir.
+  function liveConfigs(g){
+    const out = {};
+    const all = withConfigs(g);
+    Object.keys(all).forEach(ck => { if(all[ck] && !all[ck].cleared) out[ck] = all[ck]; });
+    return out;
+  }
+
+  // Totaux du jeu recalculés à partir de ses configurations
+  function recomputeTotals(g){
+    const live = liveConfigs(g);
+    const list = Object.keys(live).map(ck => live[ck]);
+    g.plays = list.reduce((n, c) => n + (c.plays || 0), 0);
+    g.bestScore = list.reduce((m, c) => Math.max(m, c.bestScore || 0), 0);
+    g.bestLevel = list.reduce((m, c) => Math.max(m, c.bestLevel || 0), 0);
+    return g;
+  }
+
+  function hasLegacyScores(games){
+    return Object.keys(games || {}).some(k => !!liveConfigs(games[k])[LEGACY_CONFIG]);
+  }
+
+  function clearLegacyScores(){
+    const name = profilesStore.activePlayer;
+    if(!name || !profilesStore.players[name]) return;
+    const games = profilesStore.players[name].games || {};
+    const now = new Date().toISOString();
+    Object.keys(games).forEach(k => {
+      const g = games[k];
+      if(!liveConfigs(g)[LEGACY_CONFIG]) return;
+      const configs = Object.assign({}, withConfigs(g));
+      configs[LEGACY_CONFIG] = { cleared: true, clearedAt: now };
+      g.configs = configs;
+      recomputeTotals(g);
+    });
+    profilesStore.players[name].updatedAt = now;
+    saveProfilesStore(profilesStore);
+    if(isGoogleKey(name)) cloud.push();
+    renderProfilePanel();
+    $("profile-clear-status").textContent = t("✔ Anciens scores effacés.");
+  }
+
   function renderProfilePanel(){
     const statsEl = $("profile-stats");
     if(!statsEl) return;
     const name = profilesStore.activePlayer;
     const games = (name && profilesStore.players[name] && profilesStore.players[name].games) || {};
     const rows = Object.keys(GAME_META)
-      .filter(key => games[key])
+      .filter(key => Object.keys(liveConfigs(games[key])).length)
       .map(key => {
         const g = games[key];
-        let configs = g.configs;
-        if(!configs || !Object.keys(configs).length){
-          configs = {}; configs[LEGACY_CONFIG] = g;
-        }
+        const configs = liveConfigs(g);
         const sub = Object.keys(configs)
           .sort((a, b) => (configs[b].lastPlayedAt || "").localeCompare(configs[a].lastPlayedAt || ""))
           .map(ck => {
@@ -2474,6 +2533,8 @@
       })
       .join("");
     statsEl.innerHTML = rows || '<p class="profile-empty">' + t("Aucune partie enregistrée pour l'instant.") + '</p>';
+    const clearBtn = $("profile-clear-legacy-btn");
+    if(clearBtn) clearBtn.classList.toggle("hidden", !hasLegacyScores(games));
   }
 
   function renderPlayerSelect(){
@@ -2602,17 +2663,14 @@
 
     // Scores enregistrés avant le rangement par configuration :
     // conservés à part, sous « réglages non enregistrés ».
-    const configs = Object.assign({}, prev.configs || {});
-    if(!prev.configs && (prev.plays || 0) > 0){
-      configs[LEGACY_CONFIG] = { plays: prev.plays, bestScore: prev.bestScore || 0, bestLevel: prev.bestLevel || 0, lastPlayedAt: prev.lastPlayedAt || "" };
-    }
+    const configs = Object.assign({}, withConfigs(prev));
     const cfg = readGameConfig(gameKey);
     const ck = configKey(gameKey, cfg);
     configs[ck] = Object.assign(bumpRecord(configs[ck], fields, now), { config: cfg });
 
     const entry = bumpRecord(prev, fields, now);
     entry.configs = configs;
-    games[gameKey] = entry;
+    games[gameKey] = recomputeTotals(entry);
 
     profilesStore.players[name].games = games;
     profilesStore.players[name].updatedAt = now;
@@ -2624,6 +2682,11 @@
   }
 
   $("profile-create-btn").addEventListener("click", handleCreatePlayer);
+  $("profile-clear-legacy-btn").addEventListener("click", () => {
+    $("profile-clear-status").textContent = "";
+    pendingQuitAction = clearLegacyScores;
+    showQuitModal("Effacer les anciens scores (« réglages non enregistrés ») ?<br>Cette action est définitive.", "EFFACER");
+  });
   $("profile-select-btn").addEventListener("click", handleSelectPlayer);
   $("profile-switch-btn").addEventListener("click", handleSwitchPlayer);
   $("profile-backup-download-btn").addEventListener("click", downloadProfilesBackup);
@@ -2670,8 +2733,11 @@
   function googleKey(uid){ return "google:" + uid; }
   function isGoogleKey(name){ return typeof name === "string" && name.indexOf("google:") === 0; }
 
-  function mergeRecord(x, y){
+  function mergeRecord(x, y, isConfig){
     x = x || {}; y = y || {};
+    if(isConfig && (x.cleared || y.cleared)){
+      return { cleared: true, clearedAt: x.clearedAt || y.clearedAt || null };
+    }
     const newer = (x.lastPlayedAt || "") >= (y.lastPlayedAt || "") ? x : y;
     const out = Object.assign({}, y, x, newer, {
       plays: Math.max(x.plays || 0, y.plays || 0),
@@ -2679,12 +2745,14 @@
       bestLevel: Math.max(x.bestLevel || 0, y.bestLevel || 0),
       lastPlayedAt: newer.lastPlayedAt || x.lastPlayedAt || y.lastPlayedAt || null
     });
-    if(x.configs || y.configs){
+    if(!isConfig && (x.configs || y.configs)){
+      const xc = withConfigs(x), yc = withConfigs(y);
       const configs = {};
-      new Set(Object.keys(x.configs || {}).concat(Object.keys(y.configs || {}))).forEach(ck => {
-        configs[ck] = mergeRecord((x.configs || {})[ck], (y.configs || {})[ck]);
+      new Set(Object.keys(xc).concat(Object.keys(yc))).forEach(ck => {
+        configs[ck] = mergeRecord(xc[ck], yc[ck], true);
       });
       out.configs = configs;
+      recomputeTotals(out);
     }
     return out;
   }
