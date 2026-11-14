@@ -368,6 +368,8 @@
 
   .profile-stat-game{ color: var(--white); opacity: 0.85; }
   .profile-stat-value{ color: var(--yellow); white-space: nowrap; }
+  .profile-stat-config{ border-top: none; padding: 2px 0 2px 12px; font-size: 0.72rem; }
+  .profile-stat-cfg{ color: var(--cyan); opacity: 0.9; }
   .profile-empty{ margin: 4px 0 0; color: var(--white); opacity: 0.6; font-size: 0.78rem; }
 
   .profile-backup-actions{ margin-top: 12px; margin-bottom: 0; }
@@ -1757,6 +1759,10 @@
       "🚦 3619 REFLEX — {score} pts ({s}s response time)\n⏱ {time} · 🎯 {acc} accuracy · ❌ {err} mistake(s)\nCan you beat that?",
     // --- profil / banque de mots
     "{n} partie(s)": "{n} game(s)",
+    "{n} manches": "{n} rounds", "{n} mots": "{n} words", "grille {n}": "grid {n}",
+    "{n} lettres": "{n} letters", "{n} formes": "{n} shapes", "{n} s": "{n} s",
+    "écoute seule": "audio only", "ordre libre": "any order", "sans son": "no sound",
+    "sans mélange": "no shuffle", "réglages non enregistrés": "settings not recorded",
     "Aucune partie enregistrée pour l'instant.": "No games recorded yet.",
     "Choisissez un nom d'au moins 2 caractères.": "Choose a name with at least 2 characters.",
     "Ce nom existe déjà — choisissez-le dans la liste.": "That name already exists — pick it from the list.",
@@ -2369,6 +2375,77 @@
     return (raw || "").trim().slice(0, 30);
   }
 
+  // ---------------------------------------------------------
+  // Configurations : chaque meilleur score est rangé par jeu ET
+  // par réglages de la partie (difficulté, vitesse, manches…).
+  // Seuls les réglages qui changent la difficulté comptent ; le
+  // choix du clavier (ABC/AZERTY/QWERTY) n'en fait pas partie.
+  // ---------------------------------------------------------
+  const SPEED_LABEL = { lente: "Lente", normale: "Normale", rapide: "Rapide" };
+  const CONFIG_SPEC = {
+    memo: [
+      { k: "diff",   btn: "diff",   fmt: v => t(({ facile: "Facile", moyen: "Moyen", difficile: "Difficile" })[v] || v) },
+      { k: "speed",  btn: "speed",  fmt: v => t(SPEED_LABEL[v] || v) },
+      { k: "rounds", btn: "rounds", fmt: v => t("{n} manches", { n: v }) },
+      { k: "show",   chk: "memo-afficher-toggle", fmt: v => v ? "" : t("écoute seule") }
+    ],
+    mots: [
+      { k: "count",  btn: "count",    fmt: v => t("{n} mots", { n: v }) },
+      { k: "grid",   btn: "gridsize", fmt: v => t("grille {n}", { n: v }) },
+      { k: "speed",  btn: "speed",    fmt: v => t(SPEED_LABEL[v] || v) },
+      { k: "rounds", btn: "rounds",   fmt: v => t("{n} manches", { n: v }) },
+      { k: "show",   chk: "mots-afficher-toggle", fmt: v => v ? "" : t("écoute seule") },
+      { k: "alpha",  chk: "mots-alpha-toggle",    fmt: v => v ? "" : t("ordre libre") }
+    ],
+    simon: [
+      { k: "speed",  btn: "speed", fmt: v => t(SPEED_LABEL[v] || v) },
+      { k: "sound",  chk: "simon-son-toggle", fmt: v => v ? "" : t("sans son") }
+    ],
+    anagramme: [
+      { k: "len",    btn: "length", fmt: v => t("{n} lettres", { n: v }) },
+      { k: "rounds", btn: "rounds", fmt: v => t("{n} manches", { n: v }) },
+      { k: "shuffle", chk: "anagramme-shuffle-toggle", fmt: v => v ? "" : t("sans mélange") }
+    ],
+    reflexe: [
+      { k: "time",   range: "reflexe-speed-slider", fmt: v => t("{n} s", { n: Number(v).toFixed(1) }) },
+      { k: "rounds", btn: "rounds", fmt: v => t("{n} formes", { n: v }) }
+    ]
+  };
+  const LEGACY_CONFIG = "_ancien";
+
+  // Lit les réglages affichés sur l'écran de départ du jeu
+  // (ils ne peuvent pas changer pendant une partie).
+  function readGameConfig(gameKey){
+    const cfg = {};
+    (CONFIG_SPEC[gameKey] || []).forEach(sp => {
+      if(sp.btn){
+        const b = document.querySelector("#page-" + gameKey + " .choice-btn.active[data-" + sp.btn + "]");
+        cfg[sp.k] = b ? b.getAttribute("data-" + sp.btn) : "?";
+      } else if(sp.chk){
+        const c = $(sp.chk);
+        cfg[sp.k] = c ? !!c.checked : true;
+      } else if(sp.range){
+        const r = $(sp.range);
+        cfg[sp.k] = r ? String(Number(r.value)) : "?";
+      }
+    });
+    return cfg;
+  }
+
+  function configKey(gameKey, cfg){
+    return (CONFIG_SPEC[gameKey] || []).map(sp => sp.k + "=" + (sp.chk ? (cfg[sp.k] ? 1 : 0) : cfg[sp.k])).join("|");
+  }
+
+  function configLabel(gameKey, cfgKey, cfg){
+    if(cfgKey === LEGACY_CONFIG) return t("réglages non enregistrés");
+    if(!cfg) return cfgKey;
+    return (CONFIG_SPEC[gameKey] || []).map(sp => sp.fmt(cfg[sp.k])).filter(Boolean).join(" · ");
+  }
+
+  function escHtml(s){
+    return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  }
+
   function renderProfilePanel(){
     const statsEl = $("profile-stats");
     if(!statsEl) return;
@@ -2378,10 +2455,22 @@
       .filter(key => games[key])
       .map(key => {
         const g = games[key];
-        const value = key === "simon" ? (g.bestLevel || 0) : (g.bestScore || 0);
+        let configs = g.configs;
+        if(!configs || !Object.keys(configs).length){
+          configs = {}; configs[LEGACY_CONFIG] = g;
+        }
+        const sub = Object.keys(configs)
+          .sort((a, b) => (configs[b].lastPlayedAt || "").localeCompare(configs[a].lastPlayedAt || ""))
+          .map(ck => {
+            const c = configs[ck];
+            const value = key === "simon" ? (c.bestLevel || 0) : (c.bestScore || 0);
+            return '<div class="profile-stat-row profile-stat-config"><span class="profile-stat-cfg">' +
+              escHtml(configLabel(key, ck, c.config)) + '</span><span class="profile-stat-value">' +
+              value + ' · ' + t("{n} partie(s)", { n: c.plays || 0 }) + '</span></div>';
+          }).join("");
         return '<div class="profile-stat-row"><span class="profile-stat-game">' +
           GAME_META[key].label + '</span><span class="profile-stat-value">' +
-          value + ' · ' + t("{n} partie(s)", { n: g.plays || 0 }) + '</span></div>';
+          t("{n} partie(s)", { n: g.plays || 0 }) + '</span></div>' + sub;
       })
       .join("");
     statsEl.innerHTML = rows || '<p class="profile-empty">' + t("Aucune partie enregistrée pour l'instant.") + '</p>';
@@ -2493,22 +2582,40 @@
     reader.readAsText(file);
   }
 
+  function bumpRecord(prev, fields, now){
+    prev = prev || { plays: 0, bestScore: 0, bestLevel: 0 };
+    return Object.assign({}, prev, fields, {
+      plays: (prev.plays || 0) + 1,
+      bestScore: Math.max(prev.bestScore || 0, fields.score || 0),
+      bestLevel: Math.max(prev.bestLevel || 0, fields.level || 0),
+      lastPlayedAt: now
+    });
+  }
+
   function saveGameResult(gameKey, fields){
     const name = profilesStore.activePlayer;
     if(!name || !profilesStore.players[name]) return;
 
     const games = profilesStore.players[name].games || {};
     const prev = games[gameKey] || { plays: 0, bestScore: 0, bestLevel: 0 };
+    const now = new Date().toISOString();
 
-    games[gameKey] = Object.assign({}, prev, fields, {
-      plays: (prev.plays || 0) + 1,
-      bestScore: Math.max(prev.bestScore || 0, fields.score || 0),
-      bestLevel: Math.max(prev.bestLevel || 0, fields.level || 0),
-      lastPlayedAt: new Date().toISOString()
-    });
+    // Scores enregistrés avant le rangement par configuration :
+    // conservés à part, sous « réglages non enregistrés ».
+    const configs = Object.assign({}, prev.configs || {});
+    if(!prev.configs && (prev.plays || 0) > 0){
+      configs[LEGACY_CONFIG] = { plays: prev.plays, bestScore: prev.bestScore || 0, bestLevel: prev.bestLevel || 0, lastPlayedAt: prev.lastPlayedAt || "" };
+    }
+    const cfg = readGameConfig(gameKey);
+    const ck = configKey(gameKey, cfg);
+    configs[ck] = Object.assign(bumpRecord(configs[ck], fields, now), { config: cfg });
+
+    const entry = bumpRecord(prev, fields, now);
+    entry.configs = configs;
+    games[gameKey] = entry;
 
     profilesStore.players[name].games = games;
-    profilesStore.players[name].updatedAt = new Date().toISOString();
+    profilesStore.players[name].updatedAt = now;
     saveProfilesStore(profilesStore);
     if(isGoogleKey(name)) cloud.push();
     if($("profile-active-view") && !$("profile-active-view").classList.contains("hidden")){
@@ -2563,19 +2670,29 @@
   function googleKey(uid){ return "google:" + uid; }
   function isGoogleKey(name){ return typeof name === "string" && name.indexOf("google:") === 0; }
 
+  function mergeRecord(x, y){
+    x = x || {}; y = y || {};
+    const newer = (x.lastPlayedAt || "") >= (y.lastPlayedAt || "") ? x : y;
+    const out = Object.assign({}, y, x, newer, {
+      plays: Math.max(x.plays || 0, y.plays || 0),
+      bestScore: Math.max(x.bestScore || 0, y.bestScore || 0),
+      bestLevel: Math.max(x.bestLevel || 0, y.bestLevel || 0),
+      lastPlayedAt: newer.lastPlayedAt || x.lastPlayedAt || y.lastPlayedAt || null
+    });
+    if(x.configs || y.configs){
+      const configs = {};
+      new Set(Object.keys(x.configs || {}).concat(Object.keys(y.configs || {}))).forEach(ck => {
+        configs[ck] = mergeRecord((x.configs || {})[ck], (y.configs || {})[ck]);
+      });
+      out.configs = configs;
+    }
+    return out;
+  }
+
   function mergeGames(a, b){
     const out = {};
     const keys = new Set(Object.keys(a || {}).concat(Object.keys(b || {})));
-    keys.forEach(k => {
-      const x = (a && a[k]) || {}, y = (b && b[k]) || {};
-      const newer = (x.lastPlayedAt || "") >= (y.lastPlayedAt || "") ? x : y;
-      out[k] = Object.assign({}, y, x, newer, {
-        plays: Math.max(x.plays || 0, y.plays || 0),
-        bestScore: Math.max(x.bestScore || 0, y.bestScore || 0),
-        bestLevel: Math.max(x.bestLevel || 0, y.bestLevel || 0),
-        lastPlayedAt: newer.lastPlayedAt || x.lastPlayedAt || y.lastPlayedAt || null
-      });
-    });
+    keys.forEach(k => { out[k] = mergeRecord((a || {})[k], (b || {})[k]); });
     return out;
   }
 
